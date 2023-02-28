@@ -2,26 +2,33 @@ import { AggregateRoot } from "@nestjs/cqrs";
 
 import { DeletionDate } from '@netspaces/domain'
 
-import { WorkspaceId } from "./value-objects/";
+import { WorkspaceId, WorkspaceName, WorkspaceLocation, Street, City, Country, LocationCreationParams, WorkspaceDescription } from "./value-objects/";
 
 import { WorkspaceWasCreated, WorkspaceWasDeleted } from '../event'
+
+import { WorkspaceCreationParams } from "../event/workspace-was-created"
+
+
 
 export class Workspace extends AggregateRoot {
 
     private _id: WorkspaceId;
     private _deleted: DeletionDate;
+    private _name: WorkspaceName;
+    private _description: WorkspaceDescription;
+    private _location: WorkspaceLocation;
 
     private constructor() {
         super();
     }
 
-    public static add(params: { id: WorkspaceId }): Workspace {
+    public static add(id: WorkspaceId, name: WorkspaceName, description: WorkspaceDescription, location: WorkspaceLocation): Workspace {
 
         const workspace = new Workspace();
 
-        const event = new WorkspaceWasCreated({
-            id: params.id.value,
-        });
+        const event_params: WorkspaceCreationParams = { id: id, name: name, description: description, location: location }
+
+        const event = new WorkspaceWasCreated(event_params);
 
         workspace.apply(event);
 
@@ -30,6 +37,16 @@ export class Workspace extends AggregateRoot {
 
     private onWorkspaceWasCreated(event: WorkspaceWasCreated): void {
         this._id = WorkspaceId.fromString(event.id);
+        this._name = WorkspaceName.fromString(event.name)
+        this._description = WorkspaceDescription.fromString(event.description)
+
+        const location_params: LocationCreationParams = {
+            street: { name: event.streetName },
+            city: { name: event.cityName },
+            country: { name: event.countryName }
+        }
+
+        this._location = WorkspaceLocation.create(location_params)
         this._deleted = null;
     }
 
