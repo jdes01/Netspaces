@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "serve": "npx nx run-many --parallel --target=serve --projects=web,api"
+    "serve": "npx nx run-many --parallel --target=serve --projects=web,api",
+    "test": "jest"
   },
   "private": true,
   "devDependencies": {

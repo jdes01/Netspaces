@@ -2,7 +2,7 @@ import { AggregateRoot } from "@nestjs/cqrs";
 
 import { DeletionDate } from '@netspaces/domain'
 
-import { WorkspaceId, WorkspaceName, WorkspaceLocation, Street, City, Country, LocationCreationParams, WorkspaceDescription } from "./value-objects/";
+import { WorkspaceId, WorkspaceName, WorkspaceLocation, LocationCreationParams, WorkspaceDescription, WorkspaceService } from "./value-objects/";
 
 import { WorkspaceWasCreated, WorkspaceWasDeleted } from '../event'
 
@@ -17,6 +17,7 @@ export class Workspace extends AggregateRoot {
     private _name: WorkspaceName;
     private _description: WorkspaceDescription;
     private _location: WorkspaceLocation;
+    private _services: Array<WorkspaceService> = [];
 
     private constructor() {
         super();
@@ -57,5 +58,29 @@ export class Workspace extends AggregateRoot {
 
     public get id(): WorkspaceId {
         return this._id;
+    }
+
+    public get deleted(): DeletionDate | null {
+        return this._deleted
+    }
+
+    public get name(): WorkspaceName {
+        return this._name
+    }
+
+    public get description(): WorkspaceDescription {
+        return this._description
+    }
+
+    public get location(): WorkspaceLocation {
+        return this._location
+    }
+
+    public get services(): Array<WorkspaceService> {
+        return this._services
+    }
+
+    public add_service(service: WorkspaceService) {
+        this._services.push(service)
     }
 }
