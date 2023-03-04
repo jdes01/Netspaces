@@ -1,4 +1,4 @@
-import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, LocationCreationParams, WorkspaceService } from './value-objects';
+import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, Street, City, Country, WorkspaceService, LocationCreationParams } from './value-objects';
 import { Workspace } from './workspace'
 
 describe('Workspace entity', () => {
@@ -9,18 +9,15 @@ describe('Workspace entity', () => {
         const name = WorkspaceName.fromString('workspace name')
         const description = WorkspaceDescription.fromString('workspace description')
 
-        const locationParams: LocationCreationParams = {
-            street: { name: 'street name' },
-            city: { name: 'city name' },
-            country: { name: 'country name' }
-        }
-
-        const location = WorkspaceLocation.create(locationParams)
+        const street: Street = { name: 'workspace street' }
+        const city: City = { name: 'workspace city' }
+        const country: Country = { name: 'workspace country' }
+        const location: WorkspaceLocation = WorkspaceLocation.create({ street, city, country })
 
         const workspace = Workspace.add(id, name, description, location);
 
         expect(workspace.name).toEqual(name)
-        expect(workspace.location.city).toEqual(locationParams.city)
+        expect(workspace.location.city).toEqual(city)
         expect(workspace.deleted).toBe(null)
     });
 
@@ -30,13 +27,10 @@ describe('Workspace entity', () => {
         const name = WorkspaceName.fromString('workspace name')
         const description = WorkspaceDescription.fromString('workspace description')
 
-        const locationParams: LocationCreationParams = {
-            street: { name: 'street name' },
-            city: { name: 'city name' },
-            country: { name: 'country name' }
-        }
-
-        const location = WorkspaceLocation.create(locationParams)
+        const street: Street = { name: 'workspace street' }
+        const city: City = { name: 'workspace city' }
+        const country: Country = { name: 'workspace country' }
+        const location: WorkspaceLocation = WorkspaceLocation.create({ street, city, country })
 
         const workspace = Workspace.add(id, name, description, location);
 

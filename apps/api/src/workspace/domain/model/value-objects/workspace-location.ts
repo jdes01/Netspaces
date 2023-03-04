@@ -1,30 +1,41 @@
 import { ValueObject } from '@netspaces/domain';
+import { WorkspaceCreationParams } from '../../event';
 
 export type Street = { name: string }
 export type City = { name: string }
 export type Country = { name: string }
 
-export type LocationCreationParams = { street: Street, city: City, country: Country }
+export type LocationCreationParams = {
+    street: Street,
+    city: City,
+    country: Country
+}
 
-export class WorkspaceLocation extends ValueObject<{ street: Street, city: City, country: Country }> {
+export class WorkspaceLocation {
 
     private _street: Street
     private _city: City
     private _country: Country
 
-    public static create(params: LocationCreationParams): WorkspaceLocation {
-        return new WorkspaceLocation({ street: params.street, city: params.city, country: params.country });
+    private constructor(creationParams: LocationCreationParams) {
+        this._street = creationParams.street
+        this._city = creationParams.city
+        this._country = creationParams.country
+    }
+
+    public static create(creationParams: LocationCreationParams): WorkspaceLocation {
+        return new WorkspaceLocation(creationParams);
     }
 
     get street() {
-        return this.props.street;
+        return this._street;
     }
 
     get city() {
-        return this.props.city;
+        return this._city;
     }
 
     get country() {
-        return this.props.country;
+        return this._country;
     }
 }
