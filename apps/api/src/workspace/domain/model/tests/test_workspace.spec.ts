@@ -1,5 +1,5 @@
-import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, Street, City, Country, WorkspaceService, LocationCreationParams } from './value-objects';
-import { Workspace } from './workspace'
+import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, Street, City, Country, WorkspaceService, LocationCreationParams } from '../value-objects';
+import { Workspace } from '../workspace'
 
 describe('Workspace entity', () => {
 
