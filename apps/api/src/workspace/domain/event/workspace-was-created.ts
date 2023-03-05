@@ -13,11 +13,11 @@ export class WorkspaceWasCreated extends StorableEvent {
     readonly description: string;
     readonly location: LocationCreationParams;
 
-    constructor(params: WorkspaceCreationParams) {
+    constructor(id: string, name: string, description: string, location: LocationCreationParams) {
         super();
-        this.id = params.id.value;
-        this.name = params.name.value;
-        this.description = params.description.value;
-        this.location = params.location;
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.location = location;
     }
 }

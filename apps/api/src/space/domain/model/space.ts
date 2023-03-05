@@ -2,7 +2,7 @@ import { DeletionDate } from '@netspaces/domain'
 
 import { SpaceId, SpaceName, SpaceAmenity } from "../model/value-objects";
 
-import { SpaceWasCreated, SpaceCreationParams } from "../event/space-was-created"
+import { SpaceWasCreated } from "../event/space-was-created"
 import { AggregateRoot } from '@nestjs/cqrs';
 
 
@@ -24,11 +24,7 @@ export class Space extends AggregateRoot {
 
         const space = new Space();
 
-        const event_params: SpaceCreationParams = { id: id, name: name, quantity: quantity, seats: seats }
-
-        const event = new SpaceWasCreated(event_params);
-
-        space.apply(event);
+        space.apply(new SpaceWasCreated(id.value, name.value, quantity, seats));
 
         return space;
     }

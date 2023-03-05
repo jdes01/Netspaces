@@ -2,13 +2,9 @@ import { AggregateRoot } from "@nestjs/cqrs";
 
 import { DeletionDate } from '@netspaces/domain'
 
-import { WorkspaceId, WorkspaceName, WorkspaceLocation, LocationCreationParams, WorkspaceDescription, WorkspaceService, City, Street, Country } from "./value-objects/";
+import { WorkspaceId, WorkspaceName, WorkspaceLocation, WorkspaceDescription, WorkspaceService } from "./value-objects/";
 
 import { WorkspaceWasCreated, WorkspaceWasDeleted } from '../event'
-
-import { WorkspaceCreationParams } from "../event/workspace-was-created"
-
-
 
 export class Workspace extends AggregateRoot {
 
@@ -27,9 +23,7 @@ export class Workspace extends AggregateRoot {
 
         const workspace = new Workspace();
 
-        const event_params: WorkspaceCreationParams = { id: id, name: name, description: description, location: location }
-
-        const event = new WorkspaceWasCreated(event_params);
+        const event = new WorkspaceWasCreated(id.value, name.value, description.value, location);
 
         workspace.apply(event);
 
