@@ -34,9 +34,9 @@ describe('Workspace entity', () => {
 
         const workspace = Workspace.add(id, name, description, location);
 
-        const wifi_service = WorkspaceService.WIFI
+        const wifiService = WorkspaceService.WIFI
 
-        workspace.add_service(wifi_service)
+        workspace.add_service(wifiService)
 
         expect(workspace)
         expect(workspace.services.length).toBe(1)

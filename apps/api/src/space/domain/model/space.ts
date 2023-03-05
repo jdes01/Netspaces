@@ -33,7 +33,7 @@ export class Space extends AggregateRoot {
         return space;
     }
 
-    private onWorkspaceWasCreated(event: SpaceWasCreated): void {
+    private onSpaceWasCreated(event: SpaceWasCreated): void {
         this._id = SpaceId.fromString(event.id);
         this._name = SpaceName.fromString(event.name)
         this._quantity = event.quantity
