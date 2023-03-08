@@ -19,7 +19,7 @@ export class Workspace extends AggregateRoot {
         super();
     }
 
-    public static add(id: WorkspaceId, name: WorkspaceName, description: WorkspaceDescription, location: WorkspaceLocation,): Workspace {
+    public static add(id: WorkspaceId, name: WorkspaceName, description: WorkspaceDescription, location: WorkspaceLocation): Workspace {
 
         const workspace = new Workspace();
 

@@ -1,6 +1,6 @@
 import { CqrsModule, EventBus, EventPublisher } from '@nestjs/cqrs';
 import { Test, TestingModule } from '@nestjs/testing';
-import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, Street, City, Country, WorkspaceService, LocationCreationParams } from '../value-objects';
+import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, Street, City, Country, WorkspaceService, LocationDTO } from '../value-objects';
 import { Workspace } from '../workspace'
 
 describe('Workspace entity', () => {

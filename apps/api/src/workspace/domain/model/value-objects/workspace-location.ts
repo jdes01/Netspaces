@@ -5,7 +5,7 @@ export type Street = { name: string }
 export type City = { name: string }
 export type Country = { name: string }
 
-export type LocationCreationParams = {
+export type LocationDTO = {
     street: Street,
     city: City,
     country: Country
@@ -17,13 +17,13 @@ export class WorkspaceLocation {
     private _city: City
     private _country: Country
 
-    private constructor(creationParams: LocationCreationParams) {
+    private constructor(creationParams: LocationDTO) {
         this._street = creationParams.street
         this._city = creationParams.city
         this._country = creationParams.country
     }
 
-    public static create(creationParams: LocationCreationParams): WorkspaceLocation {
+    public static create(creationParams: LocationDTO): WorkspaceLocation {
         return new WorkspaceLocation(creationParams);
     }
 
