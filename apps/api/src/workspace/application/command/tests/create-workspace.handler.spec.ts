@@ -5,11 +5,14 @@ import { Workspace } from '../../../domain/model/workspace';
 import { CreateWorkspaceCommand } from '../create-workspace.command'
 import { CreateWorkspaceHandler } from '../../handler/create-workspace.handler'
 
+import { WorkspaceRepository } from './../../../domain/repository/workspace.repository'
+import { WORKSPACE_REPOSITORY } from '../../../domain/repository';
+
 
 describe('CreateWorkspaceHandler', () => {
     let command$: CreateWorkspaceHandler;
 
-    const workspaces: Partial<Workspace> = {};
+    const workspace_repository: Partial<WorkspaceRepository> = {};
 
     const id = WorkspaceId.fromString('fd399f01-e08c-43d4-a62e-61302ad2d06d')
     const name = WorkspaceName.fromString('workspace name')
@@ -21,11 +24,19 @@ describe('CreateWorkspaceHandler', () => {
     const location: WorkspaceLocation = WorkspaceLocation.create({ street, city, country })
 
     beforeEach(async () => {
+
         const module: TestingModule = await Test.createTestingModule({
-            providers: [CreateWorkspaceHandler],
+            providers: [
+                CreateWorkspaceHandler,
+                {
+                    provide: WORKSPACE_REPOSITORY,
+                    useValue: workspace_repository
+                },
+            ],
         }).compile();
 
         command$ = module.get<CreateWorkspaceHandler>(CreateWorkspaceHandler);
+        workspace_repository.save = jest.fn();
     });
 
     it('should creates a new workspace', async () => {
@@ -33,46 +44,8 @@ describe('CreateWorkspaceHandler', () => {
             new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
         );
 
-        expect(workspaces.save).toHaveBeenCalledWith(
+        expect(workspace_repository.save).toHaveBeenCalledWith(
             Workspace.add(id, name, description, location),
         );
     });
-
-    // it('should not creates an existing group name', async () => {
-    //     checkUniqueGroupName.with = jest.fn().mockResolvedValue(groupId);
-
-    //     expect(
-    //         command$.execute(
-    //             new CreateGroupCommand(
-    //                 groupId.value,
-    //                 name.value,
-    //                 groupCurrencyCode.value,
-    //                 owner,
-    //                 groupMembers,
-    //             ),
-    //         ),
-    //     ).rejects.toThrow(GroupNameAlreadyRegisteredError);
-
-    //     expect(groups.save).toHaveBeenCalledTimes(0);
-    // });
-
-    // it('should not creates an existing group id', async () => {
-    //     groups.find = jest
-    //         .fn()
-    //         .mockResolvedValue(Group.add(groupId, name, groupCurrencyCode, ownerId));
-
-    //     expect(
-    //         command$.execute(
-    //             new CreateGroupCommand(
-    //                 groupId.value,
-    //                 name.value,
-    //                 groupCurrencyCode.value,
-    //                 owner,
-    //                 groupMembers,
-    //             ),
-    //         ),
-    //     ).rejects.toThrow(GroupIdAlreadyRegisteredError);
-
-    //     expect(groups.save).toHaveBeenCalledTimes(0);
-    // });
 });

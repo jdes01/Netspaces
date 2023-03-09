@@ -3,13 +3,14 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { v4 as uuid } from 'uuid';
 import { Workspace } from '../../domain/model';
 import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName } from '../../domain/model/value-objects';
+import { WorkspaceRepository, WORKSPACE_REPOSITORY } from '../../domain/repository/';
 import { CreateWorkspaceCommand } from '../command/create-workspace.command';
 
 
 @CommandHandler(CreateWorkspaceCommand)
 export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCommand> {
     constructor(
-        @Inject(WORKSPACES) private readonly workspaceRepository: WorkspaceRepository,
+        @Inject(WORKSPACE_REPOSITORY) private readonly workspaceRepository: WorkspaceRepository,
     ) { }
 
     async execute(command: CreateWorkspaceCommand) {
