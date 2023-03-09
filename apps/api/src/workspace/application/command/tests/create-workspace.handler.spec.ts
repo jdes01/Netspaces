@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { v4 as uuid } from 'uuid';
 import { City, Country, Street, WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName } from '../../../domain/model/value-objects';
 import { Workspace } from '../../../domain/model/workspace';
 import { CreateWorkspaceCommand } from '../create-workspace.command'
@@ -7,10 +6,11 @@ import { CreateWorkspaceHandler } from '../../handler/create-workspace.handler'
 
 import { WorkspaceRepository } from './../../../domain/repository/workspace.repository'
 import { WORKSPACE_REPOSITORY } from '../../../domain/repository';
+import { Err, Ok } from 'ts-results';
 
 
 describe('CreateWorkspaceHandler', () => {
-    let command$: CreateWorkspaceHandler;
+    let handler$: CreateWorkspaceHandler;
 
     const workspace_repository: Partial<WorkspaceRepository> = {};
 
@@ -35,17 +35,41 @@ describe('CreateWorkspaceHandler', () => {
             ],
         }).compile();
 
-        command$ = module.get<CreateWorkspaceHandler>(CreateWorkspaceHandler);
+        handler$ = module.get<CreateWorkspaceHandler>(CreateWorkspaceHandler);
         workspace_repository.save = jest.fn();
     });
 
     it('should creates a new workspace', async () => {
-        await command$.execute(
+        await handler$.handle(
             new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
         );
 
         expect(workspace_repository.save).toHaveBeenCalledWith(
             Workspace.add(id, name, description, location),
         );
+    });
+
+    it('should return null when repository success', async () => {
+
+        workspace_repository.save = jest.fn().mockReturnValueOnce(Ok(null))
+
+        const result = await handler$.handle(
+            new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
+        );
+
+        expect(result).toBeInstanceOf(Ok)
+        expect(result.val).toBe(null)
+    });
+
+    it('should return error when repository success', async () => {
+
+        workspace_repository.save = jest.fn().mockReturnValueOnce(Err(Error('error message')))
+
+        const result = await handler$.handle(
+            new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
+        );
+
+        expect(result).toBeInstanceOf(Err)
+        expect(result.val).toEqual(Error('error message'))
     });
 });

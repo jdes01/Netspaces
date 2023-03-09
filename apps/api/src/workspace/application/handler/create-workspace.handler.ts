@@ -1,5 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { Result } from 'ts-results';
 import { v4 as uuid } from 'uuid';
 import { Workspace } from '../../domain/model';
 import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName } from '../../domain/model/value-objects';
@@ -13,7 +14,7 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
         @Inject(WORKSPACE_REPOSITORY) private readonly workspaceRepository: WorkspaceRepository,
     ) { }
 
-    async execute(command: CreateWorkspaceCommand) {
+    async handle(command: CreateWorkspaceCommand): Promise<Result<null, Error>> {
 
         const id = WorkspaceId.fromString(command.id)
         const name = WorkspaceName.fromString(command.name)
@@ -28,6 +29,6 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
             location,
         );
 
-        this.workspaceRepository.save(workspace);
+        return this.workspaceRepository.save(workspace);
     }
 }
