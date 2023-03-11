@@ -2,17 +2,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { City, Country, Street, WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName } from '../../../domain/model/value-objects';
 import { Workspace } from '../../../domain/model/workspace';
 import { CreateWorkspaceCommand } from '../create-workspace.command'
-import { CreateWorkspaceHandler } from '../../handler/create-workspace.handler'
+import { CreateWorkspaceHandler } from '../handler/create-workspace.handler'
 
-import { WorkspaceRepository } from './../../../domain/repository/workspace.repository'
-import { WORKSPACE_REPOSITORY } from '../../../domain/repository';
+import { WORKSPACE_REPOSITORY, WorkspaceRepository } from '../../../domain/repository';
 import { Err, Ok } from 'ts-results';
 
 
 describe('CreateWorkspaceHandler', () => {
     let handler$: CreateWorkspaceHandler;
 
-    const workspace_repository: Partial<WorkspaceRepository> = {};
+    const workspaceRepository: Partial<WorkspaceRepository> = {};
 
     const id = WorkspaceId.fromString('fd399f01-e08c-43d4-a62e-61302ad2d06d')
     const name = WorkspaceName.fromString('workspace name')
@@ -30,13 +29,14 @@ describe('CreateWorkspaceHandler', () => {
                 CreateWorkspaceHandler,
                 {
                     provide: WORKSPACE_REPOSITORY,
-                    useValue: workspace_repository
+                    useValue: workspaceRepository
                 },
             ],
         }).compile();
 
         handler$ = module.get<CreateWorkspaceHandler>(CreateWorkspaceHandler);
-        workspace_repository.save = jest.fn();
+        workspaceRepository.save = jest.fn();
+        workspaceRepository.find = jest.fn();
     });
 
     it('should creates a new workspace', async () => {
@@ -44,14 +44,15 @@ describe('CreateWorkspaceHandler', () => {
             new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
         );
 
-        expect(workspace_repository.save).toHaveBeenCalledWith(
+        expect(workspaceRepository.save).toHaveBeenCalledWith(
             Workspace.add(id, name, description, location),
         );
     });
 
     it('should return null when repository success', async () => {
 
-        workspace_repository.save = jest.fn().mockReturnValueOnce(Ok(null))
+        workspaceRepository.save = jest.fn().mockReturnValueOnce(Ok(null))
+        workspaceRepository.find = jest.fn().mockReturnValueOnce(null)
 
         const result = await handler$.handle(
             new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
@@ -63,7 +64,7 @@ describe('CreateWorkspaceHandler', () => {
 
     it('should return error when repository fails', async () => {
 
-        workspace_repository.save = jest.fn().mockReturnValueOnce(Err(Error('error message')))
+        workspaceRepository.save = jest.fn().mockReturnValueOnce(Err(Error('error message')))
 
         const result = await handler$.handle(
             new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
@@ -71,5 +72,19 @@ describe('CreateWorkspaceHandler', () => {
 
         expect(result).toBeInstanceOf(Err)
         expect(result.val).toEqual(Error('error message'))
+    });
+
+    it('should not save a workspace when another workspace with same id exists', async () => {
+
+        const alreadyExistingWorkspace: Partial<Workspace> = {};
+
+        workspaceRepository.save = jest.fn().mockReturnValueOnce(Ok(null))
+        workspaceRepository.find = jest.fn().mockReturnValueOnce(alreadyExistingWorkspace)
+
+        const result = await handler$.handle(
+            new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
+        );
+
+        expect(result).toBeInstanceOf(Err)
     });
 });
