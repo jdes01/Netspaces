@@ -61,7 +61,7 @@ describe('CreateWorkspaceHandler', () => {
         expect(result.val).toBe(null)
     });
 
-    it('should return error when repository success', async () => {
+    it('should return error when repository fails', async () => {
 
         workspace_repository.save = jest.fn().mockReturnValueOnce(Err(Error('error message')))
 
