@@ -1,13 +1,12 @@
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Result } from 'ts-results';
-import { WorkspaceException } from '../../../domain/exception/workspace-exception';
-import { WorkspaceAlreadyExistsException } from '../../../domain/exception/workspace-already-exists-exception';
+import { WorkspaceError } from '../../../domain/exception/workspace-error';
+import { WorkspaceAlreadyExistsError } from '../../../domain/exception/workspace-already-exists-error';
 import { Workspace } from '../../../domain/model';
 import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName } from '../../../domain/model/value-objects';
 import { WorkspaceRepository, WORKSPACE_REPOSITORY } from '../../../domain/repository/';
 import { CreateWorkspaceCommand } from '../../command/create-workspace.command';
-
 
 @CommandHandler(CreateWorkspaceCommand)
 export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCommand> {
@@ -15,23 +14,19 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
         @Inject(WORKSPACE_REPOSITORY) private readonly workspaceRepository: WorkspaceRepository,
     ) { }
 
-    async handle(command: CreateWorkspaceCommand): Promise<Result<null, WorkspaceException>> {
+    async handle(command: CreateWorkspaceCommand): Promise<Result<null, WorkspaceError>> {
 
         const id = WorkspaceId.fromString(command.id)
-        const name = WorkspaceName.fromString(command.name)
-        const description = WorkspaceDescription.fromString(command.description)
-
-        const location: WorkspaceLocation = WorkspaceLocation.create(command.location)
 
         if (await this.workspaceRepository.find(id)) {
-            return Err(WorkspaceAlreadyExistsException.withString(id))
+            return Err(WorkspaceAlreadyExistsError.withString(id))
         }
 
         const workspace = Workspace.add(
             id,
-            name,
-            description,
-            location,
+            WorkspaceName.fromString(command.name),
+            WorkspaceDescription.fromString(command.description),
+            WorkspaceLocation.create(command.location),
         );
 
         return this.workspaceRepository.save(workspace);

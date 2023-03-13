@@ -3,7 +3,7 @@ import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, Lo
 
 export type WorkspaceCreationParams = { id: WorkspaceId, name: WorkspaceName, description: WorkspaceDescription, location: WorkspaceLocation }
 
-export class WorkspaceWasCreated extends StorableEvent {
+export class WorkspaceWasCreatedEvent extends StorableEvent {
 
     eventAggregate: string = 'workspace';
     eventVersion: number = 1;

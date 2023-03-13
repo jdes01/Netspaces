@@ -4,7 +4,7 @@ import { DeletionDate } from '@netspaces/domain'
 
 import { WorkspaceId, WorkspaceName, WorkspaceLocation, WorkspaceDescription, WorkspaceService } from "./value-objects/";
 
-import { WorkspaceWasCreated, WorkspaceWasDeleted } from '../event'
+import { WorkspaceWasCreatedEvent, WorkspaceWasDeleted } from '../event'
 
 export class Workspace extends AggregateRoot {
 
@@ -23,14 +23,14 @@ export class Workspace extends AggregateRoot {
 
         const workspace = new Workspace();
 
-        const event = new WorkspaceWasCreated(id.value, name.value, description.value, location);
+        const event = new WorkspaceWasCreatedEvent(id.value, name.value, description.value, location);
 
         workspace.apply(event);
 
         return workspace;
     }
 
-    private onWorkspaceWasCreated(event: WorkspaceWasCreated): void {
+    private onWorkspaceWasCreated(event: WorkspaceWasCreatedEvent): void {
         this._id = WorkspaceId.fromString(event.id);
         this._name = WorkspaceName.fromString(event.name)
         this._description = WorkspaceDescription.fromString(event.description)

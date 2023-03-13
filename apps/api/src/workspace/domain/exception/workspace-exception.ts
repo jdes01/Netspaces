@@ -1,1 +1,0 @@
-export class WorkspaceException extends Error { }
