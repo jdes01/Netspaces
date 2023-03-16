@@ -56,6 +56,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
     "@nestjs/cqrs": "^9.0.1",
     "@nestjs/platform-express": "^9.0.0",

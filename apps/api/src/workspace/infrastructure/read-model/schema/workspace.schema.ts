@@ -7,10 +7,10 @@ export const WorkspaceSchema = new Schema({
     __v: { type: Number, select: false },
 });
 
-export interface WorkspaceView extends Document {
+export interface WorkspaceDocument extends Document {
     readonly _id: string;
     readonly name: string
     readonly description: string
 }
 
-export const WORKSPACE_VIEW = 'WORKSPACE_VIEW';
+export const WORKSPACE_MONGOOSE_MODEL = 'WORKSPACE_MONGOOSE_MODEL';
