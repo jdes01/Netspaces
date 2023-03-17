@@ -1,7 +1,9 @@
 import { WORKSPACE_REPOSITORY } from './domain/repository';
 import { WorkspaceEventStoreRepository } from './infrastructure/repository';
+
+import { WORKSPACE_PROJECTION } from './domain/projection/';
+import { WorkspaceSchema } from './infrastructure/projection/workspace.schema';
 import { Connection } from 'mongoose';
-import { WorkspaceSchema, WORKSPACE_MONGOOSE_MODEL } from './infrastructure/read-model/schema/workspace.schema';
 
 export const WorkspaceProviders = [
     {
@@ -9,7 +11,7 @@ export const WorkspaceProviders = [
         useClass: WorkspaceEventStoreRepository
     },
     {
-        provide: WORKSPACE_MONGOOSE_MODEL,
+        provide: WORKSPACE_PROJECTION,
         useFactory: (connection: Connection) => connection.model('Workspace', WorkspaceSchema),
         inject: ['DATABASE_CONNECTION']
     },

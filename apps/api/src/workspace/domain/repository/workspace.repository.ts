@@ -8,3 +8,5 @@ export interface WorkspaceRepository {
     find(workspaceId: WorkspaceId): Promise<Result<Nullable<Workspace>, WorkspaceError>>;
     save(workspace: Workspace): Promise<Result<null, WorkspaceError>>;
 }
+
+export const WORKSPACE_REPOSITORY = "WORKSPACE_REPOSITORY"

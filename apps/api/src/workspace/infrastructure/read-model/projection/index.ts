@@ -1,1 +1,0 @@
-export * from './workspace-was-created.projection'

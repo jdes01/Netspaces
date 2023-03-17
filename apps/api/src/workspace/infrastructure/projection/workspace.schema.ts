@@ -12,5 +12,3 @@ export interface WorkspaceDocument extends Document {
     readonly name: string
     readonly description: string
 }
-
-export const WORKSPACE_MONGOOSE_MODEL = 'WORKSPACE_MONGOOSE_MODEL';
