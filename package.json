@@ -55,7 +55,7 @@
     "url-loader": "^4.1.1"
   },
   "dependencies": {
-    "@aulasoftwarelibre/nestjs-eventstore": "^0.6.0",
+    "@aulasoftwarelibre/nestjs-eventstore": "^0.7.0",
     "@nestjs/common": "^9.3.10",
     "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
@@ -64,7 +64,7 @@
     "@nestjs/swagger": "^6.2.1",
     "axios": "^1.0.0",
     "class-validator": "^0.14.0",
-    "mongoose": "^7.0.1",
+    "mongoose": "^6.0.2",
     "next": "13.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
