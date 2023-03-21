@@ -8,14 +8,19 @@ const GLOBAL_PREFIX = 'api';
 
 async function bootstrap() {
 
-	const app = await NestFactory.create(AppModule.forRoot(), {
+	const app = await NestFactory.create(AppModule, {
 		logger: process.env.NODE_ENV == 'development' ? ['debug', 'error', 'log', 'verbose', 'warn'] : ['error', 'warn'],
 	});
 
 	app.setGlobalPrefix(GLOBAL_PREFIX);
-	app.enableCors();
 
-	const options = new DocumentBuilder().addBearerAuth().setTitle('Meridio API').setVersion('1.0').build();
+	app.enableCors({
+		origin: true,
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+		credentials: true,
+	});
+
+	const options = new DocumentBuilder().addBearerAuth().setTitle('Netspaces API').setVersion('1.0').build();
 
 	const document = SwaggerModule.createDocument(app, options, {});
 	SwaggerModule.setup(GLOBAL_PREFIX, app, document);

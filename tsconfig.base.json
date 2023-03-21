@@ -21,6 +21,9 @@
       "@netspaces/domain": [
         "libs/domain/src/index.ts"
       ],
+      "@netspaces/contracts": [
+        "libs/contracts/src/index.ts"
+      ],
     }
   },
   "exclude": [

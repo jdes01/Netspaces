@@ -40,7 +40,7 @@ describe('CreateWorkspaceHandler', () => {
     });
 
     it('should creates a new workspace', async () => {
-        await handler$.handle(
+        await handler$.execute(
             new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
         );
 
@@ -54,7 +54,7 @@ describe('CreateWorkspaceHandler', () => {
         workspaceRepository.save = jest.fn().mockReturnValueOnce(Ok(null))
         workspaceRepository.find = jest.fn().mockReturnValueOnce(null)
 
-        const result = await handler$.handle(
+        const result = await handler$.execute(
             new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
         );
 
@@ -66,7 +66,7 @@ describe('CreateWorkspaceHandler', () => {
 
         workspaceRepository.save = jest.fn().mockReturnValueOnce(Err(Error('error message')))
 
-        const result = await handler$.handle(
+        const result = await handler$.execute(
             new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
         );
 
@@ -81,7 +81,7 @@ describe('CreateWorkspaceHandler', () => {
         workspaceRepository.save = jest.fn().mockReturnValueOnce(Ok(null))
         workspaceRepository.find = jest.fn().mockReturnValueOnce(alreadyExistingWorkspace)
 
-        const result = await handler$.handle(
+        const result = await handler$.execute(
             new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
         );
 

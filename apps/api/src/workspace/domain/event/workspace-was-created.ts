@@ -1,23 +1,19 @@
-import { StorableEvent } from 'event-sourcing-nestjs';
-import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, LocationDTO } from '../model/value-objects';
+import { Event } from '@aulasoftwarelibre/nestjs-eventstore';
+import { CreateWorkspaceDTO } from '@netspaces/contracts';
+import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName } from '../model/value-objects';
 
 export type WorkspaceCreationParams = { id: WorkspaceId, name: WorkspaceName, description: WorkspaceDescription, location: WorkspaceLocation }
 
-export class WorkspaceWasCreatedEvent extends StorableEvent {
+export class WorkspaceWasCreatedEvent extends Event<CreateWorkspaceDTO> {
 
-    eventAggregate: string = 'workspace';
-    eventVersion: number = 1;
-
-    readonly id: string;
-    readonly name: string;
-    readonly description: string;
-    readonly location: LocationDTO;
-
-    constructor(id: string, name: string, description: string, location: LocationDTO) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.location = location;
+    constructor(
+        public readonly id: string,
+        public readonly name: string,
+        public readonly description: string,
+        public readonly street: string,
+        public readonly city: string,
+        public readonly country: string,
+    ) {
+        super(id, { _id: id, name, description, street, city, country });
     }
 }

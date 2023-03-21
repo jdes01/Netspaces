@@ -1,34 +1,36 @@
-import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Err, Result } from 'ts-results';
+import { Err, Ok, Result } from 'ts-results';
 import { WorkspaceError } from '../../../domain/exception/workspace-error';
-import { WorkspaceAlreadyExistsError } from '../../../domain/exception/workspace-already-exists-error';
 import { Workspace } from '../../../domain/model';
 import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName } from '../../../domain/model/value-objects';
-import { WorkspaceRepository, WORKSPACE_REPOSITORY } from '../../../domain/repository/';
 import { CreateWorkspaceCommand } from '../../command/create-workspace.command';
+import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
 
 @CommandHandler(CreateWorkspaceCommand)
 export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCommand> {
     constructor(
-        @Inject(WORKSPACE_REPOSITORY) private readonly workspaceRepository: WorkspaceRepository,
+        @InjectAggregateRepository(Workspace) private readonly workspaceRepository: AggregateRepository<Workspace, WorkspaceId>,
     ) { }
 
-    async handle(command: CreateWorkspaceCommand): Promise<Result<null, WorkspaceError>> {
+    async execute(command: CreateWorkspaceCommand): Promise<Result<null, WorkspaceError>> {
+        const id = WorkspaceId.fromString(command.id);
+        const name = WorkspaceName.fromString(command.name);
+        const description = WorkspaceDescription.fromString(command.description);
+        const location = new WorkspaceLocation(command.street, command.city, command.country);
 
-        const id = WorkspaceId.fromString(command.id)
-
-        if (await this.workspaceRepository.find(id)) {
-            return Err(WorkspaceAlreadyExistsError.withString(id))
-        }
+        // if (await this.workspaceRepository.find(id)) {
+        //     return Err(WorkspaceAlreadyExistsError.withString(id))
+        // }
 
         const workspace = Workspace.add(
             id,
-            WorkspaceName.fromString(command.name),
-            WorkspaceDescription.fromString(command.description),
-            WorkspaceLocation.create(command.location),
+            name,
+            description,
+            location
         );
 
-        return this.workspaceRepository.save(workspace);
+        this.workspaceRepository.save(workspace);
+
+        return Ok(null)
     }
 }

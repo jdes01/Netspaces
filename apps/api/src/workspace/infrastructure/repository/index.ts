@@ -1,1 +1,0 @@
-export * from './workspace.event-store-repository'

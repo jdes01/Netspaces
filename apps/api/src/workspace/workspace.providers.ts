@@ -1,16 +1,9 @@
-import { WORKSPACE_REPOSITORY } from './domain/repository';
-import { WorkspaceEventStoreRepository } from './infrastructure/repository';
-
-import { WORKSPACE_PROJECTION } from './domain/projection/';
-import { WorkspaceMongoDBProjection } from './infrastructure/projection/workspace.projection';
+import { WORKSPACE_FINDER } from './application/service/workspace-finder.service';
+import { WorkspaceFinder } from './infrastructure/service/workspace-finder.service';
 
 export const WorkspaceProviders = [
     {
-        provide: WORKSPACE_REPOSITORY,
-        useClass: WorkspaceEventStoreRepository
-    },
-    {
-        provide: WORKSPACE_PROJECTION,
-        useClass: WorkspaceMongoDBProjection
+        provide: WORKSPACE_FINDER,
+        useClass: WorkspaceFinder,
     },
 ];

@@ -1,13 +1,7 @@
-import { StorableEvent } from 'event-sourcing-nestjs';
-
-export class WorkspaceWasDeleted extends StorableEvent {
-
-    eventAggregate: string = 'workspace';
-    eventVersion: number = 1;
-
-    public readonly createdOn: Date = new Date();
-
+import { Event } from '@aulasoftwarelibre/nestjs-eventstore';
+import { DeleteWorkspaceDTO } from '@netspaces/contracts';
+export class WorkspaceWasDeleted extends Event<DeleteWorkspaceDTO> {
     constructor(public readonly id: string) {
-        super();
+        super(id, { _id: id });
     }
 }

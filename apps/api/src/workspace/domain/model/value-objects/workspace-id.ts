@@ -1,12 +1,16 @@
-import { ValueObject } from '@netspaces/domain';
+import { Id } from '@aulasoftwarelibre/nestjs-eventstore';
+import { v4 as uuid } from 'uuid';
 
-export class WorkspaceId extends ValueObject<{ value: string }> {
-
-    public static fromString(id: string): WorkspaceId {
-        return new WorkspaceId({ value: id });
+export class WorkspaceId extends Id {
+    static generate(): WorkspaceId {
+        return new WorkspaceId(uuid());
     }
 
-    get value() {
+    public static fromString(id: string): WorkspaceId {
+        return new WorkspaceId(id);
+    }
+
+    get value(): string {
         return this.props.value;
     }
 }

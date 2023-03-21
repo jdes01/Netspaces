@@ -1,14 +1,20 @@
 import { Document, Schema } from 'mongoose';
+import { WorkspaceDTO } from '@netspaces/contracts';
 
-export const WorkspaceSchema = new Schema({
-    _id: String,
-    name: String,
-    description: String,
-    __v: { type: Number, select: false },
-});
+export const WORKSPACE_PROJECTION = 'WORKSPACE_PROJECTION';
 
-export interface WorkspaceDocument extends Document {
-    readonly _id: string;
-    readonly name: string
-    readonly description: string
-}
+export type WorkspaceDocument = WorkspaceDTO & Document;
+
+export const WorkspaceSchema = new Schema(
+    {
+        _id: String,
+        name: String,
+        description: String,
+        street: String,
+        city: String,
+        country: String
+    },
+    {
+        versionKey: false,
+    },
+);

@@ -1,4 +1,4 @@
-import { AggregateRoot } from "@nestjs/cqrs";
+import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
 
 import { DeletionDate } from '@netspaces/domain'
 
@@ -9,45 +9,45 @@ import { WorkspaceWasCreatedEvent, WorkspaceWasDeleted } from '../event'
 export class Workspace extends AggregateRoot {
 
     private _id: WorkspaceId;
-    private _deleted: DeletionDate;
+    private _deleted: boolean;
     private _name: WorkspaceName;
     private _description: WorkspaceDescription;
     private _location: WorkspaceLocation;
     private _services: Array<WorkspaceService> = [];
 
-    private constructor() {
-        super();
-    }
-
     public static add(id: WorkspaceId, name: WorkspaceName, description: WorkspaceDescription, location: WorkspaceLocation): Workspace {
 
         const workspace = new Workspace();
 
-        const event = new WorkspaceWasCreatedEvent(id.value, name.value, description.value, location);
+        const event = new WorkspaceWasCreatedEvent(id.value, name.value, description.value, location.street, location.city, location.country);
 
         workspace.apply(event);
 
         return workspace;
     }
 
-    private onWorkspaceWasCreated(event: WorkspaceWasCreatedEvent): void {
+    private onWorkspaceWasCreatedEvent(event: WorkspaceWasCreatedEvent): void {
         this._id = WorkspaceId.fromString(event.id);
         this._name = WorkspaceName.fromString(event.name)
         this._description = WorkspaceDescription.fromString(event.description)
-        this._location = WorkspaceLocation.create(event.location)
+        this._location = new WorkspaceLocation(event.street, event.city, event.country)
         this._deleted = null;
     }
 
 
-    private onWorkspacerWasDeleted(event: WorkspaceWasDeleted): void {
-        this._deleted = event.createdOn;
+    private onWorkspacerWasDeletedEvent(event: WorkspaceWasDeleted): void {
+        this._deleted = true;
+    }
+
+    public aggregateId(): string {
+        return this._id.value;
     }
 
     public get id(): WorkspaceId {
         return this._id;
     }
 
-    public get deleted(): DeletionDate | null {
+    public get deleted(): boolean {
         return this._deleted
     }
 
