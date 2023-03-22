@@ -3,12 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { WorkspaceDTO } from '@netspaces/contracts';
 import { Model } from 'mongoose';
 
-import { IWorkspaceFinder } from '../../application/service/workspace-finder.service';
 import { WorkspaceId } from '../../domain/model/value-objects';
+import { WorkspaceFinder } from '../../domain/service/workspace-finder.service';
 import { WorkspaceDocument, WORKSPACE_PROJECTION } from '../projection';
 
 @Injectable()
-export class WorkspaceFinder implements IWorkspaceFinder {
+export class MongoDBWorkspaceFinder implements WorkspaceFinder {
     constructor(
         @InjectModel(WORKSPACE_PROJECTION) private readonly workspaceProjection: Model<WorkspaceDocument>,
     ) { }
