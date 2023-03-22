@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Response, HttpStatus, Logger } from "@nestjs/common";
+import { Body, Controller, Get, Post, HttpStatus, HttpException, HttpCode } from "@nestjs/common";
 
 import { CreateWorkspaceDTO } from "@netspaces/contracts"
 import { WorkspaceAlreadyExistsError } from "../../domain/exception";
@@ -10,7 +10,8 @@ export class WorkspaceController {
     constructor(private readonly workspaceService: WorkspaceService) { }
 
     @Post()
-    async create(@Body() createWorkspaceDTO: CreateWorkspaceDTO, @Response() response: Response) {
+    @HttpCode(200)
+    async create(@Body() createWorkspaceDTO: CreateWorkspaceDTO) {
 
         const result = await this.workspaceService.createWorkspace(
             createWorkspaceDTO._id,
@@ -22,10 +23,11 @@ export class WorkspaceController {
         );
 
         if (result.val instanceof WorkspaceAlreadyExistsError) {
-            await response.status(HttpStatus.CONFLICT).json({ error: result.val.message }).send()
+            throw new HttpException(result.val.message, HttpStatus.CONFLICT);
         }
 
-        response.status(HttpStatus.OK).send()
+        return result.val
+
     }
 
     @Get()
