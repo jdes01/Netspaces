@@ -1,1 +1,1 @@
-export * from './workspace.module';
+export * from './infrastructure';

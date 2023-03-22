@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { CreateWorkspaceCommand } from "../../application/command/create-workspace.command";
 import { GetWorkspacesQuery } from "../../application/query";
@@ -11,6 +11,7 @@ export class WorkspaceService {
     ) { }
 
     async createWorkspace(id: string, name: string, description: string, street: string, city: string, country: string) {
+        Logger.log(name)
         return this.commandBus.execute(new CreateWorkspaceCommand(id, name, description, street, city, country));
     }
 

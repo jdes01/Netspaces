@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
-import { ConfigService, ConfigModule } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CqrsModule } from '@nestjs/cqrs';
 import { EVENTSTORE_KEYSTORE_CONNECTION } from '@aulasoftwarelibre/nestjs-eventstore';
 import configuration from './config/configuration';
 import { ConsoleModule } from 'nestjs-console';
 import { WorkspaceModule } from './workspace';
-import { AccountModule } from './account';
 
 @Module({
   imports: [
@@ -30,7 +29,7 @@ import { AccountModule } from './account';
     MongooseModule.forRoot(process.env.KEYSTORE_URI, {
       connectionName: EVENTSTORE_KEYSTORE_CONNECTION,
     }),
-    AccountModule,
+    WorkspaceModule,
   ],
 })
-export class BootstrapModule {}
+export class BootstrapModule { }

@@ -2,20 +2,20 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { CommandHandlers } from './application/command';
-import { QueryHandlers } from './application/query';
-import { ProjectionHandlers } from './infrastructure/projection';
-import { WorkspaceController } from './infrastructure/controller';
+import { CommandHandlers } from '../application/command';
+import { QueryHandlers } from '../application/query';
+import { ProjectionHandlers } from './projection';
+import { WorkspaceController } from './controller';
 import { WorkspaceProviders } from './workspace.providers';
 import { Event, EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
-import { Workspace } from './domain/model';
-import { WorkspaceWasCreatedEvent } from './domain/event';
+import { Workspace } from '../domain/model';
+import { WorkspaceWasCreatedEvent } from '../domain/event';
 import { CreateWorkspaceDTO } from '@netspaces/contracts';
 import {
   WorkspaceSchema,
   WORKSPACE_PROJECTION,
-} from './infrastructure/projection/workspace.schema';
-import { WorkspaceService } from './infrastructure/service/workspace.service';
+} from './projection/workspace.schema';
+import { WorkspaceService } from './service/workspace.service';
 
 @Module({
   controllers: [WorkspaceController],
@@ -45,7 +45,6 @@ import { WorkspaceService } from './infrastructure/service/workspace.service';
     ...ProjectionHandlers,
     ...WorkspaceProviders,
     WorkspaceService,
-  ],
-  exports: [],
+  ]
 })
-export class WorkspaceModule {}
+export class WorkspaceModule { }

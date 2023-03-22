@@ -10,6 +10,7 @@ export class WorkspaceController {
 
     @Post()
     async create(@Body() createWorkspaceDTO: CreateWorkspaceDTO) {
+        Logger.log(createWorkspaceDTO._id)
         return await this.workspaceService.createWorkspace(
             createWorkspaceDTO._id,
             createWorkspaceDTO.name,
