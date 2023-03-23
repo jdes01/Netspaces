@@ -1,5 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { CommandBus, ICommand, QueryBus } from "@nestjs/cqrs";
+import { CommandBus, ICommand, IQuery, QueryBus } from "@nestjs/cqrs";
+import { WorkspaceDTO } from "@netspaces/contracts";
 import { Result } from "ts-results";
 import { CreateWorkspaceCommand } from "../../application/command/create-workspace.command";
 import { GetWorkspacesQuery } from "../../application/query";
@@ -17,7 +18,7 @@ export class WorkspaceService {
     }
 
     async getWorkspaces() {
-        return this.queryBus.execute(new GetWorkspacesQuery())
+        return this.queryBus.execute<IQuery, Array<WorkspaceDTO>>(new GetWorkspacesQuery())
     }
 
 }

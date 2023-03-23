@@ -27,10 +27,6 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
         const description = WorkspaceDescription.fromString(command.description);
         const location = new WorkspaceLocation(command.street, command.city, command.country);
 
-        // if (await this.workspaceRepository.find(id)) {
-        //     return Err(WorkspaceAlreadyExistsError.withString(id))
-        // }
-
         const workspace = Workspace.add(
             id,
             name,
