@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, HttpStatus, HttpException, HttpCode, ValidationPipe } from "@nestjs/common";
 
-import { CreateWorkspaceDTO } from "@netspaces/contracts"
+import { CreateWorkspaceDTO, WorkspaceDTO } from "@netspaces/contracts"
 import { WorkspaceAlreadyExistsError } from "../../domain/exception";
 import { WorkspaceService } from "../service/workspace.service";
 
@@ -31,7 +31,7 @@ export class WorkspaceController {
     }
 
     @Get()
-    async getAll(): Promise<Array<CreateWorkspaceDTO>> {
+    async getAll(): Promise<Array<WorkspaceDTO>> {
         return await this.workspaceService.getWorkspaces();
     }
 }
