@@ -1,5 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { IsArray, IsNotEmpty, IsString, IsUUID } from "class-validator";
+
+export enum WorkspaceService {
+    WIFI = 'WIFI',
+    KITCHEN = 'KITCHEN',
+    COFFEE = 'COFFEE',
+    PRINTER = 'PRINTER',
+    PARKING = 'PARKING',
+}
+
 
 export class CreateWorkspaceDTO {
     @ApiProperty()
@@ -31,4 +40,9 @@ export class CreateWorkspaceDTO {
     @IsNotEmpty()
     @IsString()
     readonly country: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsArray()
+    readonly services: Array<WorkspaceService>;
 };
