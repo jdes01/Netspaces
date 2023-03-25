@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, HttpStatus, HttpException, HttpCode, ValidationPipe } from "@nestjs/common";
 
 import { CreateWorkspaceDTO, WorkspaceDTO } from "@netspaces/contracts"
-import { WorkspaceAlreadyExistsError } from "../../domain/exception";
+import { Err } from "ts-results";
 import { WorkspaceService } from "../service/workspace.service";
 
 
@@ -20,9 +20,10 @@ export class WorkspaceController {
             createWorkspaceDTO.street,
             createWorkspaceDTO.city,
             createWorkspaceDTO.country,
+            createWorkspaceDTO.services.map(service => service.toString()),
         );
 
-        if (result.val instanceof WorkspaceAlreadyExistsError) {
+        if (result instanceof Err) {
             throw new HttpException(result.val.message, HttpStatus.CONFLICT);
         }
 

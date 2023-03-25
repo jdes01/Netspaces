@@ -1,10 +1,6 @@
 import { ValueObject } from '@netspaces/domain';
 import { WorkspaceCreationParams } from '../../event';
 
-export type Street = { name: string }
-export type City = { name: string }
-export type Country = { name: string }
-
 export class WorkspaceLocation {
 
     private _street: string

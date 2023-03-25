@@ -15,11 +15,11 @@ export class Workspace extends AggregateRoot {
     private _location: WorkspaceLocation;
     private _services: Array<WorkspaceService> = [];
 
-    public static add(id: WorkspaceId, name: WorkspaceName, description: WorkspaceDescription, location: WorkspaceLocation): Workspace {
+    public static add(id: WorkspaceId, name: WorkspaceName, description: WorkspaceDescription, location: WorkspaceLocation, services: Array<WorkspaceService>): Workspace {
 
         const workspace = new Workspace();
 
-        const event = new WorkspaceWasCreatedEvent(id.value, name.value, description.value, location.street, location.city, location.country);
+        const event = new WorkspaceWasCreatedEvent(id.value, name.value, description.value, location.street, location.city, location.country, services.map(service => service.value));
 
         workspace.apply(event);
 
@@ -31,6 +31,7 @@ export class Workspace extends AggregateRoot {
         this._name = WorkspaceName.fromString(event.name)
         this._description = WorkspaceDescription.fromString(event.description)
         this._location = new WorkspaceLocation(event.street, event.city, event.country)
+        this._services = event.services.map(service => WorkspaceService.fromString(service))
         this._deleted = null;
     }
 

@@ -18,4 +18,7 @@ export class WorkspaceDTO {
 
     @ApiProperty()
     readonly country: string;
+
+    @ApiProperty()
+    readonly services: Array<string>;
 }

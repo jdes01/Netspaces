@@ -13,6 +13,7 @@ export const WorkspaceSchema = new Schema(
     street: String,
     city: String,
     country: String,
+    services: Array<string>,
   },
   {
     versionKey: false,

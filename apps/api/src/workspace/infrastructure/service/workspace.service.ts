@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { CommandBus, ICommand, IQuery, QueryBus } from "@nestjs/cqrs";
 import { WorkspaceDTO } from "@netspaces/contracts";
 import { Result } from "ts-results";
@@ -13,8 +13,8 @@ export class WorkspaceService {
         private readonly queryBus: QueryBus,
     ) { }
 
-    async createWorkspace(id: string, name: string, description: string, street: string, city: string, country: string): Promise<Result<null, WorkspaceError>> {
-        return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(new CreateWorkspaceCommand(id, name, description, street, city, country));
+    async createWorkspace(id: string, name: string, description: string, street: string, city: string, country: string, services: Array<string>): Promise<Result<null, WorkspaceError>> {
+        return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(new CreateWorkspaceCommand(id, name, description, street, city, country, services));
     }
 
     async getWorkspaces() {

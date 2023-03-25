@@ -2,12 +2,13 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'ts-results';
 import { WorkspaceError } from '../../../domain/exception/workspace-error';
 import { Workspace } from '../../../domain/model';
-import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName } from '../../../domain/model/value-objects';
+import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, WorkspaceService } from '../../../domain/model/value-objects';
 import { CreateWorkspaceCommand } from '../../command/create-workspace.command';
 import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
-import { Inject, Logger } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { WorkspaceFinder, WORKSPACE_FINDER } from '../../../domain/service/workspace-finder.service';
 import { WorkspaceAlreadyExistsError } from '../../../domain/exception';
+import { WorkspaceServiceNotVaidError } from '../../../domain/exception/workspace-service-not-valid-error';
 
 @CommandHandler(CreateWorkspaceCommand)
 export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCommand> {
@@ -27,11 +28,20 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
         const description = WorkspaceDescription.fromString(command.description);
         const location = new WorkspaceLocation(command.street, command.city, command.country);
 
+        try {
+            var services = command.services.map(service => WorkspaceService.fromString(service))
+        }
+        catch (e) {
+            return Err(e)
+        }
+
+
         const workspace = Workspace.add(
             id,
             name,
             description,
-            location
+            location,
+            services,
         );
 
         this.workspaceRepository.save(workspace);

@@ -29,7 +29,8 @@ import { WorkspaceService } from './service/workspace.service';
           event.payload.description,
           event.payload.street,
           event.payload.city,
-          event.payload.country
+          event.payload.country,
+          event.payload.services.map(service => service.toString()),
         ),
     }),
     MongooseModule.forFeature([

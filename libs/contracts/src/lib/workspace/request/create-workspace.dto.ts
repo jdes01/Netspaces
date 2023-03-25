@@ -2,11 +2,11 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsNotEmpty, IsString, IsUUID } from "class-validator";
 
 export enum WorkspaceService {
-    WIFI = 'WIFI',
-    KITCHEN = 'KITCHEN',
-    COFFEE = 'COFFEE',
-    PRINTER = 'PRINTER',
-    PARKING = 'PARKING',
+    WIFI = "WIFI",
+    KITCHEN = "KITCHEN",
+    COFFEE = "COFFEE",
+    PRINTER = "PRINTER",
+    PARKING = "PARKING",
 }
 
 
