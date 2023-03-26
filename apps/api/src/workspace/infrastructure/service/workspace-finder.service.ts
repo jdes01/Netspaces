@@ -4,7 +4,7 @@ import { WorkspaceDTO } from '@netspaces/contracts';
 import { Model } from 'mongoose';
 
 import { WorkspaceId } from '../../domain/model/value-objects';
-import { WorkspaceFinder } from '../../domain/service/workspace-finder.service';
+import { WorkspaceFinder } from '../../application/service/workspace-finder.service';
 import { WorkspaceDocument, WORKSPACE_PROJECTION } from '../projection';
 
 @Injectable()

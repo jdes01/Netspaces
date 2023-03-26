@@ -1,5 +1,5 @@
 import { WorkspaceDTO } from '@netspaces/contracts';
-import { WorkspaceId } from '../model/value-objects';
+import { WorkspaceId } from '../../domain/model/value-objects';
 
 export const WORKSPACE_FINDER = 'WORKSPACE_FINDER';
 

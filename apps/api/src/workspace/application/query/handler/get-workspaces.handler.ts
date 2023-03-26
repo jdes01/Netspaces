@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { WorkspaceDTO } from '@netspaces/contracts';
-import { WORKSPACE_FINDER, WorkspaceFinder } from '../../../domain/service/workspace-finder.service';
+import { WORKSPACE_FINDER, WorkspaceFinder } from '../../service/workspace-finder.service';
 import { GetWorkspacesQuery } from '../get-workspaces.query';
 
 @QueryHandler(GetWorkspacesQuery)

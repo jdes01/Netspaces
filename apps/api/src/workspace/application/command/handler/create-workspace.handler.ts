@@ -6,7 +6,7 @@ import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, Wo
 import { CreateWorkspaceCommand } from '../../command/create-workspace.command';
 import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
 import { Inject } from '@nestjs/common';
-import { WorkspaceFinder, WORKSPACE_FINDER } from '../../../domain/service/workspace-finder.service';
+import { WorkspaceFinder, WORKSPACE_FINDER } from '../../service/workspace-finder.service';
 import { WorkspaceAlreadyExistsError } from '../../../domain/exception';
 import { WorkspaceServiceNotVaidError } from '../../../domain/exception/workspace-service-not-valid-error';
 
