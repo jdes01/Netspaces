@@ -7,6 +7,7 @@ import { EVENTSTORE_KEYSTORE_CONNECTION } from '@aulasoftwarelibre/nestjs-events
 import configuration from './config/configuration';
 import { ConsoleModule } from 'nestjs-console';
 import { WorkspaceModule } from './workspace';
+import { SpaceModule } from './space';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { WorkspaceModule } from './workspace';
       connectionName: EVENTSTORE_KEYSTORE_CONNECTION,
     }),
     WorkspaceModule,
+    SpaceModule
   ],
 })
 export class BootstrapModule { }

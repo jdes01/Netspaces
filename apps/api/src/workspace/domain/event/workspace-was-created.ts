@@ -1,8 +1,4 @@
 import { Event } from '@aulasoftwarelibre/nestjs-eventstore';
-import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, WorkspaceService } from '../model/value-objects';
-
-export type WorkspaceCreationParams = { id: WorkspaceId, name: WorkspaceName, description: WorkspaceDescription, location: WorkspaceLocation }
-
 export class WorkspaceWasCreatedEvent extends Event {
 
     constructor(

@@ -1,5 +1,3 @@
-import { ValueObject } from '@netspaces/domain';
-import { WorkspaceCreationParams } from '../../event';
 
 export class WorkspaceLocation {
 
