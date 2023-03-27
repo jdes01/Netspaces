@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { SpaceAmenitiesTypes } from "@netspaces/domain";
 import { IsNotEmpty, IsUUID } from "class-validator";
-
 
 export class CreateSpaceDTO {
     @ApiProperty()
@@ -22,4 +22,8 @@ export class CreateSpaceDTO {
     @ApiProperty()
     @IsNotEmpty()
     readonly seats: number;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    readonly amenities: Array<SpaceAmenitiesTypes>;
 };

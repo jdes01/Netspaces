@@ -28,6 +28,7 @@ import { SpaceService } from './service/space.service';
                     event.payload.name,
                     event.payload.quantity,
                     event.payload.seats,
+                    event.payload.amenities,
                 ),
         }),
         MongooseModule.forFeature([

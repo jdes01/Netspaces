@@ -8,6 +8,7 @@ import { Inject } from '@nestjs/common';
 import { SpaceFinder, SPACE_FINDER } from '../../service/space-finder.service';
 import { SpaceAlreadyExistsError } from '../../../domain/exception';
 import { SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from '../../../domain/model/value-objects';
+import { SpaceAmenity } from '../../../domain/model/value-objects/space-amenities';
 
 @CommandHandler(CreateSpaceCommand)
 export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
@@ -27,11 +28,19 @@ export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
         const quantity = SpaceQuantity.fromNumber(command.quantity)
         const seats = SpaceSeats.fromNumber(command.seats)
 
+        try {
+            var amenities = command.amenities.map(amenity => SpaceAmenity.fromString(amenity))
+        }
+        catch (e) {
+            return Err(e)
+        }
+
         const space = Space.add(
             id,
             name,
             quantity,
             seats,
+            amenities
         );
 
         this.spaceRepository.save(space);

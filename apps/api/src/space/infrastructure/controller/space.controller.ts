@@ -18,6 +18,7 @@ export class SpaceController {
             createSpaceDTO.name,
             createSpaceDTO.quantity,
             createSpaceDTO.seats,
+            createSpaceDTO.amenities.map(amenity => amenity.toString()),
         );
 
         if (result instanceof Err) {

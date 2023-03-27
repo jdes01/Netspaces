@@ -11,6 +11,7 @@ export const SpaceSchema = new Schema(
         name: String,
         quantity: Number,
         seats: Number,
+        amenities: Array<String>
 
     },
     {
