@@ -12,4 +12,9 @@ export class CreateSpaceDTO {
     @ApiProperty()
     @IsNotEmpty()
     readonly quantity: number;
+
+
+    @ApiProperty()
+    @IsNotEmpty()
+    readonly seats: number;
 };

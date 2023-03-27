@@ -25,7 +25,8 @@ import { SpaceService } from './service/space.service';
             SpaceWasCreatedEvent: (event: Event<CreateSpaceDTO>) =>
                 new SpaceWasCreatedEvent(
                     event.payload._id,
-                    event.payload.quantity
+                    event.payload.quantity,
+                    event.payload.seats,
                 ),
         }),
         MongooseModule.forFeature([

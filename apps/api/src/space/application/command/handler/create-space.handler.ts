@@ -2,13 +2,12 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'ts-results';
 import { SpaceError } from '../../../domain/exception/space-error';
 import { Space } from '../../../domain/model';
-import { SpaceId } from '../../../domain/model/value-objects';
 import { CreateSpaceCommand } from '../../command/create-space.command';
 import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
 import { Inject } from '@nestjs/common';
 import { SpaceFinder, SPACE_FINDER } from '../../service/space-finder.service';
 import { SpaceAlreadyExistsError } from '../../../domain/exception';
-import { SpaceQuantity } from '../../../domain/model/value-objects/space-quantity';
+import { SpaceId, SpaceQuantity, SpaceSeats } from '../../../domain/model/value-objects';
 
 @CommandHandler(CreateSpaceCommand)
 export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
@@ -25,10 +24,12 @@ export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
         }
 
         const quantity = SpaceQuantity.fromNumber(command.quantity)
+        const seats = SpaceSeats.fromNumber(command.seats)
 
         const space = Space.add(
             id,
-            quantity
+            quantity,
+            seats,
         );
 
         this.spaceRepository.save(space);

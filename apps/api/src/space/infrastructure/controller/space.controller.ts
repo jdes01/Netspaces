@@ -16,6 +16,7 @@ export class SpaceController {
         const result = await this.spaceService.createSpace(
             createSpaceDTO._id,
             createSpaceDTO.quantity,
+            createSpaceDTO.seats,
         );
 
         if (result instanceof Err) {
