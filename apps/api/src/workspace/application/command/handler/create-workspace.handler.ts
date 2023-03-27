@@ -8,7 +8,6 @@ import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelib
 import { Inject } from '@nestjs/common';
 import { WorkspaceFinder, WORKSPACE_FINDER } from '../../service/workspace-finder.service';
 import { WorkspaceAlreadyExistsError } from '../../../domain/exception';
-import { WorkspaceServiceNotVaidError } from '../../../domain/exception/workspace-service-not-valid-error';
 
 @CommandHandler(CreateWorkspaceCommand)
 export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCommand> {

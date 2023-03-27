@@ -1,8 +1,8 @@
 import { WorkspaceError } from "./workspace-error";
 
-export class WorkspaceServiceNotVaidError extends WorkspaceError {
-    public static withService(service: string): WorkspaceServiceNotVaidError {
-        return new WorkspaceServiceNotVaidError(
+export class WorkspaceServiceNotValidError extends WorkspaceError {
+    public static withService(service: string): WorkspaceServiceNotValidError {
+        return new WorkspaceServiceNotValidError(
             `Workspace service ${service} not valid`,
         );
     }

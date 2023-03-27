@@ -1,5 +1,5 @@
 import { ValueObject } from '@netspaces/domain';
-import { WorkspaceServiceNotVaidError } from '../../exception/workspace-service-not-valid-error';
+import { WorkspaceServiceNotValidError } from '../../exception/workspace-service-not-valid-error';
 
 
 export enum WorkspaceServicesTypes {
@@ -14,7 +14,7 @@ export class WorkspaceService extends ValueObject<{ value: WorkspaceServicesType
 
     public static fromString(service: string): WorkspaceService {
         if (service in WorkspaceServicesTypes === false) {
-            throw WorkspaceServiceNotVaidError.withService(service);
+            throw WorkspaceServiceNotValidError.withService(service);
         }
 
         return new WorkspaceService({ value: WorkspaceServicesTypes[service] });
