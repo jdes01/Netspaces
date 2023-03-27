@@ -7,7 +7,7 @@ import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelib
 import { Inject } from '@nestjs/common';
 import { SpaceFinder, SPACE_FINDER } from '../../service/space-finder.service';
 import { SpaceAlreadyExistsError } from '../../../domain/exception';
-import { SpaceId, SpaceQuantity, SpaceSeats } from '../../../domain/model/value-objects';
+import { SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from '../../../domain/model/value-objects';
 
 @CommandHandler(CreateSpaceCommand)
 export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
@@ -23,11 +23,13 @@ export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
             return Err(SpaceAlreadyExistsError.withId(id))
         }
 
+        const name = SpaceName.fromString(command.name)
         const quantity = SpaceQuantity.fromNumber(command.quantity)
         const seats = SpaceSeats.fromNumber(command.seats)
 
         const space = Space.add(
             id,
+            name,
             quantity,
             seats,
         );

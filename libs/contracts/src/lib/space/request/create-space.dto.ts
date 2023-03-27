@@ -11,6 +11,11 @@ export class CreateSpaceDTO {
 
     @ApiProperty()
     @IsNotEmpty()
+    readonly name: string;
+
+
+    @ApiProperty()
+    @IsNotEmpty()
     readonly quantity: number;
 
 
