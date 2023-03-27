@@ -8,6 +8,7 @@ import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelib
 import { Inject } from '@nestjs/common';
 import { SpaceFinder, SPACE_FINDER } from '../../service/space-finder.service';
 import { SpaceAlreadyExistsError } from '../../../domain/exception';
+import { SpaceQuantity } from '../../../domain/model/value-objects/space-quantity';
 
 @CommandHandler(CreateSpaceCommand)
 export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
@@ -23,8 +24,11 @@ export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
             return Err(SpaceAlreadyExistsError.withId(id))
         }
 
+        const quantity = SpaceQuantity.fromNumber(command.quantity)
+
         const space = Space.add(
             id,
+            quantity
         );
 
         this.spaceRepository.save(space);

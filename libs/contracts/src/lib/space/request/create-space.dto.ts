@@ -7,4 +7,9 @@ export class CreateSpaceDTO {
     @IsNotEmpty()
     @IsUUID()
     readonly _id: string;
+
+
+    @ApiProperty()
+    @IsNotEmpty()
+    readonly quantity: number;
 };

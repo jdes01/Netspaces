@@ -13,8 +13,8 @@ export class SpaceService {
         private readonly queryBus: QueryBus,
     ) { }
 
-    async createSpace(id: string): Promise<Result<null, SpaceError>> {
-        return this.commandBus.execute<ICommand, Result<null, SpaceError>>(new CreateSpaceCommand(id));
+    async createSpace(id: string, quantity: number): Promise<Result<null, SpaceError>> {
+        return this.commandBus.execute<ICommand, Result<null, SpaceError>>(new CreateSpaceCommand(id, quantity));
     }
 
     async getSpaces() {

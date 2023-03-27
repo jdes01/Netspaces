@@ -3,17 +3,19 @@ import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
 import { SpaceId } from "./value-objects/";
 
 import { SpaceWasCreatedEvent } from '../event'
+import { SpaceQuantity } from './value-objects/space-quantity';
 
 export class Space extends AggregateRoot {
 
     private _id: SpaceId;
+    private _quantity: SpaceQuantity;
     private _deleted: boolean;
 
-    public static add(id: SpaceId): Space {
+    public static add(id: SpaceId, quantity: SpaceQuantity): Space {
 
         const space = new Space();
 
-        const event = new SpaceWasCreatedEvent(id.value);
+        const event = new SpaceWasCreatedEvent(id.value, quantity.value);
 
         space.apply(event);
 
@@ -22,6 +24,7 @@ export class Space extends AggregateRoot {
 
     private onSpaceWasCreatedEvent(event: SpaceWasCreatedEvent): void {
         this._id = SpaceId.fromString(event.id);
+        this._quantity = SpaceQuantity.fromNumber(event.quantity)
         this._deleted = null;
     }
 
@@ -31,6 +34,10 @@ export class Space extends AggregateRoot {
 
     public get id(): SpaceId {
         return this._id;
+    }
+
+    public get quantity(): SpaceQuantity {
+        return this._quantity;
     }
 
     public get deleted(): boolean {
