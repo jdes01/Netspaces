@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, HttpStatus, HttpException, HttpCode, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Post, HttpStatus, HttpException, HttpCode, ValidationPipe, Param } from "@nestjs/common";
 
 import { CreateSpaceDTO, SpaceDTO } from "@netspaces/contracts"
 import { Err } from "ts-results";
@@ -33,5 +33,10 @@ export class SpaceController {
     @Get()
     async getAll(): Promise<Array<SpaceDTO>> {
         return await this.spaceService.getSpaces();
+    }
+
+    @Get(':id')
+    async getById(@Param() params): Promise<SpaceDTO> {
+        return await this.spaceService.getSpaceById(params.id);
     }
 }

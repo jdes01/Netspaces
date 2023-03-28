@@ -4,6 +4,7 @@ import { SpaceDTO } from "@netspaces/contracts";
 import { Result } from "ts-results";
 import { CreateSpaceCommand } from "../../application/command/create-space.command";
 import { GetSpacesQuery } from "../../application/query";
+import { GetSpaceByIdQuery } from "../../application/query/get-space-by-id.query";
 import { SpaceError } from "../../domain/exception";
 
 @Injectable()
@@ -19,6 +20,10 @@ export class SpaceService {
 
     async getSpaces() {
         return this.queryBus.execute<IQuery, Array<SpaceDTO>>(new GetSpacesQuery())
+    }
+
+    async getSpaceById(id: string) {
+        return this.queryBus.execute<IQuery, SpaceDTO>(new GetSpaceByIdQuery(id))
     }
 
 }
