@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Post, HttpStatus, HttpException, HttpCode, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, Post, HttpStatus, HttpException, HttpCode, ValidationPipe, Param, Logger } from "@nestjs/common";
 
 import { CreateWorkspaceDTO, WorkspaceDTO } from "@netspaces/contracts"
 import { Err } from "ts-results";
 import { WorkspaceService } from "../service/workspace.service";
 
 
-@Controller('workspace')
+@Controller('workspaces')
 export class WorkspaceController {
     constructor(private readonly workspaceService: WorkspaceService) { }
 
@@ -34,5 +34,10 @@ export class WorkspaceController {
     @Get()
     async getAll(): Promise<Array<WorkspaceDTO>> {
         return await this.workspaceService.getWorkspaces();
+    }
+
+    @Get(':id')
+    async getById(@Param() params): Promise<WorkspaceDTO> {
+        return await this.workspaceService.getWorkspaceById(params.id);
     }
 }

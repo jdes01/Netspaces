@@ -5,7 +5,7 @@ import { Err } from "ts-results";
 import { SpaceService } from "../service/space.service";
 
 
-@Controller('space')
+@Controller('spaces')
 export class SpaceController {
     constructor(private readonly spaceService: SpaceService) { }
 
