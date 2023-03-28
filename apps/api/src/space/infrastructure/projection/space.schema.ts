@@ -8,11 +8,11 @@ export type SpaceDocument = SpaceDTO & Document;
 export const SpaceSchema = new Schema(
     {
         _id: String,
+        workspaceId: String,
         name: String,
         quantity: Number,
         seats: Number,
         amenities: Array<String>
-
     },
     {
         versionKey: false,

@@ -11,6 +11,12 @@ export class CreateSpaceDTO {
 
     @ApiProperty()
     @IsNotEmpty()
+    @IsUUID()
+    readonly workspaceId: string;
+
+
+    @ApiProperty()
+    @IsNotEmpty()
     readonly name: string;
 
 

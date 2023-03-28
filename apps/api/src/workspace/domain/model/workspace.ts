@@ -5,6 +5,8 @@ import { DeletionDate } from '@netspaces/domain'
 import { WorkspaceId, WorkspaceName, WorkspaceLocation, WorkspaceDescription, WorkspaceService } from "./value-objects/";
 
 import { WorkspaceWasCreatedEvent, WorkspaceWasDeleted } from '../event'
+import { SpaceAmenity, SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from 'apps/api/src/space/domain/model/value-objects';
+import { Space } from 'apps/api/src/space/domain/model';
 
 export class Workspace extends AggregateRoot {
 
@@ -24,6 +26,10 @@ export class Workspace extends AggregateRoot {
         workspace.apply(event);
 
         return workspace;
+    }
+
+    public addSpace(spaceId: SpaceId, name: SpaceName, quantity: SpaceQuantity, seats: SpaceSeats, amenities: Array<SpaceAmenity>): Space {
+        return Space.add(spaceId, this.id, name, quantity, seats, amenities)
     }
 
     private onWorkspaceWasCreatedEvent(event: WorkspaceWasCreatedEvent): void {

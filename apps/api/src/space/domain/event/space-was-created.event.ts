@@ -4,11 +4,12 @@ export class SpaceWasCreatedEvent extends Event {
 
     constructor(
         public readonly id: string,
+        public readonly workspaceId: string,
         public readonly name: string,
         public readonly quantity: number,
         public readonly seats: number,
         public readonly amenities: Array<string>
     ) {
-        super(id, { _id: id, name, quantity, seats, amenities });
+        super(id, { _id: id, workspaceId, name, quantity, seats, amenities });
     }
 }

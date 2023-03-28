@@ -16,6 +16,7 @@ import {
     SPACE_PROJECTION,
 } from './projection/space.schema';
 import { SpaceService } from './service/space.service';
+import { WorkspaceSchema, WORKSPACE_PROJECTION } from '../../workspace/infrastructure/projection';
 
 @Module({
     controllers: [SpaceController],
@@ -25,6 +26,7 @@ import { SpaceService } from './service/space.service';
             SpaceWasCreatedEvent: (event: Event<CreateSpaceDTO>) =>
                 new SpaceWasCreatedEvent(
                     event.payload._id,
+                    event.payload.workspaceId,
                     event.payload.name,
                     event.payload.quantity,
                     event.payload.seats,
@@ -35,6 +37,10 @@ import { SpaceService } from './service/space.service';
             {
                 name: SPACE_PROJECTION,
                 schema: SpaceSchema,
+            },
+            {
+                name: WORKSPACE_PROJECTION,
+                schema: WorkspaceSchema,
             },
         ]),
     ],
