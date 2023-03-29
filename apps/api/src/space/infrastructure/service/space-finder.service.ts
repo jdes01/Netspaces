@@ -9,15 +9,16 @@ import { SpaceDocument, SPACE_PROJECTION } from '../projection';
 
 @Injectable()
 export class MongoDBSpaceFinder implements SpaceFinder {
-    constructor(
-        @InjectModel(SPACE_PROJECTION) private readonly spaceProjection: Model<SpaceDocument>,
-    ) { }
+	constructor(
+		@InjectModel(SPACE_PROJECTION)
+		private readonly spaceProjection: Model<SpaceDocument>,
+	) {}
 
-    findAll(): Promise<SpaceDTO[]> {
-        return this.spaceProjection.find().exec();
-    }
+	findAll(): Promise<SpaceDTO[]> {
+		return this.spaceProjection.find().exec();
+	}
 
-    find(id: SpaceId): Promise<SpaceDTO> {
-        return this.spaceProjection.findById(id.value).exec();
-    }
+	find(id: SpaceId): Promise<SpaceDTO> {
+		return this.spaceProjection.findById(id.value).exec();
+	}
 }

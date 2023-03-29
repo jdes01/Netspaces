@@ -1,1 +1,1 @@
-export * from './space-was-created.event'
+export * from './space-was-created.event';

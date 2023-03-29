@@ -1,109 +1,112 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, WorkspaceService } from '../../../domain/model/value-objects';
+import {
+	WorkspaceDescription,
+	WorkspaceId,
+	WorkspaceLocation,
+	WorkspaceName,
+	WorkspaceService,
+} from '../../../domain/model/value-objects';
 import { Workspace } from '../../../domain/model/workspace';
-import { CreateWorkspaceCommand } from '../create-workspace.command'
-import { CreateWorkspaceHandler } from '../handler/create-workspace.handler'
+import { CreateWorkspaceCommand } from '../create-workspace.command';
+import { CreateWorkspaceHandler } from '../handler/create-workspace.handler';
 
 import { WORKSPACE_REPOSITORY, WorkspaceRepository } from '../../../domain/repository';
 import { WorkspaceFinder, WORKSPACE_FINDER } from '../../service/workspace-finder.service';
 
-
 describe('CreateWorkspaceHandler', () => {
-    let handler$: CreateWorkspaceHandler;
+	let handler$: CreateWorkspaceHandler;
 
-    const workspaceRepository: Partial<WorkspaceRepository> = {};
-    const workspaceFinder: Partial<WorkspaceFinder> = {};
+	const workspaceRepository: Partial<WorkspaceRepository> = {};
+	const workspaceFinder: Partial<WorkspaceFinder> = {};
 
-    const id = 'fd399f01-e08c-43d4-a62e-61302ad2d06d'
-    const name = 'workspace name'
-    const description = 'workspace description'
+	const id = 'fd399f01-e08c-43d4-a62e-61302ad2d06d';
+	const name = 'workspace name';
+	const description = 'workspace description';
 
-    const street = 'workspace street'
-    const city = 'workspace city'
-    const country = 'workspace country'
-    const services = ["WIFI"]
+	const street = 'workspace street';
+	const city = 'workspace city';
+	const country = 'workspace country';
+	const services = ['WIFI'];
 
-    beforeEach(async () => {
+	beforeEach(async () => {
+		const module: TestingModule = await Test.createTestingModule({
+			providers: [
+				CreateWorkspaceHandler,
+				{
+					provide: WORKSPACE_REPOSITORY,
+					useValue: {
+						find: jest.fn(),
+						save: jest.fn(),
+					},
+				},
+				{
+					provide: WORKSPACE_FINDER,
+					useValue: workspaceFinder,
+				},
+			],
+		}).compile();
 
-        const module: TestingModule = await Test.createTestingModule({
-            providers: [
-                CreateWorkspaceHandler,
-                {
-                    provide: WORKSPACE_REPOSITORY,
-                    useValue: {
-                        find: jest.fn(),
-                        save: jest.fn(),
-                    }
-                },
-                {
-                    provide: WORKSPACE_FINDER,
-                    useValue: workspaceFinder
-                }
-            ],
-        }).compile();
+		handler$ = module.get<CreateWorkspaceHandler>(CreateWorkspaceHandler);
+		workspaceRepository.save = jest.fn().mockResolvedValue(null);
+		workspaceRepository.find = jest.fn();
+		workspaceFinder.find = jest.fn().mockResolvedValue(null);
+	});
 
-        handler$ = module.get<CreateWorkspaceHandler>(CreateWorkspaceHandler);
-        workspaceRepository.save = jest.fn().mockResolvedValue(null);;
-        workspaceRepository.find = jest.fn();
-        workspaceFinder.find = jest.fn().mockResolvedValue(null);;
-    });
+	it('should creates a new workspace', async () => {
+		expect(1 + 2).toBe(3);
 
-    it('should creates a new workspace', async () => {
+		// workspaceRepository.find = jest.fn().mockReturnValueOnce(null)
 
-        expect(1 + 2).toBe(3)
+		// await handler$.execute(
+		//     new CreateWorkspaceCommand(id, name, description, street, city, country, services),
+		// );
 
-        // workspaceRepository.find = jest.fn().mockReturnValueOnce(null)
+		// expect(workspaceRepository.save).toHaveBeenCalledWith(
+		//     Workspace.add(
+		//         WorkspaceId.fromString(id),
+		//         WorkspaceName.fromString(name),
+		//         WorkspaceDescription.fromString(description),
+		//         new WorkspaceLocation(street, city, country),
+		//         services.map(service => WorkspaceService.fromString(service))),
+		// );
+	});
 
-        // await handler$.execute(
-        //     new CreateWorkspaceCommand(id, name, description, street, city, country, services),
-        // );
+	// it('should return null when repository success', async () => {
 
-        // expect(workspaceRepository.save).toHaveBeenCalledWith(
-        //     Workspace.add(
-        //         WorkspaceId.fromString(id),
-        //         WorkspaceName.fromString(name),
-        //         WorkspaceDescription.fromString(description),
-        //         new WorkspaceLocation(street, city, country),
-        //         services.map(service => WorkspaceService.fromString(service))),
-        // );
-    });
+	//     workspaceRepository.save = jest.fn().mockReturnValueOnce(Ok(null))
+	//     workspaceRepository.find = jest.fn().mockReturnValueOnce(null)
 
-    // it('should return null when repository success', async () => {
+	//     const result = await handler$.execute(
+	//         new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
+	//     );
 
-    //     workspaceRepository.save = jest.fn().mockReturnValueOnce(Ok(null))
-    //     workspaceRepository.find = jest.fn().mockReturnValueOnce(null)
+	//     expect(result).toBeInstanceOf(Ok)
+	//     expect(result.val).toBe(null)
+	// });
 
-    //     const result = await handler$.execute(
-    //         new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
-    //     );
+	// it('should return error when repository fails', async () => {
 
-    //     expect(result).toBeInstanceOf(Ok)
-    //     expect(result.val).toBe(null)
-    // });
+	//     workspaceRepository.save = jest.fn().mockReturnValueOnce(Err(Error('error message')))
 
-    // it('should return error when repository fails', async () => {
+	//     const result = await handler$.execute(
+	//         new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
+	//     );
 
-    //     workspaceRepository.save = jest.fn().mockReturnValueOnce(Err(Error('error message')))
+	//     expect(result).toBeInstanceOf(Err)
+	//     expect(result.val).toEqual(Error('error message'))
+	// });
 
-    //     const result = await handler$.execute(
-    //         new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
-    //     );
+	// it('should not save a workspace when another workspace with same id exists', async () => {
 
-    //     expect(result).toBeInstanceOf(Err)
-    //     expect(result.val).toEqual(Error('error message'))
-    // });
+	//     const alreadyExistingWorkspace: Partial<Workspace> = {};
 
-    // it('should not save a workspace when another workspace with same id exists', async () => {
+	//     workspaceRepository.save = jest.fn().mockReturnValueOnce(Ok(null))
+	//     workspaceRepository.find = jest.fn().mockReturnValueOnce(alreadyExistingWorkspace)
 
-    //     const alreadyExistingWorkspace: Partial<Workspace> = {};
+	//     const result = await handler$.execute(
+	//         new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
+	//     );
 
-    //     workspaceRepository.save = jest.fn().mockReturnValueOnce(Ok(null))
-    //     workspaceRepository.find = jest.fn().mockReturnValueOnce(alreadyExistingWorkspace)
-
-    //     const result = await handler$.execute(
-    //         new CreateWorkspaceCommand(id.value, name.value, description.value, { street, city, country }),
-    //     );
-
-    //     expect(result).toBeInstanceOf(Err)
-    // });
+	//     expect(result).toBeInstanceOf(Err)
+	// });
 });

@@ -1,1 +1,1 @@
-export * from './space-finder.service'
+export * from './space-finder.service';

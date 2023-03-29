@@ -7,9 +7,9 @@ import { GetSpaceByIdQuery } from '../get-space-by-id.query';
 
 @QueryHandler(GetSpaceByIdQuery)
 export class GetSpaceByIdHandler implements IQueryHandler {
-    constructor(@Inject(SPACE_FINDER) private readonly spaceFinder: SpaceFinder) { }
+	constructor(@Inject(SPACE_FINDER) private readonly spaceFinder: SpaceFinder) {}
 
-    async execute(query: GetSpaceByIdQuery): Promise<SpaceDTO> {
-        return this.spaceFinder.find(SpaceId.fromString(query.id))
-    }
+	async execute(query: GetSpaceByIdQuery): Promise<SpaceDTO> {
+		return this.spaceFinder.find(SpaceId.fromString(query.id));
+	}
 }

@@ -5,8 +5,8 @@ import { Workspace } from '../model';
 import { WorkspaceId } from '../model/value-objects';
 
 export interface WorkspaceRepository {
-    find(workspaceId: WorkspaceId): Promise<Result<Nullable<Workspace>, WorkspaceError>>;
-    save(workspace: Workspace): Promise<Result<null, WorkspaceError>>;
+	find(workspaceId: WorkspaceId): Promise<Result<Nullable<Workspace>, WorkspaceError>>;
+	save(workspace: Workspace): Promise<Result<null, WorkspaceError>>;
 }
 
-export const WORKSPACE_REPOSITORY = "WORKSPACE_REPOSITORY"
+export const WORKSPACE_REPOSITORY = 'WORKSPACE_REPOSITORY';

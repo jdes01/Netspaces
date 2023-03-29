@@ -1,1 +1,1 @@
-export class SpaceError extends Error { }
+export class SpaceError extends Error {}

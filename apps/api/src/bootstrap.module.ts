@@ -10,28 +10,23 @@ import { WorkspaceModule } from './workspace';
 import { SpaceModule } from './space';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      envFilePath: [
-        `.env.${process.env.NODE_ENV}.local`,
-        `.env.${process.env.NODE_ENV}`,
-        '.env.local',
-        '.env',
-      ],
-      isGlobal: true,
-      load: [configuration],
-    }),
-    CqrsModule,
-    ConsoleModule,
-    EventStoreModule.forRoot({
-      connection: process.env.EVENTSTORE_URI,
-    }),
-    MongooseModule.forRoot(process.env.MONGO_URI, {}),
-    MongooseModule.forRoot(process.env.KEYSTORE_URI, {
-      connectionName: EVENTSTORE_KEYSTORE_CONNECTION,
-    }),
-    WorkspaceModule,
-    SpaceModule
-  ],
+	imports: [
+		ConfigModule.forRoot({
+			envFilePath: [`.env.${process.env.NODE_ENV}.local`, `.env.${process.env.NODE_ENV}`, '.env.local', '.env'],
+			isGlobal: true,
+			load: [configuration],
+		}),
+		CqrsModule,
+		ConsoleModule,
+		EventStoreModule.forRoot({
+			connection: process.env.EVENTSTORE_URI,
+		}),
+		MongooseModule.forRoot(process.env.MONGO_URI, {}),
+		MongooseModule.forRoot(process.env.KEYSTORE_URI, {
+			connectionName: EVENTSTORE_KEYSTORE_CONNECTION,
+		}),
+		WorkspaceModule,
+		SpaceModule,
+	],
 })
-export class BootstrapModule { }
+export class BootstrapModule {}

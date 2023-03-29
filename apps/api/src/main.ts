@@ -7,9 +7,9 @@ import { AppModule } from './app.module';
 const GLOBAL_PREFIX = 'api';
 
 async function bootstrap() {
-
 	const app = await NestFactory.create(AppModule, {
-		logger: process.env.NODE_ENV == 'development' ? ['debug', 'error', 'log', 'verbose', 'warn'] : ['error', 'warn'],
+		logger:
+			process.env.NODE_ENV == 'development' ? ['debug', 'error', 'log', 'verbose', 'warn'] : ['error', 'warn'],
 	});
 
 	app.setGlobalPrefix(GLOBAL_PREFIX);

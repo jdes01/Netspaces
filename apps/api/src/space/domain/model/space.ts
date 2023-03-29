@@ -1,71 +1,82 @@
 import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
 import { WorkspaceId } from 'apps/api/src/workspace/domain/model/value-objects';
 
-import { SpaceWasCreatedEvent } from '../event'
+import { SpaceWasCreatedEvent } from '../event';
 import { SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from './value-objects';
 import { SpaceAmenity } from './value-objects/space-amenities';
 
 export class Space extends AggregateRoot {
+	private _id: SpaceId;
+	private _workspaceId: WorkspaceId;
+	private _name: SpaceName;
+	private _quantity: SpaceQuantity;
+	private _seats: SpaceSeats;
+	private _amenities: Array<SpaceAmenity>;
+	private _deleted: boolean;
 
-    private _id: SpaceId;
-    private _workspaceId: WorkspaceId;
-    private _name: SpaceName;
-    private _quantity: SpaceQuantity;
-    private _seats: SpaceSeats;
-    private _amenities: Array<SpaceAmenity>
-    private _deleted: boolean;
+	public static add(
+		id: SpaceId,
+		workspaceId: WorkspaceId,
+		name: SpaceName,
+		quantity: SpaceQuantity,
+		seats: SpaceSeats,
+		amenities: Array<SpaceAmenity>,
+	): Space {
+		const space = new Space();
 
-    public static add(id: SpaceId, workspaceId: WorkspaceId, name: SpaceName, quantity: SpaceQuantity, seats: SpaceSeats, amenities: Array<SpaceAmenity>): Space {
+		const event = new SpaceWasCreatedEvent(
+			id.value,
+			workspaceId.value,
+			name.value,
+			quantity.value,
+			seats.value,
+			amenities.map((amenity) => amenity.value),
+		);
 
-        const space = new Space();
+		space.apply(event);
 
-        const event = new SpaceWasCreatedEvent(id.value, workspaceId.value, name.value, quantity.value, seats.value, amenities.map(amenity => amenity.value));
+		return space;
+	}
 
-        space.apply(event);
+	private onSpaceWasCreatedEvent(event: SpaceWasCreatedEvent): void {
+		this._id = SpaceId.fromString(event.id);
+		this._workspaceId = WorkspaceId.fromString(event.workspaceId);
+		this._name = SpaceName.fromString(event.name);
+		this._quantity = SpaceQuantity.fromNumber(event.quantity);
+		this._seats = SpaceSeats.fromNumber(event.seats);
+		this._amenities = event.amenities.map((amenity) => SpaceAmenity.fromString(amenity));
+		this._deleted = null;
+	}
 
-        return space;
-    }
+	public aggregateId(): string {
+		return this._id.value;
+	}
 
-    private onSpaceWasCreatedEvent(event: SpaceWasCreatedEvent): void {
-        this._id = SpaceId.fromString(event.id);
-        this._workspaceId = WorkspaceId.fromString(event.workspaceId);
-        this._name = SpaceName.fromString(event.name);
-        this._quantity = SpaceQuantity.fromNumber(event.quantity);
-        this._seats = SpaceSeats.fromNumber(event.seats);
-        this._amenities = event.amenities.map(amenity => SpaceAmenity.fromString(amenity));
-        this._deleted = null;
-    }
+	public get id(): SpaceId {
+		return this._id;
+	}
 
-    public aggregateId(): string {
-        return this._id.value;
-    }
+	public get workspaceId(): WorkspaceId {
+		return this._workspaceId;
+	}
 
-    public get id(): SpaceId {
-        return this._id;
-    }
+	public get name(): SpaceName {
+		return this._name;
+	}
 
-    public get workspaceId(): WorkspaceId {
-        return this._workspaceId;
-    }
+	public get quantity(): SpaceQuantity {
+		return this._quantity;
+	}
 
-    public get name(): SpaceName {
-        return this._name;
-    }
+	public get seats(): SpaceSeats {
+		return this._seats;
+	}
 
-    public get quantity(): SpaceQuantity {
-        return this._quantity;
-    }
+	public get amenities(): Array<SpaceAmenity> {
+		return this._amenities;
+	}
 
-    public get seats(): SpaceSeats {
-        return this._seats;
-    }
-
-    public get amenities(): Array<SpaceAmenity> {
-        return this._amenities;
-    }
-
-
-    public get deleted(): boolean {
-        return this._deleted
-    }
+	public get deleted(): boolean {
+		return this._deleted;
+	}
 }

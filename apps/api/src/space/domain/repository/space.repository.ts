@@ -5,8 +5,8 @@ import { Space } from '../model';
 import { SpaceId } from '../model/value-objects';
 
 export interface SpaceRepository {
-    find(spaceId: SpaceId): Promise<Result<Nullable<Space>, SpaceError>>;
-    save(space: Space): Promise<Result<null, SpaceError>>;
+	find(spaceId: SpaceId): Promise<Result<Nullable<Space>, SpaceError>>;
+	save(space: Space): Promise<Result<null, SpaceError>>;
 }
 
-export const SPACE_REPOSITORY = "SPACE_REPOSITORY"
+export const SPACE_REPOSITORY = 'SPACE_REPOSITORY';

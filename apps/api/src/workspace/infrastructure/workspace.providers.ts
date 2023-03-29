@@ -2,8 +2,8 @@ import { WORKSPACE_FINDER } from '../application/service/workspace-finder.servic
 import { MongoDBWorkspaceFinder } from '../infrastructure/service/workspace-finder.service';
 
 export const WorkspaceProviders = [
-    {
-        provide: WORKSPACE_FINDER,
-        useClass: MongoDBWorkspaceFinder,
-    },
+	{
+		provide: WORKSPACE_FINDER,
+		useClass: MongoDBWorkspaceFinder,
+	},
 ];

@@ -1,1 +1,1 @@
-export class WorkspaceError extends Error { }
+export class WorkspaceError extends Error {}

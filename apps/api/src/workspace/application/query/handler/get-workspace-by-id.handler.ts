@@ -7,9 +7,12 @@ import { GetWorkspaceByIdQuery } from '../get-workspace-by-id.query';
 
 @QueryHandler(GetWorkspaceByIdQuery)
 export class GetWorkspaceByIdHandler implements IQueryHandler {
-    constructor(@Inject(WORKSPACE_FINDER) private readonly workspaceFinder: WorkspaceFinder) { }
+	constructor(
+		@Inject(WORKSPACE_FINDER)
+		private readonly workspaceFinder: WorkspaceFinder,
+	) {}
 
-    async execute(query: GetWorkspaceByIdQuery): Promise<WorkspaceDTO> {
-        return this.workspaceFinder.find(WorkspaceId.fromString(query.id))
-    }
+	async execute(query: GetWorkspaceByIdQuery): Promise<WorkspaceDTO> {
+		return this.workspaceFinder.find(WorkspaceId.fromString(query.id));
+	}
 }

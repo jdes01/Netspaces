@@ -1,80 +1,109 @@
 import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
 
-import { DeletionDate } from '@netspaces/domain'
+import { DeletionDate } from '@netspaces/domain';
 
-import { WorkspaceId, WorkspaceName, WorkspaceLocation, WorkspaceDescription, WorkspaceService } from "./value-objects/";
+import {
+	WorkspaceId,
+	WorkspaceName,
+	WorkspaceLocation,
+	WorkspaceDescription,
+	WorkspaceService,
+} from './value-objects/';
 
-import { WorkspaceWasCreatedEvent, WorkspaceWasDeleted } from '../event'
-import { SpaceAmenity, SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from 'apps/api/src/space/domain/model/value-objects';
+import { WorkspaceWasCreatedEvent, WorkspaceWasDeleted } from '../event';
+import {
+	SpaceAmenity,
+	SpaceId,
+	SpaceName,
+	SpaceQuantity,
+	SpaceSeats,
+} from 'apps/api/src/space/domain/model/value-objects';
 import { Space } from 'apps/api/src/space/domain/model';
 
 export class Workspace extends AggregateRoot {
+	private _id: WorkspaceId;
+	private _deleted: boolean;
+	private _name: WorkspaceName;
+	private _description: WorkspaceDescription;
+	private _location: WorkspaceLocation;
+	private _services: Array<WorkspaceService> = [];
 
-    private _id: WorkspaceId;
-    private _deleted: boolean;
-    private _name: WorkspaceName;
-    private _description: WorkspaceDescription;
-    private _location: WorkspaceLocation;
-    private _services: Array<WorkspaceService> = [];
+	public static add(
+		id: WorkspaceId,
+		name: WorkspaceName,
+		description: WorkspaceDescription,
+		location: WorkspaceLocation,
+		services: Array<WorkspaceService>,
+	): Workspace {
+		const workspace = new Workspace();
 
-    public static add(id: WorkspaceId, name: WorkspaceName, description: WorkspaceDescription, location: WorkspaceLocation, services: Array<WorkspaceService>): Workspace {
+		const event = new WorkspaceWasCreatedEvent(
+			id.value,
+			name.value,
+			description.value,
+			location.street,
+			location.city,
+			location.country,
+			services.map((service) => service.value),
+		);
 
-        const workspace = new Workspace();
+		workspace.apply(event);
 
-        const event = new WorkspaceWasCreatedEvent(id.value, name.value, description.value, location.street, location.city, location.country, services.map(service => service.value));
+		return workspace;
+	}
 
-        workspace.apply(event);
+	public addSpace(
+		spaceId: SpaceId,
+		name: SpaceName,
+		quantity: SpaceQuantity,
+		seats: SpaceSeats,
+		amenities: Array<SpaceAmenity>,
+	): Space {
+		return Space.add(spaceId, this.id, name, quantity, seats, amenities);
+	}
 
-        return workspace;
-    }
+	private onWorkspaceWasCreatedEvent(event: WorkspaceWasCreatedEvent): void {
+		this._id = WorkspaceId.fromString(event.id);
+		this._name = WorkspaceName.fromString(event.name);
+		this._description = WorkspaceDescription.fromString(event.description);
+		this._location = new WorkspaceLocation(event.street, event.city, event.country);
+		this._services = event.services.map((service) => WorkspaceService.fromString(service));
+		this._deleted = null;
+	}
 
-    public addSpace(spaceId: SpaceId, name: SpaceName, quantity: SpaceQuantity, seats: SpaceSeats, amenities: Array<SpaceAmenity>): Space {
-        return Space.add(spaceId, this.id, name, quantity, seats, amenities)
-    }
+	private onWorkspacerWasDeletedEvent(event: WorkspaceWasDeleted): void {
+		this._deleted = true;
+	}
 
-    private onWorkspaceWasCreatedEvent(event: WorkspaceWasCreatedEvent): void {
-        this._id = WorkspaceId.fromString(event.id);
-        this._name = WorkspaceName.fromString(event.name)
-        this._description = WorkspaceDescription.fromString(event.description)
-        this._location = new WorkspaceLocation(event.street, event.city, event.country)
-        this._services = event.services.map(service => WorkspaceService.fromString(service))
-        this._deleted = null;
-    }
+	public aggregateId(): string {
+		return this._id.value;
+	}
 
+	public get id(): WorkspaceId {
+		return this._id;
+	}
 
-    private onWorkspacerWasDeletedEvent(event: WorkspaceWasDeleted): void {
-        this._deleted = true;
-    }
+	public get deleted(): boolean {
+		return this._deleted;
+	}
 
-    public aggregateId(): string {
-        return this._id.value;
-    }
+	public get name(): WorkspaceName {
+		return this._name;
+	}
 
-    public get id(): WorkspaceId {
-        return this._id;
-    }
+	public get description(): WorkspaceDescription {
+		return this._description;
+	}
 
-    public get deleted(): boolean {
-        return this._deleted
-    }
+	public get location(): WorkspaceLocation {
+		return this._location;
+	}
 
-    public get name(): WorkspaceName {
-        return this._name
-    }
+	public get services(): Array<WorkspaceService> {
+		return this._services;
+	}
 
-    public get description(): WorkspaceDescription {
-        return this._description
-    }
-
-    public get location(): WorkspaceLocation {
-        return this._location
-    }
-
-    public get services(): Array<WorkspaceService> {
-        return this._services
-    }
-
-    public add_service(service: WorkspaceService) {
-        this._services.push(service)
-    }
+	public add_service(service: WorkspaceService) {
+		this._services.push(service);
+	}
 }

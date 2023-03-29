@@ -2,6 +2,4 @@ import { WorkspaceWasCreatedProjection } from './workspace-was-created.projectio
 
 export * from './workspace.schema';
 
-export const ProjectionHandlers = [
-    WorkspaceWasCreatedProjection,
-];
+export const ProjectionHandlers = [WorkspaceWasCreatedProjection];
