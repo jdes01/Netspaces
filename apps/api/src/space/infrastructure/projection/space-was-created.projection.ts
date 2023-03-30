@@ -1,8 +1,9 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+
 import { SpaceWasCreatedEvent } from '../../domain/event';
-import { SpaceDocument, SPACE_PROJECTION } from './space.schema';
+import { SPACE_PROJECTION, SpaceDocument } from './space.schema';
 
 @EventsHandler(SpaceWasCreatedEvent)
 export class SpaceWasCreatedProjection implements IEventHandler<SpaceWasCreatedEvent> {

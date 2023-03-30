@@ -1,5 +1,6 @@
 import { Nullable } from '@netspaces/domain';
 import { Result } from 'ts-results';
+
 import { WorkspaceError } from '../exception/workspace-error';
 import { Workspace } from '../model';
 import { WorkspaceId } from '../model/value-objects';

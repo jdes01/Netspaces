@@ -1,4 +1,5 @@
 import { ValueObject, WorkspaceServicesTypes } from '@netspaces/domain';
+
 import { WorkspaceServiceNotValidError } from '../../exception/workspace-service-not-valid-error';
 
 export class WorkspaceService extends ValueObject<{

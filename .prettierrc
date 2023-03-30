@@ -3,7 +3,6 @@
 	"trailingComma": "all",
 	"useTabs": true,
 	"tabWidth": 4,
-	"semicolons": true,
-	"bracketSpacing": true,
+	"semi": true,
 	"printWidth": 120
 }

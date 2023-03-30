@@ -2,16 +2,16 @@ import {
 	Body,
 	Controller,
 	Get,
-	Post,
-	HttpStatus,
-	HttpException,
 	HttpCode,
-	ValidationPipe,
+	HttpException,
+	HttpStatus,
 	Param,
+	Post,
+	ValidationPipe,
 } from '@nestjs/common';
-
 import { CreateSpaceDTO, SpaceDTO } from '@netspaces/contracts';
 import { Err } from 'ts-results';
+
 import { SpaceService } from '../service/space.service';
 
 @Controller('spaces')

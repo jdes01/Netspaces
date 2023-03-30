@@ -1,5 +1,5 @@
-import { CreateWorkspaceHandler } from './handler/create-workspace.handler';
 import { CreateWorkspaceCommand } from './create-workspace.command';
+import { CreateWorkspaceHandler } from './handler/create-workspace.handler';
 
 export const CommandHandlers = [CreateWorkspaceHandler];
 

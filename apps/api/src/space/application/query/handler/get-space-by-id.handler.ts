@@ -1,6 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { SpaceDTO } from '@netspaces/contracts';
+
 import { SpaceId } from '../../../domain/model/value-objects';
 import { SPACE_FINDER, SpaceFinder } from '../../service/space-finder.service';
 import { GetSpaceByIdQuery } from '../get-space-by-id.query';

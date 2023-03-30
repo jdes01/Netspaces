@@ -1,5 +1,6 @@
 import { Nullable } from '@netspaces/domain';
 import { Result } from 'ts-results';
+
 import { SpaceError } from '../exception/space-error';
 import { Space } from '../model';
 import { SpaceId } from '../model/value-objects';

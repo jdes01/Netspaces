@@ -1,15 +1,16 @@
 import { CqrsModule, EventBus, EventPublisher } from '@nestjs/cqrs';
 import { Test, TestingModule } from '@nestjs/testing';
+
 import {
+	City,
+	Country,
+	LocationDTO,
+	Street,
 	WorkspaceDescription,
 	WorkspaceId,
 	WorkspaceLocation,
 	WorkspaceName,
-	Street,
-	City,
-	Country,
 	WorkspaceService,
-	LocationDTO,
 } from '../value-objects';
 import { Workspace } from '../workspace';
 
@@ -26,9 +27,9 @@ describe('Workspace entity', () => {
 	const city: City = { name: 'workspace city' };
 	const country: Country = { name: 'workspace country' };
 	const location: WorkspaceLocation = WorkspaceLocation.create({
-		street,
 		city,
 		country,
+		street,
 	});
 
 	const wifiService = WorkspaceService.WIFI;

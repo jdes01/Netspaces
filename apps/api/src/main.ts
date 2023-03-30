@@ -15,9 +15,9 @@ async function bootstrap() {
 	app.setGlobalPrefix(GLOBAL_PREFIX);
 
 	app.enableCors({
-		origin: true,
-		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
 		credentials: true,
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+		origin: true,
 	});
 
 	const options = new DocumentBuilder().addBearerAuth().setTitle('Netspaces API').setVersion('1.0').build();

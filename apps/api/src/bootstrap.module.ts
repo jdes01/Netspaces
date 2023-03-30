@@ -1,13 +1,13 @@
+import { EVENTSTORE_KEYSTORE_CONNECTION, EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
 import { Module } from '@nestjs/common';
-import { EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
 import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
 import { CqrsModule } from '@nestjs/cqrs';
-import { EVENTSTORE_KEYSTORE_CONNECTION } from '@aulasoftwarelibre/nestjs-eventstore';
-import configuration from './config/configuration';
+import { MongooseModule } from '@nestjs/mongoose';
 import { ConsoleModule } from 'nestjs-console';
-import { WorkspaceModule } from './workspace';
+
+import configuration from './config/configuration';
 import { SpaceModule } from './space';
+import { WorkspaceModule } from './workspace';
 
 @Module({
 	imports: [

@@ -1,5 +1,9 @@
+import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
+import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'ts-results';
+
+import { WorkspaceAlreadyExistsError } from '../../../domain/exception';
 import { WorkspaceError } from '../../../domain/exception/workspace-error';
 import { Workspace } from '../../../domain/model';
 import {
@@ -10,10 +14,7 @@ import {
 	WorkspaceService,
 } from '../../../domain/model/value-objects';
 import { CreateWorkspaceCommand } from '../../command/create-workspace.command';
-import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
-import { Inject } from '@nestjs/common';
-import { WorkspaceFinder, WORKSPACE_FINDER } from '../../service/workspace-finder.service';
-import { WorkspaceAlreadyExistsError } from '../../../domain/exception';
+import { WORKSPACE_FINDER, WorkspaceFinder } from '../../service/workspace-finder.service';
 
 @CommandHandler(CreateWorkspaceCommand)
 export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCommand> {

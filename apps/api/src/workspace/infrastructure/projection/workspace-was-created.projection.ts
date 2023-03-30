@@ -1,8 +1,9 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+
 import { WorkspaceWasCreatedEvent } from '../../domain/event';
-import { WorkspaceDocument, WORKSPACE_PROJECTION } from './workspace.schema';
+import { WORKSPACE_PROJECTION, WorkspaceDocument } from './workspace.schema';
 
 @EventsHandler(WorkspaceWasCreatedEvent)
 export class WorkspaceWasCreatedProjection implements IEventHandler<WorkspaceWasCreatedEvent> {

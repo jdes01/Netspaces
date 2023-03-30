@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus, ICommand, IQuery, QueryBus } from '@nestjs/cqrs';
 import { WorkspaceDTO } from '@netspaces/contracts';
 import { Result } from 'ts-results';
+
 import { CreateWorkspaceCommand } from '../../application/command/create-workspace.command';
 import { GetWorkspacesQuery } from '../../application/query';
 import { GetWorkspaceByIdQuery } from '../../application/query/get-workspace-by-id.query';

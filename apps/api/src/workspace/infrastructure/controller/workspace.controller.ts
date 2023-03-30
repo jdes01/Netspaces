@@ -2,17 +2,17 @@ import {
 	Body,
 	Controller,
 	Get,
-	Post,
-	HttpStatus,
-	HttpException,
 	HttpCode,
-	ValidationPipe,
-	Param,
+	HttpException,
+	HttpStatus,
 	Logger,
+	Param,
+	Post,
+	ValidationPipe,
 } from '@nestjs/common';
-
 import { CreateWorkspaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 import { Err } from 'ts-results';
+
 import { WorkspaceService } from '../service/workspace.service';
 
 @Controller('workspaces')

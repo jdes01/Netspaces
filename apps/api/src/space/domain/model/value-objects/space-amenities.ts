@@ -1,4 +1,5 @@
 import { SpaceAmenitiesTypes, ValueObject } from '@netspaces/domain';
+
 import { SpaceAmenityNotValidError } from '../../exception';
 
 export class SpaceAmenity extends ValueObject<{ value: SpaceAmenitiesTypes }> {

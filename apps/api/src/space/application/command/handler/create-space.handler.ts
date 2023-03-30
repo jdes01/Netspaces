@@ -1,18 +1,19 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Err, Ok, Result } from 'ts-results';
-import { SpaceError } from '../../../domain/exception/space-error';
-import { Space } from '../../../domain/model';
-import { CreateSpaceCommand } from '../../command/create-space.command';
 import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
 import { Inject } from '@nestjs/common';
-import { SpaceFinder, SPACE_FINDER } from '../../service/space-finder.service';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { WORKSPACE_FINDER, WorkspaceFinder } from 'apps/api/src/workspace/application/service/workspace-finder.service';
+import { WorkspaceError } from 'apps/api/src/workspace/domain/exception';
+import { WorkspaceNotFoundError } from 'apps/api/src/workspace/domain/exception/workspace-not-found-error';
+import { WorkspaceId } from 'apps/api/src/workspace/domain/model/value-objects';
+import { Err, Ok, Result } from 'ts-results';
+
 import { SpaceAlreadyExistsError } from '../../../domain/exception';
+import { SpaceError } from '../../../domain/exception/space-error';
+import { Space } from '../../../domain/model';
 import { SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from '../../../domain/model/value-objects';
 import { SpaceAmenity } from '../../../domain/model/value-objects/space-amenities';
-import { WorkspaceId } from 'apps/api/src/workspace/domain/model/value-objects';
-import { WorkspaceNotFoundError } from 'apps/api/src/workspace/domain/exception/workspace-not-found-error';
-import { WorkspaceFinder, WORKSPACE_FINDER } from 'apps/api/src/workspace/application/service/workspace-finder.service';
-import { WorkspaceError } from 'apps/api/src/workspace/domain/exception';
+import { CreateSpaceCommand } from '../../command/create-space.command';
+import { SPACE_FINDER, SpaceFinder } from '../../service/space-finder.service';
 
 @CommandHandler(CreateSpaceCommand)
 export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {

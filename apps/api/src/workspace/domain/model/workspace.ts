@@ -1,16 +1,6 @@
 import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
-
 import { DeletionDate } from '@netspaces/domain';
-
-import {
-	WorkspaceId,
-	WorkspaceName,
-	WorkspaceLocation,
-	WorkspaceDescription,
-	WorkspaceService,
-} from './value-objects/';
-
-import { WorkspaceWasCreatedEvent, WorkspaceWasDeleted } from '../event';
+import { Space } from 'apps/api/src/space/domain/model';
 import {
 	SpaceAmenity,
 	SpaceId,
@@ -18,7 +8,15 @@ import {
 	SpaceQuantity,
 	SpaceSeats,
 } from 'apps/api/src/space/domain/model/value-objects';
-import { Space } from 'apps/api/src/space/domain/model';
+
+import { WorkspaceWasCreatedEvent, WorkspaceWasDeleted } from '../event';
+import {
+	WorkspaceDescription,
+	WorkspaceId,
+	WorkspaceLocation,
+	WorkspaceName,
+	WorkspaceService,
+} from './value-objects/';
 
 export class Workspace extends AggregateRoot {
 	private _id: WorkspaceId;

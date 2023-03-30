@@ -11,11 +11,11 @@ export class SpaceWasCreatedEvent extends Event {
 	) {
 		super(id, {
 			_id: id,
-			workspaceId,
+			amenities,
 			name,
 			quantity,
 			seats,
-			amenities,
+			workspaceId,
 		});
 	}
 }

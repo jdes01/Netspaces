@@ -3,9 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { SpaceDTO } from '@netspaces/contracts';
 import { Model } from 'mongoose';
 
-import { SpaceId } from '../../domain/model/value-objects';
 import { SpaceFinder } from '../../application/service/space-finder.service';
-import { SpaceDocument, SPACE_PROJECTION } from '../projection';
+import { SpaceId } from '../../domain/model/value-objects';
+import { SPACE_PROJECTION, SpaceDocument } from '../projection';
 
 @Injectable()
 export class MongoDBSpaceFinder implements SpaceFinder {

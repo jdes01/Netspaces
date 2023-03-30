@@ -1,19 +1,19 @@
+import { Event, EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MongooseModule } from '@nestjs/mongoose';
+import { CreateSpaceDTO } from '@netspaces/contracts';
 
+import { WORKSPACE_PROJECTION, WorkspaceSchema } from '../../workspace/infrastructure/projection';
 import { CommandHandlers } from '../application/command';
 import { QueryHandlers } from '../application/query';
-import { ProjectionHandlers } from './projection';
-import { SpaceController } from './controller';
-import { SpaceProviders } from './space.providers';
-import { Event, EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
-import { Space } from '../domain/model';
 import { SpaceWasCreatedEvent } from '../domain/event';
-import { CreateSpaceDTO } from '@netspaces/contracts';
-import { SpaceSchema, SPACE_PROJECTION } from './projection/space.schema';
+import { Space } from '../domain/model';
+import { SpaceController } from './controller';
+import { ProjectionHandlers } from './projection';
+import { SPACE_PROJECTION, SpaceSchema } from './projection/space.schema';
 import { SpaceService } from './service/space.service';
-import { WorkspaceSchema, WORKSPACE_PROJECTION } from '../../workspace/infrastructure/projection';
+import { SpaceProviders } from './space.providers';
 
 @Module({
 	controllers: [SpaceController],

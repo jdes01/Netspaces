@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import {
 	WorkspaceDescription,
 	WorkspaceId,
@@ -7,11 +8,10 @@ import {
 	WorkspaceService,
 } from '../../../domain/model/value-objects';
 import { Workspace } from '../../../domain/model/workspace';
+import { WORKSPACE_REPOSITORY, WorkspaceRepository } from '../../../domain/repository';
+import { WORKSPACE_FINDER, WorkspaceFinder } from '../../service/workspace-finder.service';
 import { CreateWorkspaceCommand } from '../create-workspace.command';
 import { CreateWorkspaceHandler } from '../handler/create-workspace.handler';
-
-import { WORKSPACE_REPOSITORY, WorkspaceRepository } from '../../../domain/repository';
-import { WorkspaceFinder, WORKSPACE_FINDER } from '../../service/workspace-finder.service';
 
 describe('CreateWorkspaceHandler', () => {
 	let handler$: CreateWorkspaceHandler;
