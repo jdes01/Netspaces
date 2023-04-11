@@ -1,6 +1,8 @@
 import { Event, EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
+import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CreateSpaceDTO } from '@netspaces/contracts';
 
@@ -10,6 +12,7 @@ import { QueryHandlers } from '../application/query';
 import { SpaceWasCreatedEvent } from '../domain/event';
 import { Space } from '../domain/model';
 import { SpaceController } from './controller';
+import { SpaceResolver } from './graphql/resolvers/space.resolver';
 import { ProjectionHandlers } from './projection';
 import { SPACE_PROJECTION, SpaceSchema } from './projection/space.schema';
 import { SpaceService } from './service/space.service';
@@ -40,7 +43,18 @@ import { SpaceProviders } from './space.providers';
 				schema: WorkspaceSchema,
 			},
 		]),
+		GraphQLModule.forRoot<ApolloDriverConfig>({
+			autoSchemaFile: true,
+			driver: ApolloDriver,
+		}),
 	],
-	providers: [...CommandHandlers, ...QueryHandlers, ...ProjectionHandlers, ...SpaceProviders, SpaceService],
+	providers: [
+		...CommandHandlers,
+		...QueryHandlers,
+		...ProjectionHandlers,
+		...SpaceProviders,
+		SpaceResolver,
+		SpaceService,
+	],
 })
 export class SpaceModule {}
