@@ -5,7 +5,6 @@ import {
 	HttpCode,
 	HttpException,
 	HttpStatus,
-	Logger,
 	Param,
 	Post,
 	ValidationPipe,
@@ -17,7 +16,7 @@ import { WorkspaceService } from '../service/workspace.service';
 
 @Controller('workspaces')
 export class WorkspaceController {
-	constructor(private readonly workspaceService: WorkspaceService) {}
+	constructor(private readonly workspaceService: WorkspaceService) { }
 
 	@Post()
 	@HttpCode(200)

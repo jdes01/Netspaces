@@ -14,6 +14,11 @@ import { WORKSPACE_PROJECTION, WorkspaceSchema } from './projection/workspace.sc
 import { WorkspaceService } from './service/workspace.service';
 import { WorkspaceProviders } from './workspace.providers';
 
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { GraphQLModule } from '@nestjs/graphql';
+import { WorkspaceResolver } from './graphql/resolvers/workspace.resolver';
+
+
 @Module({
 	controllers: [WorkspaceController],
 	imports: [
@@ -36,7 +41,12 @@ import { WorkspaceProviders } from './workspace.providers';
 				schema: WorkspaceSchema,
 			},
 		]),
+		GraphQLModule.forRoot<ApolloDriverConfig>({
+			driver: ApolloDriver,
+			typePaths: ['./**/*.graphql'],
+			playground: true,
+		}),
 	],
-	providers: [...CommandHandlers, ...QueryHandlers, ...ProjectionHandlers, ...WorkspaceProviders, WorkspaceService],
+	providers: [...CommandHandlers, ...QueryHandlers, ...ProjectionHandlers, ...WorkspaceProviders, WorkspaceResolver, WorkspaceService],
 })
-export class WorkspaceModule {}
+export class WorkspaceModule { }

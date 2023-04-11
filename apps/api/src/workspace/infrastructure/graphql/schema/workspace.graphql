@@ -1,0 +1,13 @@
+type Query {
+	workspaces: [Workspace]
+}
+
+type Workspace {
+	_id: String
+	name: String
+	description: String
+	street: String
+	city: String
+	country: String
+	services: [String]
+}
