@@ -1,14 +1,15 @@
-import { Resolver, Query } from '@nestjs/graphql'
+import { Query, Resolver } from '@nestjs/graphql';
+import { WorkspaceDTO } from '@netspaces/contracts';
 
-import { WorkspaceService } from '../../service/workspace.service'
-import { WorkspaceDTO } from '@netspaces/contracts'
+import { WorkspaceService } from '../../service/workspace.service';
+import { Workspace } from '../schema/workspace.graphql-model';
 
-@Resolver('Workspace')
+@Resolver((_of) => Workspace)
 export class WorkspaceResolver {
-    constructor(private readonly workspaceService: WorkspaceService) { }
+	constructor(private readonly workspaceService: WorkspaceService) {}
 
-    @Query('workspaces')
-    async workspaces(): Promise<WorkspaceDTO[]> {
-        return await this.workspaceService.getWorkspaces();
-    }
+	@Query((_returns) => [Workspace])
+	async workspaces(): Promise<WorkspaceDTO[]> {
+		return await this.workspaceService.getWorkspaces();
+	}
 }
