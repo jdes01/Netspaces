@@ -1,9 +1,9 @@
 export default () => ({
 	database: {
-		uri: process.env.DATABASE_URL || 'mongodb://localhost/database',
+		uri: process.env.DATABASE_URL || 'mongodb://netspaces-mongodb:27017/database',
 	},
 	eventstore: {
 		category: process.env.EVENTSTORE_STREAM,
-		connection: process.env.EVENTSTORE_URL || 'esdb://localhost:2113?tls=false',
+		connection: process.env.EVENTSTORE_URL || 'esdb://netspaces-eventstore:2113?tls=false',
 	},
 });
