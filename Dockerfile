@@ -2,9 +2,9 @@ FROM node:18.15-alpine as netspaces-base
 
 WORKDIR /app
 
-COPY ./package.json ./
+COPY ./package.json ./package-lock.json ./
 
-RUN npm install
+RUN --mount=type=cache,target=/root/.npm --mount=type=cache,target=/root/.cache npm ci
 
 # ===============================
 
@@ -14,7 +14,7 @@ COPY ./apps/web .
 
 EXPOSE 3000
 
-CMD ["npx", "nx", "run", "web:serve"]
+CMD ["npx", "nx", "run", "web:serve", "--hostname=0.0.0.0", "--port=3000"]
 
 # ===============================
 

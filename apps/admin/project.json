@@ -18,7 +18,9 @@
 				"assets": ["apps/admin/src/favicon.ico", "apps/admin/src/assets"],
 				"styles": ["apps/admin/src/styles.css"],
 				"scripts": [],
-				"webpackConfig": "apps/admin/webpack.config.js"
+				"webpackConfig": "apps/admin/webpack.config.js",
+				"isolatedConfig": true,
+				"babelUpwardRootMode": true
 			},
 			"configurations": {
 				"development": {

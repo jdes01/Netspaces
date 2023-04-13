@@ -15,8 +15,8 @@
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"@netspaces/domain": ["libs/domain/src/index.ts"],
-			"@netspaces/contracts": ["libs/contracts/src/index.ts"]
+			"@netspaces/contracts": ["libs/contracts/src/index.ts"],
+			"@netspaces/domain": ["libs/domain/src/index.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]
