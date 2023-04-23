@@ -11,6 +11,7 @@
 		}
 	],
 	"compilerOptions": {
+		"strict": true,
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
 		"target": "es5",

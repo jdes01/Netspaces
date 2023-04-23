@@ -11,6 +11,8 @@ services:
             - .:/app
         depends_on:
             - netspaces-api
+        networks:
+            - netspaces-network
 
     netspaces-api:
         build:
@@ -26,6 +28,8 @@ services:
             - netspaces-eventstore
             - netspaces-mongodb
             - mongo-express
+        networks:
+            - netspaces-network
 
     netspaces-eventstore:
         container_name: netspaces-eventstore
@@ -49,6 +53,8 @@ services:
             - type: volume
               source: eventstore-volume-logs
               target: /var/log/eventstore
+        networks:
+            - netspaces-network
 
     netspaces-mongodb:
         container_name: netspaces-mongodb
@@ -59,6 +65,8 @@ services:
             - type: volume
               source: mongo-volume-data
               target: /data/db
+        networks:
+            - netspaces-network
 
     mongo-express:
         container_name: netspaces-mongoexpress
@@ -67,9 +75,15 @@ services:
         image: mongo-express:latest
         ports:
             - 8081:8081
+        networks:
+            - netspaces-network
 
 volumes:
     eventstore-volume-data:
     eventstore-volume-logs:
     mongo-volume-data:
     mongoclient-volume-data:
+
+networks:
+    netspaces-network:
+        driver: bridge
