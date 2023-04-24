@@ -63,6 +63,7 @@
 		"url-loader": "^4.1.1"
 	},
 	"dependencies": {
+		"@apollo/client": "^3.7.12",
 		"@apollo/server": "^4.6.0",
 		"@aulasoftwarelibre/nestjs-eventstore": "^0.7.0",
 		"@chakra-ui/next-js": "^2.1.2",
