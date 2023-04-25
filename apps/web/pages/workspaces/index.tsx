@@ -1,25 +1,25 @@
+import { gql } from '@apollo/client';
 import {
 	Badge,
 	Box,
 	FormControl,
-	Icon,
+	HStack,
+	IconButton,
 	Image,
 	Select,
 	SimpleGrid,
-	HStack,
 	Stack,
-	IconButton,
-	Tabs,
-	TabList,
 	Tab,
+	TabList,
 	TabPanels,
-	TabPanel,
+	Tabs,
 } from '@chakra-ui/react';
 import { WorkspaceDTO } from '@netspaces/contracts';
-import { gql } from '@apollo/client';
-import client from 'apps/web/apollo-client';
-import { FiMapPin } from 'react-icons/fi';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { FiMapPin } from 'react-icons/fi';
+
+import client from '../../apollo-client';
 
 type Props = {
 	workspaces: Array<WorkspaceDTO>;
@@ -29,7 +29,13 @@ export function Index({ workspaces }: Props) {
 	const uniqueServices: string[] = uniqueServicesFromWorkspaces(workspaces);
 
 	const [tabIndex, setTabIndex] = useState(0);
-	const service = uniqueServices[tabIndex];
+	const filteredService = uniqueServices[tabIndex];
+
+	const router = useRouter();
+
+	const handleClick = () => {
+		router.push('http://localhost:3000/');
+	};
 
 	return (
 		<Box p="5" bg={'#FAF9F6'} m={[0, null, 5]}>
@@ -59,9 +65,15 @@ export function Index({ workspaces }: Props) {
 				<TabPanels p="2rem">
 					<SimpleGrid columns={[1, null, 6]}>
 						{workspaces
-							.filter((workspace) => workspace.services.includes(service))
+							.filter((workspace) => workspace.services.includes(filteredService))
 							.map((workspace) => (
-								<Box m={1}>
+								<Box
+									m={1}
+									onClick={handleClick}
+									borderRadius={20}
+									borderColor={'transparent'}
+									_hover={{ cursor: 'pointer', shadow: 'base' }}
+								>
 									<Image
 										borderRadius={20}
 										src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
@@ -70,7 +82,14 @@ export function Index({ workspaces }: Props) {
 									<Box p="5">
 										<Stack direction="row" spacing={1} align="left">
 											{workspace.services.map((service) => (
-												<Badge borderRadius="full" px="2" colorScheme="teal">
+												<Badge
+													borderRadius="full"
+													px="2"
+													colorScheme="teal"
+													position={'relative'}
+													left={1}
+													right={1}
+												>
 													{service}
 												</Badge>
 											))}
