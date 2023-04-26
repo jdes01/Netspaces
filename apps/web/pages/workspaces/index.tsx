@@ -149,8 +149,6 @@ export async function getStaticProps() {
 		`,
 	});
 
-	console.log(data);
-
 	const workspaces: Array<WorkspaceDTO> = data?.workspaces;
 
 	return {
