@@ -1,7 +1,8 @@
-import { gql } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import {
 	Badge,
 	Box,
+	Heading,
 	FormControl,
 	HStack,
 	IconButton,
@@ -19,22 +20,37 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FiMapPin } from 'react-icons/fi';
 
-import client from '../../apollo-client';
+const GET_WORKSPACES = gql`
+	query GetWorkspaces {
+		workspaces {
+			_id
+			name
+			description
+			street
+			city
+			country
+			services
+		}
+	}
+`;
 
-type Props = {
-	workspaces: Array<WorkspaceDTO>;
-};
+export function Index() {
+	const [tabIndex, setTabIndex] = useState(0);
 
-export function Index({ workspaces }: Props) {
+	const { loading, error, data } = useQuery(GET_WORKSPACES);
+
+	if (loading) return <Heading>Loading</Heading>;
+
+	const workspaces: Array<WorkspaceDTO> = data?.workspaces;
+
 	const uniqueServices: string[] = uniqueServicesFromWorkspaces(workspaces);
 
-	const [tabIndex, setTabIndex] = useState(0);
 	const filteredService = uniqueServices[tabIndex];
 
 	const router = useRouter();
 
-	const handleClick = () => {
-		router.push('http://localhost:3000/');
+	const handleClick = (id: string) => {
+		router.push(`/workspaces/${id}`);
 	};
 
 	return (
@@ -69,7 +85,7 @@ export function Index({ workspaces }: Props) {
 							.map((workspace) => (
 								<Box
 									m={1}
-									onClick={handleClick}
+									onClick={() => handleClick(workspace._id)}
 									borderRadius={20}
 									borderColor={'transparent'}
 									_hover={{ cursor: 'pointer', shadow: 'base' }}
@@ -130,32 +146,6 @@ function uniqueServicesFromWorkspaces(workspaces: Array<WorkspaceDTO>): Array<st
 	});
 
 	return Array.from(uniqueServicesSet);
-}
-
-export async function getStaticProps() {
-	const { data } = await client.query({
-		query: gql`
-			query GetWorkspaces {
-				workspaces {
-					_id
-					name
-					description
-					street
-					city
-					country
-					services
-				}
-			}
-		`,
-	});
-
-	const workspaces: Array<WorkspaceDTO> = data?.workspaces;
-
-	return {
-		props: {
-			workspaces,
-		},
-	};
 }
 
 export default Index;
