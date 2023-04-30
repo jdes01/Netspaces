@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Space } from '../../../../space/infrastructure/graphql/schema/space.graphql-model'
 
 @ObjectType()
 export class Workspace {
@@ -22,4 +23,7 @@ export class Workspace {
 
 	@Field((_type) => [String], { nullable: true })
 	services: [string];
+
+	@Field(() => [Space])
+	space: Space[];
 }

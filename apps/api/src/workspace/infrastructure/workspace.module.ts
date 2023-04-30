@@ -16,6 +16,7 @@ import { ProjectionHandlers } from './projection';
 import { WORKSPACE_PROJECTION, WorkspaceSchema } from './projection/workspace.schema';
 import { WorkspaceService } from './service/workspace.service';
 import { WorkspaceProviders } from './workspace.providers';
+import { SpaceService } from '../../space/infrastructure/service/space.service';
 
 @Module({
 	controllers: [WorkspaceController],
@@ -50,7 +51,8 @@ import { WorkspaceProviders } from './workspace.providers';
 		...ProjectionHandlers,
 		...WorkspaceProviders,
 		WorkspaceResolver,
+		SpaceService,
 		WorkspaceService,
 	],
 })
-export class WorkspaceModule {}
+export class WorkspaceModule { }

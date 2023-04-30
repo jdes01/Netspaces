@@ -6,13 +6,14 @@ import { Model } from 'mongoose';
 import { SpaceFinder } from '../../application/service/space-finder.service';
 import { SpaceId } from '../../domain/model/value-objects';
 import { SPACE_PROJECTION, SpaceDocument } from '../projection';
+import { WorkspaceId } from 'apps/api/src/workspace/domain/model/value-objects';
 
 @Injectable()
 export class MongoDBSpaceFinder implements SpaceFinder {
 	constructor(
 		@InjectModel(SPACE_PROJECTION)
 		private readonly spaceProjection: Model<SpaceDocument>,
-	) {}
+	) { }
 
 	findAll(): Promise<SpaceDTO[]> {
 		return this.spaceProjection.find().exec();
@@ -20,5 +21,9 @@ export class MongoDBSpaceFinder implements SpaceFinder {
 
 	find(id: SpaceId): Promise<SpaceDTO> {
 		return this.spaceProjection.findById(id.value).exec();
+	}
+
+	findByWorkspaceId(id: WorkspaceId): Promise<SpaceDTO> {
+		return this.spaceProjection.find({ workspaceId: id.value });
 	}
 }
