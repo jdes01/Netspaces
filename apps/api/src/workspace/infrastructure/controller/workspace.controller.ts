@@ -47,7 +47,7 @@ export class WorkspaceController {
 	}
 
 	@Get(':id')
-	async getById(@Param() params): Promise<WorkspaceDTO> {
+	async getById(@Param() params: any): Promise<WorkspaceDTO> {
 		return await this.workspaceService.getWorkspaceById(params.id);
 	}
 }

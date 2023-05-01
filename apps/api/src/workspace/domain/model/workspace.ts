@@ -1,5 +1,4 @@
 import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
-import { DeletionDate } from '@netspaces/domain';
 import { Space } from 'apps/api/src/space/domain/model';
 import {
 	SpaceAmenity,
@@ -17,14 +16,15 @@ import {
 	WorkspaceName,
 	WorkspaceService,
 } from './value-objects/';
+import { WorkspaceServiceNotValidError } from '../exception/workspace-service-not-valid-error';
 
 export class Workspace extends AggregateRoot {
-	private _id: WorkspaceId;
-	private _deleted: boolean;
-	private _name: WorkspaceName;
-	private _description: WorkspaceDescription;
-	private _location: WorkspaceLocation;
+	private _id!: WorkspaceId;
+	private _name!: WorkspaceName;
+	private _description!: WorkspaceDescription;
+	private _location!: WorkspaceLocation;
 	private _services: Array<WorkspaceService> = [];
+	private _deleted!: boolean;
 
 	public static add(
 		id: WorkspaceId,
@@ -65,11 +65,15 @@ export class Workspace extends AggregateRoot {
 		this._name = WorkspaceName.fromString(event.name);
 		this._description = WorkspaceDescription.fromString(event.description);
 		this._location = new WorkspaceLocation(event.street, event.city, event.country);
-		this._services = event.services.map((service) => WorkspaceService.fromString(service));
-		this._deleted = null;
+
+		const servicesResult = WorkspaceService.fromStringList(event.services).val
+		if (servicesResult instanceof WorkspaceServiceNotValidError) { throw new WorkspaceServiceNotValidError() }
+		this._services = servicesResult
+
+		this._deleted = false;
 	}
 
-	private onWorkspacerWasDeletedEvent(event: WorkspaceWasDeleted): void {
+	private onWorkspacerWasDeletedEvent(_event: WorkspaceWasDeleted): void {
 		this._deleted = true;
 	}
 
@@ -101,7 +105,7 @@ export class Workspace extends AggregateRoot {
 		return this._services;
 	}
 
-	public add_service(service: WorkspaceService) {
+	public addService(service: WorkspaceService) {
 		this._services.push(service);
 	}
 }

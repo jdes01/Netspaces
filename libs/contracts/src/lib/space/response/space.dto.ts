@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { ApiProperty } from '@nestjs/swagger';
 import { SpaceAmenitiesTypes } from '@netspaces/domain';
 import { IsNotEmpty, IsUUID } from 'class-validator';

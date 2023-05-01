@@ -12,13 +12,13 @@ export class MongoDBWorkspaceFinder implements WorkspaceFinder {
 	constructor(
 		@InjectModel(WORKSPACE_PROJECTION)
 		private readonly workspaceProjection: Model<WorkspaceDocument>,
-	) {}
+	) { }
 
 	findAll(): Promise<WorkspaceDTO[]> {
 		return this.workspaceProjection.find().exec();
 	}
 
-	find(id: WorkspaceId): Promise<WorkspaceDTO> {
+	find(id: WorkspaceId): Promise<WorkspaceDTO | null> {
 		return this.workspaceProjection.findById(id.value).exec();
 	}
 }

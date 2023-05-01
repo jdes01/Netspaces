@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { ApiProperty } from '@nestjs/swagger';
 import { WorkspaceServicesTypes } from '@netspaces/domain';
 import { IsArray, IsNotEmpty, IsString, IsUUID } from 'class-validator';

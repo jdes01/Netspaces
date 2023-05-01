@@ -4,15 +4,16 @@ import { WorkspaceId } from 'apps/api/src/workspace/domain/model/value-objects';
 import { SpaceWasCreatedEvent } from '../event';
 import { SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from './value-objects';
 import { SpaceAmenity } from './value-objects/space-amenities';
+import { SpaceAmenityNotValidError } from '../exception';
 
 export class Space extends AggregateRoot {
-	private _id: SpaceId;
-	private _workspaceId: WorkspaceId;
-	private _name: SpaceName;
-	private _quantity: SpaceQuantity;
-	private _seats: SpaceSeats;
-	private _amenities: Array<SpaceAmenity>;
-	private _deleted: boolean;
+	private _id!: SpaceId;
+	private _workspaceId!: WorkspaceId;
+	private _name!: SpaceName;
+	private _quantity!: SpaceQuantity;
+	private _seats!: SpaceSeats;
+	private _amenities!: Array<SpaceAmenity>;
+	private _deleted!: boolean | null;
 
 	public static add(
 		id: SpaceId,
@@ -44,7 +45,11 @@ export class Space extends AggregateRoot {
 		this._name = SpaceName.fromString(event.name);
 		this._quantity = SpaceQuantity.fromNumber(event.quantity);
 		this._seats = SpaceSeats.fromNumber(event.seats);
-		this._amenities = event.amenities.map((amenity) => SpaceAmenity.fromString(amenity));
+
+		const amenitiesResult = SpaceAmenity.fromStringList(event.amenities).val
+		if (amenitiesResult instanceof SpaceAmenityNotValidError) { throw new SpaceAmenityNotValidError() }
+		this._amenities = amenitiesResult
+
 		this._deleted = null;
 	}
 

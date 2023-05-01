@@ -4,9 +4,9 @@ import { SpaceDTO } from '@netspaces/contracts';
 import { SpaceService } from '../../service/space.service';
 import { Space } from '../schema/space.graphql-model';
 
-@Resolver((_of) => Space)
+@Resolver((_of: any) => Space)
 export class SpaceResolver {
-	constructor(private readonly spaceService: SpaceService) {}
+	constructor(private readonly spaceService: SpaceService) { }
 
 	@Query((_returns) => [Space])
 	async spaces(): Promise<SpaceDTO[]> {

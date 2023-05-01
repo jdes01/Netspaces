@@ -15,15 +15,15 @@ export class MongoDBSpaceFinder implements SpaceFinder {
 		private readonly spaceProjection: Model<SpaceDocument>,
 	) { }
 
-	findAll(): Promise<SpaceDTO[]> {
+	findAll(): Promise<Array<SpaceDTO>> {
 		return this.spaceProjection.find().exec();
 	}
 
-	find(id: SpaceId): Promise<SpaceDTO> {
+	find(id: SpaceId): Promise<SpaceDTO | null> {
 		return this.spaceProjection.findById(id.value).exec();
 	}
 
-	findByWorkspaceId(id: WorkspaceId): Promise<SpaceDTO> {
-		return this.spaceProjection.find({ workspaceId: id.value });
+	async findByWorkspaceId(id: WorkspaceId): Promise<Array<SpaceDTO>> {
+		return await this.spaceProjection.find({ workspaceId: id.value });
 	}
 }

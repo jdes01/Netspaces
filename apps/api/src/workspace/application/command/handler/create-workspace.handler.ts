@@ -23,7 +23,7 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
 		private readonly workspaceRepository: AggregateRepository<Workspace, WorkspaceId>,
 		@Inject(WORKSPACE_FINDER)
 		private readonly workspaceFinder: WorkspaceFinder,
-	) {}
+	) { }
 
 	async execute(command: CreateWorkspaceCommand): Promise<Result<null, WorkspaceError>> {
 		const id = WorkspaceId.fromString(command.id);
@@ -36,13 +36,13 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
 		const description = WorkspaceDescription.fromString(command.description);
 		const location = new WorkspaceLocation(command.street, command.city, command.country);
 
-		try {
-			var services = command.services.map((service) => WorkspaceService.fromString(service));
-		} catch (e) {
-			return Err(e);
+		const result = WorkspaceService.fromStringList(command.services)
+
+		if (result instanceof Err) {
+			return result
 		}
 
-		const workspace = Workspace.add(id, name, description, location, services);
+		const workspace = Workspace.add(id, name, description, location, result.val);
 
 		this.workspaceRepository.save(workspace);
 

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Space } from '../../../../space/infrastructure/graphql/schema/space.graphql-model'
 

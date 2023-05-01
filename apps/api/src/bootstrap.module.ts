@@ -19,14 +19,14 @@ import { WorkspaceModule } from './workspace';
 		CqrsModule,
 		ConsoleModule,
 		EventStoreModule.forRoot({
-			connection: process.env.EVENTSTORE_URI,
+			connection: process.env.EVENTSTORE_URI || "",
 		}),
-		MongooseModule.forRoot(process.env.MONGO_URI, {}),
-		MongooseModule.forRoot(process.env.KEYSTORE_URI, {
+		MongooseModule.forRoot(process.env.MONGO_URI || "", {}),
+		MongooseModule.forRoot(process.env.KEYSTORE_URI || "", {
 			connectionName: EVENTSTORE_KEYSTORE_CONNECTION,
 		}),
 		WorkspaceModule,
 		SpaceModule,
 	],
 })
-export class BootstrapModule {}
+export class BootstrapModule { }

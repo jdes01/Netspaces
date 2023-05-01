@@ -16,7 +16,7 @@ import { SpaceService } from '../service/space.service';
 
 @Controller('spaces')
 export class SpaceController {
-	constructor(private readonly spaceService: SpaceService) {}
+	constructor(private readonly spaceService: SpaceService) { }
 
 	@Post()
 	@HttpCode(200)
@@ -43,7 +43,7 @@ export class SpaceController {
 	}
 
 	@Get(':id')
-	async getById(@Param() params): Promise<SpaceDTO> {
+	async getById(@Param() params: any): Promise<SpaceDTO> {
 		return await this.spaceService.getSpaceById(params.id);
 	}
 }

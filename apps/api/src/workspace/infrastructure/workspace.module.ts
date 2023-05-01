@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Event, EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';

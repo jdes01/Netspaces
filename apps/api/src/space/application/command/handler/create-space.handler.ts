@@ -23,7 +23,7 @@ export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
 		@Inject(SPACE_FINDER) private readonly spaceFinder: SpaceFinder,
 		@Inject(WORKSPACE_FINDER)
 		private readonly workspaceFinder: WorkspaceFinder,
-	) {}
+	) { }
 
 	async execute(command: CreateSpaceCommand): Promise<Result<null, SpaceError | WorkspaceError>> {
 		const id = SpaceId.fromString(command.id);
@@ -40,13 +40,13 @@ export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
 		const quantity = SpaceQuantity.fromNumber(command.quantity);
 		const seats = SpaceSeats.fromNumber(command.seats);
 
-		try {
-			var amenities = command.amenities.map((amenity) => SpaceAmenity.fromString(amenity));
-		} catch (e) {
-			return Err(e);
+		const result = SpaceAmenity.fromStringList(command.amenities)
+
+		if (result instanceof Err) {
+			return result
 		}
 
-		const space = Space.add(id, workspaceId, name, quantity, seats, amenities);
+		const space = Space.add(id, workspaceId, name, quantity, seats, result.val);
 
 		this.spaceRepository.save(space);
 

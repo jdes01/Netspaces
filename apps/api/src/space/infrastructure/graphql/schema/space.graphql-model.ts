@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()

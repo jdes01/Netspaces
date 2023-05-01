@@ -74,7 +74,7 @@ describe('Workspace entity', () => {
 	});
 
 	it('should be able to add multile services', async () => {
-		workspace.add_service(wifiService);
+		workspace.addService(wifiService);
 		expect(workspace);
 		expect(workspace.services.length).toBe(1);
 		expect(workspace.services[0]).toBe(WorkspaceService.WIFI);
