@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router';
-import { Badge, Box, Heading, Stack, Image, SimpleGrid } from '@chakra-ui/react';
 import { gql, useQuery } from '@apollo/client';
+import { Badge, Box, Heading, Image, SimpleGrid, Stack } from '@chakra-ui/react';
 import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
+import { useRouter } from 'next/router';
 
 const GET_WORKSPACE = gql`
 	query GetWorkspace($id: String!) {
@@ -29,7 +29,7 @@ const Workspace = () => {
 	const router = useRouter();
 	const { uuid } = router.query;
 
-	const { loading, error, data } = useQuery(GET_WORKSPACE, {
+	const { data, loading } = useQuery(GET_WORKSPACE, {
 		variables: { id: uuid },
 	});
 
@@ -103,14 +103,18 @@ const Workspace = () => {
 								</Box>
 
 								<Box display="flex" alignItems="baseline" mt={2}>
-									<Box
-										color="gray.500"
-										fontWeight="semibold"
-										letterSpacing="wide"
-										fontSize="xs"
-										textTransform="uppercase"
-									>
-										{space.seats}, {space.quantity}
+									<Box color="gray.500" fontWeight="semibold" letterSpacing="wide" fontSize="xs">
+										<Badge
+											borderRadius="full"
+											px="2"
+											colorScheme="teal"
+											position={'relative'}
+											mr={3}
+											left={1}
+										>
+											{space.seats} seats
+										</Badge>
+										{space.quantity} left
 									</Box>
 								</Box>
 							</Box>
