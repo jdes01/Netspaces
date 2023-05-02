@@ -1,8 +1,10 @@
-import { gql, useQuery } from '@apollo/client';
-import { Badge, Box, Heading, Image, SimpleGrid, Stack, TabPanels, Tabs } from '@chakra-ui/react';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { Badge, Box, Heading, IconButton, Image, SimpleGrid, Stack, TabPanels, Tabs } from '@chakra-ui/react';
 import { WorkspaceDTO } from '@netspaces/contracts';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { BsBuildingFillAdd } from 'react-icons/bs';
+import { v4 as uuidv4 } from 'uuid';
 
 const GET_WORKSPACES = gql`
 	query GetWorkspaces {
@@ -18,9 +20,31 @@ const GET_WORKSPACES = gql`
 	}
 `;
 
+function getCreateWorkspaceMutation(name: string) {
+	const uuid = uuidv4();
+
+	return gql`
+	mutation {
+		createWorkspace(
+			workspaceInput: {
+				_id: "${uuid}"
+				name: "${name}"
+				description: "las mejores de majalahonda"
+				street: "calle chota"
+				city: "majalahonda"
+				country: "Puerto Rico"
+				services: ["WIFI", "COFFEE", "PRINTER"]
+			}
+		)
+	}
+`;
+}
+
 export function Index() {
 	const router = useRouter();
 	const [tabIndex, setTabIndex] = useState(0);
+
+	const [createWorkspace] = useMutation(getCreateWorkspaceMutation('illo'));
 
 	const { data, loading } = useQuery(GET_WORKSPACES);
 
@@ -33,7 +57,16 @@ export function Index() {
 	const filteredService = uniqueServices[tabIndex];
 
 	return (
-		<Box p="5" bg={'#FAF9F6'} m={[0, null, 5]}>
+		<Box p="5" bg={'#FAF9F6'} m={[0, null, 5]} position="relative" h="100vh">
+			<IconButton
+				aria-label="toggle theme"
+				rounded="full"
+				size="md"
+				position="absolute"
+				left={15}
+				onClick={() => createWorkspace({ variables: { name: 'illo' } })}
+				icon={<BsBuildingFillAdd />}
+			/>
 			<Tabs onChange={(index) => setTabIndex(index)} mt={10}>
 				<TabPanels p="2rem">
 					<SimpleGrid columns={[1, null, 6]}>
