@@ -1,7 +1,6 @@
-// @ts-nocheck
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 
-import { Field, ObjectType } from '@nestjs/graphql';
-import { Space } from '../../../../space/infrastructure/graphql/schema/space.graphql-model'
+import { Space } from '../../../../space/infrastructure/graphql/schema/space.graphql-model';
 
 @ObjectType()
 export class Workspace {
@@ -28,4 +27,28 @@ export class Workspace {
 
 	@Field(() => [Space])
 	space: Space[];
+}
+
+@InputType()
+export class WorkspaceInput {
+	@Field()
+	_id: string;
+
+	@Field()
+	name: string;
+
+	@Field()
+	description: string;
+
+	@Field()
+	street: string;
+
+	@Field()
+	city: string;
+
+	@Field()
+	country: string;
+
+	@Field(() => [String])
+	services: [string];
 }
