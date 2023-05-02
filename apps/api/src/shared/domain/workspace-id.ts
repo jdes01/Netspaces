@@ -1,8 +1,8 @@
 import { ValueObject } from '@netspaces/domain';
 
-export class UserId extends ValueObject<{ value: string }> {
-	public static fromString(id: string): UserId {
-		return new UserId({ value: id });
+export class WorkspaceId extends ValueObject<{ value: string }> {
+	public static fromString(id: string): WorkspaceId {
+		return new WorkspaceId({ value: id });
 	}
 
 	get value() {
