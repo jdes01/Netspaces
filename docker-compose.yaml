@@ -22,9 +22,8 @@ services:
             target: netspaces-api
         environment:
             - PORT=3333
-            - REDIS_HOST="redis://cache:6379"
+            - REDIS_HOST="netspaces-cache"
             - REDIS_PORT=6379
-            - REDIS_PASSWORD="eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81"
         ports:
             - 3333:3333
         volumes:
@@ -92,6 +91,8 @@ services:
             - '6379:6379'
         volumes:
             - cache:/data
+        networks:
+            - netspaces-network
 
 volumes:
     eventstore-volume-data:
