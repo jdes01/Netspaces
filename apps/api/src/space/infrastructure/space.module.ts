@@ -30,7 +30,7 @@ import { SpaceProviders } from './space.providers';
 					event.payload.name,
 					event.payload.quantity,
 					event.payload.seats,
-					event.payload.amenities,
+					event.payload.amenities.map((amenity) => amenity.toString()),
 				),
 		}),
 		MongooseModule.forFeature([

@@ -83,12 +83,12 @@ export function Index() {
 		createWorkspace({
 			variables: {
 				_id: uuidv4(),
+				name: formName,
+				description: formDescription,
+				street: formStreet,
 				city: formCity,
 				country: formCountry,
-				description: formDescription,
-				name: formName,
 				services: ['WIFI'],
-				street: formStreet,
 			},
 		});
 	};
