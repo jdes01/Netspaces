@@ -8,9 +8,11 @@ import { GetWorkspacesQuery } from '../../application/query';
 import { GetWorkspaceByIdQuery } from '../../application/query/get-workspace-by-id.query';
 import { WorkspaceError } from '../../domain/exception';
 
+import { Redis } from 'ioredis'
+
 @Injectable()
 export class WorkspaceService {
-	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
+	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) { }
 
 	async createWorkspace(
 		id: string,
@@ -21,6 +23,17 @@ export class WorkspaceService {
 		country: string,
 		services: Array<string>,
 	): Promise<Result<null, WorkspaceError>> {
+
+		const redis = new Redis(
+			{
+				host: 'redis://netspaces-cache:6379',
+				port: 6379,
+				// password: 'eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81',
+			}
+		)
+
+		await redis.set(`workspace-${id}`, name)
+
 		return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(
 			new CreateWorkspaceCommand(id, name, description, street, city, country, services),
 		);

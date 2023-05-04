@@ -22,6 +22,9 @@ services:
             target: netspaces-api
         environment:
             - PORT=3333
+            - REDIS_HOST="redis://cache:6379"
+            - REDIS_PORT=6379
+            - REDIS_PASSWORD="eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81"
         ports:
             - 3333:3333
         volumes:
@@ -30,6 +33,7 @@ services:
             - netspaces-eventstore
             - netspaces-mongodb
             - mongo-express
+            - netspaces-cache
         networks:
             - netspaces-network
 
@@ -80,11 +84,22 @@ services:
         networks:
             - netspaces-network
 
+    netspaces-cache:
+        container_name: netspaces-cache
+        image: redis:6.2-alpine
+        restart: always
+        ports:
+            - '6379:6379'
+        volumes:
+            - cache:/data
+
 volumes:
     eventstore-volume-data:
     eventstore-volume-logs:
     mongo-volume-data:
     mongoclient-volume-data:
+    cache:
+        driver: local
 
 networks:
     netspaces-network:
