@@ -71,7 +71,7 @@ services:
             - netspaces-network
 
     mongo-express:
-        container_name: netspaces-mongoexpress
+        container_name: mongo-express
         depends_on:
             - netspaces-mongodb
         image: mongo-express:latest
