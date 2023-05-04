@@ -7,18 +7,18 @@ export class Space {
 	@Field()
 	_id: string;
 
-	@Field({ nullable: true })
+	@Field()
 	workspaceId: string;
 
-	@Field({ nullable: true })
+	@Field()
 	name: string;
 
-	@Field({ nullable: true })
+	@Field()
 	quantity: number;
 
-	@Field({ nullable: true })
+	@Field()
 	seats: number;
 
-	@Field((_type) => [String], { nullable: true })
+	@Field((_type) => [String])
 	amenities: [string];
 }

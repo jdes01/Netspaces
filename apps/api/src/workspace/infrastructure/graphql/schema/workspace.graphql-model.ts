@@ -7,22 +7,22 @@ export class Workspace {
 	@Field()
 	_id: string;
 
-	@Field({ nullable: true })
+	@Field()
 	name: string;
 
-	@Field({ nullable: true })
+	@Field()
 	description: string;
 
-	@Field({ nullable: true })
+	@Field()
 	street: string;
 
-	@Field({ nullable: true })
+	@Field()
 	city: string;
 
-	@Field({ nullable: true })
+	@Field()
 	country: string;
 
-	@Field((_type) => [String], { nullable: true })
+	@Field((_type) => [String])
 	services: [string];
 
 	@Field(() => [Space])
