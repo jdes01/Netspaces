@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { SpaceAmenitiesTypes, ValueObject } from '@netspaces/domain';
 
 import { SpaceAmenityNotValidError } from '../../exception';
@@ -25,6 +23,10 @@ export class SpaceAmenity extends ValueObject<{ value: SpaceAmenitiesTypes }> {
 			return Err(new SpaceAmenityNotValidError(e.message));
 		}
 
+	}
+
+	public static toStringList(amenities: Array<SpaceAmenity | SpaceAmenitiesTypes>): Array<string> {
+		return amenities.map((amenity) => amenity.toString())
 	}
 
 	get value(): SpaceAmenitiesTypes {

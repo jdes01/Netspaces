@@ -17,6 +17,7 @@ import { ProjectionHandlers } from './projection';
 import { SPACE_PROJECTION, SpaceSchema } from './projection/space.schema';
 import { SpaceService } from './service/space.service';
 import { SpaceProviders } from './space.providers';
+import { SpaceAmenity } from '../domain/model/value-objects';
 
 @Module({
 	controllers: [SpaceController],
@@ -30,7 +31,7 @@ import { SpaceProviders } from './space.providers';
 					event.payload.name,
 					event.payload.quantity,
 					event.payload.seats,
-					event.payload.amenities.map((amenity) => amenity.toString()),
+					SpaceAmenity.toStringList(event.payload.amenities),
 				),
 		}),
 		MongooseModule.forFeature([
@@ -57,4 +58,4 @@ import { SpaceProviders } from './space.providers';
 		SpaceService,
 	],
 })
-export class SpaceModule {}
+export class SpaceModule { }
