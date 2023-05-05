@@ -20,6 +20,8 @@ import { WorkspaceService } from './service/workspace.service';
 import { WorkspaceProviders } from './workspace.providers';
 import { SpaceService } from '../../space/infrastructure/service/space.service';
 
+import { RedisModule } from '../../redis.module'
+
 @Module({
 	controllers: [WorkspaceController],
 	imports: [
@@ -46,6 +48,7 @@ import { SpaceService } from '../../space/infrastructure/service/space.service';
 			autoSchemaFile: true,
 			driver: ApolloDriver,
 		}),
+		RedisModule
 	],
 	providers: [
 		...CommandHandlers,
@@ -55,6 +58,7 @@ import { SpaceService } from '../../space/infrastructure/service/space.service';
 		WorkspaceResolver,
 		SpaceService,
 		WorkspaceService,
+		RedisModule
 	],
 })
 export class WorkspaceModule { }

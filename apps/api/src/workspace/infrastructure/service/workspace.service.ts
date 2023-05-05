@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CommandBus, ICommand, IQuery, QueryBus } from '@nestjs/cqrs';
 import { WorkspaceDTO } from '@netspaces/contracts';
 import { Result } from 'ts-results';
@@ -7,8 +7,6 @@ import { CreateWorkspaceCommand } from '../../application/command/create-workspa
 import { GetWorkspacesQuery } from '../../application/query';
 import { GetWorkspaceByIdQuery } from '../../application/query/get-workspace-by-id.query';
 import { WorkspaceError } from '../../domain/exception';
-
-import { Redis } from 'ioredis'
 
 @Injectable()
 export class WorkspaceService {
@@ -23,16 +21,6 @@ export class WorkspaceService {
 		country: string,
 		services: Array<string>,
 	): Promise<Result<null, WorkspaceError>> {
-
-		const redis = new Redis(
-			{
-				host: 'redis://netspaces-cache:6379',
-				port: 6379,
-				// password: 'eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81',
-			}
-		)
-
-		await redis.set(`workspace-${id}`, name)
 
 		return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(
 			new CreateWorkspaceCommand(id, name, description, street, city, country, services),

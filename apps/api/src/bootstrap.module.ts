@@ -8,6 +8,7 @@ import { ConsoleModule } from 'nestjs-console';
 import configuration from './config/configuration';
 import { SpaceModule } from './space';
 import { WorkspaceModule } from './workspace';
+import { RedisModule } from './redis.module';
 
 @Module({
 	imports: [
@@ -27,6 +28,7 @@ import { WorkspaceModule } from './workspace';
 		}),
 		WorkspaceModule,
 		SpaceModule,
+		RedisModule
 	],
 })
 export class BootstrapModule { }

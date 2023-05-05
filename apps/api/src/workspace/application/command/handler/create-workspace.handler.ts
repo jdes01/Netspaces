@@ -15,6 +15,7 @@ import {
 } from '../../../domain/model/value-objects';
 import { CreateWorkspaceCommand } from '../../command/create-workspace.command';
 import { WORKSPACE_FINDER, WorkspaceFinder } from '../../service/workspace-finder.service';
+import { REDIS_SERVICE, RedisService } from 'apps/api/src/redis.module';
 
 @CommandHandler(CreateWorkspaceCommand)
 export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCommand> {
@@ -23,6 +24,8 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
 		private readonly workspaceRepository: AggregateRepository<Workspace, WorkspaceId>,
 		@Inject(WORKSPACE_FINDER)
 		private readonly workspaceFinder: WorkspaceFinder,
+		@Inject(REDIS_SERVICE)
+		private readonly redisService: RedisService
 	) { }
 
 	async execute(command: CreateWorkspaceCommand): Promise<Result<null, WorkspaceError>> {
