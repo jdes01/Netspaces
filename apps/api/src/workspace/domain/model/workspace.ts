@@ -1,12 +1,12 @@
 import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
-import { Space } from 'apps/api/src/space/domain/model';
+import { Space } from '../../../space/domain/model';
 import {
 	SpaceAmenity,
 	SpaceId,
 	SpaceName,
 	SpaceQuantity,
 	SpaceSeats,
-} from 'apps/api/src/space/domain/model/value-objects';
+} from '../../../space/domain/model/value-objects';
 
 import { WorkspaceWasCreatedEvent, WorkspaceWasDeleted } from '../event';
 import {
@@ -17,9 +17,11 @@ import {
 	WorkspaceService,
 } from './value-objects/';
 import { WorkspaceServiceNotValidError } from '../exception/workspace-service-not-valid-error';
+import { WorkspaceOwner } from './value-objects/workspace-owner';
 
 export class Workspace extends AggregateRoot {
 	private _id!: WorkspaceId;
+	private _owner!: WorkspaceOwner;
 	private _name!: WorkspaceName;
 	private _description!: WorkspaceDescription;
 	private _location!: WorkspaceLocation;
@@ -28,15 +30,18 @@ export class Workspace extends AggregateRoot {
 
 	public static add(
 		id: WorkspaceId,
+		owner: WorkspaceOwner,
 		name: WorkspaceName,
 		description: WorkspaceDescription,
 		location: WorkspaceLocation,
 		services: Array<WorkspaceService>,
 	): Workspace {
+
 		const workspace = new Workspace();
 
 		const event = new WorkspaceWasCreatedEvent(
 			id.value,
+			owner.value,
 			name.value,
 			description.value,
 			location.street,
@@ -62,13 +67,21 @@ export class Workspace extends AggregateRoot {
 
 	private onWorkspaceWasCreatedEvent(event: WorkspaceWasCreatedEvent): void {
 		this._id = WorkspaceId.fromString(event.id);
+		this._owner = WorkspaceOwner.fromString(event.owner)
 		this._name = WorkspaceName.fromString(event.name);
 		this._description = WorkspaceDescription.fromString(event.description);
 		this._location = new WorkspaceLocation(event.street, event.city, event.country);
 
-		const servicesResult = WorkspaceService.fromStringList(event.services).val
-		if (servicesResult instanceof WorkspaceServiceNotValidError) { throw new WorkspaceServiceNotValidError() }
-		this._services = servicesResult
+		const servicesResult = WorkspaceService.fromStringList(event.services)
+
+		servicesResult.match(
+			(services) => {
+				this._services = services
+			},
+			(_) => {
+				throw new WorkspaceServiceNotValidError()
+			}
+		)
 
 		this._deleted = false;
 	}
@@ -83,6 +96,10 @@ export class Workspace extends AggregateRoot {
 
 	public get id(): WorkspaceId {
 		return this._id;
+	}
+
+	public get owner(): WorkspaceOwner {
+		return this._owner;
 	}
 
 	public get deleted(): boolean {

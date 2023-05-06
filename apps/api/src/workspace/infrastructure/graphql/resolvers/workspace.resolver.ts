@@ -30,6 +30,7 @@ export class WorkspaceResolver {
 	async createWorkspace(@Args('workspaceInput') workspaceInput: WorkspaceInput): Promise<string> {
 		const createdWorkspaceResult = await this.workspaceService.createWorkspace(
 			workspaceInput._id,
+			workspaceInput.owner,
 			workspaceInput.name,
 			workspaceInput.description,
 			workspaceInput.street,

@@ -14,6 +14,7 @@ export class WorkspaceService {
 
 	async createWorkspace(
 		id: string,
+		owner: string,
 		name: string,
 		description: string,
 		street: string,
@@ -23,7 +24,7 @@ export class WorkspaceService {
 	): Promise<Result<null, WorkspaceError>> {
 
 		return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(
-			new CreateWorkspaceCommand(id, name, description, street, city, country, services),
+			new CreateWorkspaceCommand(id, owner, name, description, street, city, country, services),
 		);
 	}
 

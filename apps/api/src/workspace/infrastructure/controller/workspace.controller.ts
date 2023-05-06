@@ -26,6 +26,7 @@ export class WorkspaceController {
 	) {
 		const createdWorkspaceResult = await this.workspaceService.createWorkspace(
 			createWorkspaceDTO._id,
+			createWorkspaceDTO.owner,
 			createWorkspaceDTO.name,
 			createWorkspaceDTO.description,
 			createWorkspaceDTO.street,

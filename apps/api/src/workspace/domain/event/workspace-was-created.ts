@@ -3,6 +3,7 @@ import { Event } from '@aulasoftwarelibre/nestjs-eventstore';
 export class WorkspaceWasCreatedEvent extends Event {
 	constructor(
 		public readonly id: string,
+		public readonly owner: string,
 		public readonly name: string,
 		public readonly description: string,
 		public readonly street: string,
@@ -12,12 +13,13 @@ export class WorkspaceWasCreatedEvent extends Event {
 	) {
 		super(id, {
 			_id: id,
+			owner,
+			name,
+			description,
+			street,
 			city,
 			country,
-			description,
-			name,
 			services,
-			street,
 		});
 	}
 }

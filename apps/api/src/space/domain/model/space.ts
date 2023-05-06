@@ -1,5 +1,5 @@
 import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
-import { WorkspaceId } from 'apps/api/src/workspace/domain/model/value-objects';
+import { WorkspaceId } from '../../../workspace/domain/model/value-objects';
 
 import { SpaceWasCreatedEvent } from '../event';
 import { SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from './value-objects';
@@ -46,9 +46,14 @@ export class Space extends AggregateRoot {
 		this._quantity = SpaceQuantity.fromNumber(event.quantity);
 		this._seats = SpaceSeats.fromNumber(event.seats);
 
-		const amenitiesResult = SpaceAmenity.fromStringList(event.amenities).val
-		if (amenitiesResult instanceof SpaceAmenityNotValidError) { throw new SpaceAmenityNotValidError() }
-		this._amenities = amenitiesResult
+		SpaceAmenity.fromStringList(event.amenities).match(
+			(amenities) => {
+				this._amenities = amenities
+			},
+			(_) => {
+				throw new SpaceAmenityNotValidError()
+			}
+		)
 
 		this._deleted = null;
 	}

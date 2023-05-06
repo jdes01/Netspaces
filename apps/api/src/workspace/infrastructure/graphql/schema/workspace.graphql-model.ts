@@ -8,6 +8,9 @@ export class Workspace {
 	_id!: string;
 
 	@Field()
+	owner?: string;
+
+	@Field()
 	name?: string;
 
 	@Field()
@@ -33,6 +36,9 @@ export class Workspace {
 export class WorkspaceInput {
 	@Field()
 	_id!: string;
+
+	@Field()
+	owner!: string;
 
 	@Field()
 	name!: string;

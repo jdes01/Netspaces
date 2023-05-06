@@ -21,6 +21,7 @@ import { WorkspaceProviders } from './workspace.providers';
 import { SpaceService } from '../../space/infrastructure/service/space.service';
 
 import { RedisModule } from '../../redis.module'
+import { USER_PROJECTION, UserSchema } from '../../user/infrastructure/projection';
 
 @Module({
 	controllers: [WorkspaceController],
@@ -30,6 +31,7 @@ import { RedisModule } from '../../redis.module'
 			WorkspaceWasCreatedEvent: (event: Event<CreateWorkspaceDTO>) =>
 				new WorkspaceWasCreatedEvent(
 					event.payload._id,
+					event.payload.owner,
 					event.payload.name,
 					event.payload.description,
 					event.payload.street,
@@ -42,6 +44,10 @@ import { RedisModule } from '../../redis.module'
 			{
 				name: WORKSPACE_PROJECTION,
 				schema: WorkspaceSchema,
+			},
+			{
+				name: USER_PROJECTION,
+				schema: UserSchema,
 			},
 		]),
 		GraphQLModule.forRoot<ApolloDriverConfig>({

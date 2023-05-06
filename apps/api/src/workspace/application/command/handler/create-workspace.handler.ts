@@ -3,7 +3,7 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'neverthrow';
 
-import { WorkspaceAlreadyExistsError } from '../../../domain/exception';
+import { WorkspaceAlreadyExistsError, WorkspaceOwnerNotFoundError } from '../../../domain/exception';
 import { WorkspaceError } from '../../../domain/exception/workspace-error';
 import { Workspace } from '../../../domain/model';
 import {
@@ -16,6 +16,8 @@ import {
 import { CreateWorkspaceCommand } from '../../../application/command/create-workspace.command';
 import { WORKSPACE_FINDER, WorkspaceFinder } from '../../../application/service/workspace-finder.service';
 import { REDIS_SERVICE, RedisService } from '../../../../redis.module';
+import { WorkspaceOwner } from '../../../domain/model/value-objects/workspace-owner';
+import { USER_FINDER, UserFinder } from '../../../../user/application/service/user-finder.service';
 
 @CommandHandler(CreateWorkspaceCommand)
 export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCommand> {
@@ -24,6 +26,8 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
 		private readonly workspaceRepository: AggregateRepository<Workspace, WorkspaceId>,
 		@Inject(WORKSPACE_FINDER)
 		private readonly workspaceFinder: WorkspaceFinder,
+		@Inject(USER_FINDER)
+		private readonly userFinder: UserFinder,
 		@Inject(REDIS_SERVICE)
 		private readonly redisService: RedisService
 	) { }
@@ -32,6 +36,9 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
 		const id = WorkspaceId.fromString(command.id);
 		if (await this.workspaceFinder.find(id)) return new Err(WorkspaceAlreadyExistsError.withId(id));
 
+		const owner = WorkspaceOwner.fromString(command.owner)
+
+		if (await this.userFinder.find(owner) === null) return new Err(WorkspaceOwnerNotFoundError.withOwner(owner))
 
 		const name = WorkspaceName.fromString(command.name);
 		const description = WorkspaceDescription.fromString(command.description);
@@ -42,7 +49,7 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
 		return workspaceServicesresult.match<Result<null, WorkspaceError>>(
 			(workspaceServices) => {
 
-				const workspace = Workspace.add(id, name, description, location, workspaceServices);
+				const workspace = Workspace.add(id, owner, name, description, location, workspaceServices);
 				this.workspaceRepository.save(workspace);
 
 				return new Ok(null)
