@@ -1,7 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CommandBus, ICommand, IQuery, QueryBus } from '@nestjs/cqrs';
 import { WorkspaceDTO } from '@netspaces/contracts';
-import { Result } from 'ts-results';
+import { Result } from 'neverthrow';
 
 import { CreateWorkspaceCommand } from '../../application/command/create-workspace.command';
 import { GetWorkspacesQuery } from '../../application/query';

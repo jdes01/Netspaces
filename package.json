@@ -81,10 +81,12 @@
 		"axios": "^1.0.0",
 		"class-transformer": "^0.5.1",
 		"class-validator": "^0.14.0",
+		"eslint-plugin-neverthrow": "^1.1.4",
 		"framer-motion": "^10.12.2",
 		"graphql": "^16.6.0",
 		"ioredis": "^5.3.2",
 		"mongoose": "^6.0.2",
+		"neverthrow": "^6.0.0",
 		"next": "13.1.1",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
@@ -95,5 +97,9 @@
 		"ts-results": "^3.3.0",
 		"tslib": "^2.3.0"
 	},
-	"proxy": "http://netspaces_netspaces-api_1:3333/"
+	"proxy": "http://netspaces_netspaces-api_1:3333/",
+	"_moduleAliases": {
+		"@modules": "build/modules",
+		"@core": "build/core"
+	}
 }

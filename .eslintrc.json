@@ -35,7 +35,8 @@
 		"prettier",
 		"react",
 		"simple-import-sort",
-		"sort"
+		"sort",
+		"eslint-plugin-neverthrow"
 	],
 	"rules": {
 		"@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],

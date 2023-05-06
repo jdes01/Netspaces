@@ -1,7 +1,7 @@
 import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Err, Ok, Result } from 'ts-results';
+import { Err, Ok, Result } from 'neverthrow';
 
 import { WorkspaceAlreadyExistsError } from '../../../domain/exception';
 import { WorkspaceError } from '../../../domain/exception/workspace-error';
@@ -13,9 +13,9 @@ import {
 	WorkspaceName,
 	WorkspaceService,
 } from '../../../domain/model/value-objects';
-import { CreateWorkspaceCommand } from '../../command/create-workspace.command';
-import { WORKSPACE_FINDER, WorkspaceFinder } from '../../service/workspace-finder.service';
-import { REDIS_SERVICE, RedisService } from 'apps/api/src/redis.module';
+import { CreateWorkspaceCommand } from '../../../application/command/create-workspace.command';
+import { WORKSPACE_FINDER, WorkspaceFinder } from '../../../application/service/workspace-finder.service';
+import { REDIS_SERVICE, RedisService } from '../../../../redis.module';
 
 @CommandHandler(CreateWorkspaceCommand)
 export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCommand> {
@@ -30,25 +30,27 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
 
 	async execute(command: CreateWorkspaceCommand): Promise<Result<null, WorkspaceError>> {
 		const id = WorkspaceId.fromString(command.id);
+		if (await this.workspaceFinder.find(id)) return new Err(WorkspaceAlreadyExistsError.withId(id));
 
-		if (await this.workspaceFinder.find(id)) {
-			return Err(WorkspaceAlreadyExistsError.withId(id));
-		}
 
 		const name = WorkspaceName.fromString(command.name);
 		const description = WorkspaceDescription.fromString(command.description);
 		const location = new WorkspaceLocation(command.street, command.city, command.country);
 
-		const result = WorkspaceService.fromStringList(command.services)
+		const workspaceServicesresult = WorkspaceService.fromStringList(command.services)
 
-		if (result instanceof Err) {
-			return result
-		}
+		return workspaceServicesresult.match<Result<null, WorkspaceError>>(
+			(workspaceServices) => {
 
-		const workspace = Workspace.add(id, name, description, location, result.val);
+				const workspace = Workspace.add(id, name, description, location, workspaceServices);
+				this.workspaceRepository.save(workspace);
 
-		this.workspaceRepository.save(workspace);
+				return new Ok(null)
+			},
+			(err) => {
 
-		return Ok(null);
+				return new Err(err)
+			}
+		)
 	}
 }

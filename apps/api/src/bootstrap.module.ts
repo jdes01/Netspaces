@@ -9,6 +9,7 @@ import configuration from './config/configuration';
 import { SpaceModule } from './space';
 import { WorkspaceModule } from './workspace';
 import { RedisModule } from './redis.module';
+import { UserModule } from './user/infrastructure/user.module';
 
 @Module({
 	imports: [
@@ -28,6 +29,7 @@ import { RedisModule } from './redis.module';
 		}),
 		WorkspaceModule,
 		SpaceModule,
+		UserModule,
 		RedisModule
 	],
 })

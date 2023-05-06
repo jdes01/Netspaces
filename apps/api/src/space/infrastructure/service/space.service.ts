@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus, ICommand, IQuery, QueryBus } from '@nestjs/cqrs';
 import { SpaceDTO } from '@netspaces/contracts';
-import { Result } from 'ts-results';
+import { Result } from 'neverthrow';
 
 import { CreateSpaceCommand } from '../../application/command/create-space.command';
 import { GetSpacesQuery } from '../../application/query';

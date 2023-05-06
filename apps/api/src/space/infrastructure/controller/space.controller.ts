@@ -10,9 +10,9 @@ import {
 	ValidationPipe,
 } from '@nestjs/common';
 import { CreateSpaceDTO, SpaceDTO } from '@netspaces/contracts';
-import { Err } from 'ts-results';
 
 import { SpaceService } from '../service/space.service';
+import { SpaceError } from '../../domain/exception';
 
 @Controller('spaces')
 export class SpaceController {
@@ -21,7 +21,7 @@ export class SpaceController {
 	@Post()
 	@HttpCode(200)
 	async create(@Body(new ValidationPipe()) createSpaceDTO: CreateSpaceDTO) {
-		const result = await this.spaceService.createSpace(
+		const createdSpaceResult = await this.spaceService.createSpace(
 			createSpaceDTO._id,
 			createSpaceDTO.workspaceId,
 			createSpaceDTO.name,
@@ -30,11 +30,12 @@ export class SpaceController {
 			createSpaceDTO.amenities.map((amenity) => amenity.toString()),
 		);
 
-		if (result instanceof Err) {
-			throw new HttpException(result.val.message, HttpStatus.CONFLICT);
-		}
+		createdSpaceResult.mapErr<SpaceError>(
+			(err) => {
+				throw new HttpException(err.message, HttpStatus.CONFLICT);
+			}
+		)
 
-		return result.val;
 	}
 
 	@Get()

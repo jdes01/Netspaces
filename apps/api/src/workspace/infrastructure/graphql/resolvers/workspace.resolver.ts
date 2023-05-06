@@ -5,10 +5,11 @@ import { SpaceService } from '../../../../space/infrastructure//service/space.se
 import { Space } from '../../../../space/infrastructure/graphql/schema/space.graphql-model';
 import { WorkspaceService } from '../../service/workspace.service';
 import { Workspace, WorkspaceInput } from '../schema/workspace.graphql-model';
+import { GraphQLError } from 'graphql';
 
 @Resolver((_of: any) => Workspace)
 export class WorkspaceResolver {
-	constructor(private readonly workspaceService: WorkspaceService, private readonly spaceService: SpaceService) {}
+	constructor(private readonly workspaceService: WorkspaceService, private readonly spaceService: SpaceService) { }
 
 	@Query((_returns) => [Workspace])
 	async workspaces(): Promise<WorkspaceDTO[]> {
@@ -27,7 +28,7 @@ export class WorkspaceResolver {
 
 	@Mutation((_returns) => String)
 	async createWorkspace(@Args('workspaceInput') workspaceInput: WorkspaceInput): Promise<string> {
-		const result = await this.workspaceService.createWorkspace(
+		const createdWorkspaceResult = await this.workspaceService.createWorkspace(
 			workspaceInput._id,
 			workspaceInput.name,
 			workspaceInput.description,
@@ -37,6 +38,13 @@ export class WorkspaceResolver {
 			workspaceInput.services,
 		);
 
-		return result.ok ? 'Workspace created successfully' : result.val.message;
+		return createdWorkspaceResult.match<string>(
+			(_) => {
+				return 'Workspace created successfully'
+			},
+			(err) => {
+				throw new GraphQLError(err.message);
+			}
+		)
 	}
 }

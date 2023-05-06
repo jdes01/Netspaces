@@ -5,50 +5,50 @@ import { Space } from '../../../../space/infrastructure/graphql/schema/space.gra
 @ObjectType()
 export class Workspace {
 	@Field()
-	_id: string;
+	_id!: string;
 
 	@Field()
-	name: string;
+	name?: string;
 
 	@Field()
-	description: string;
+	description?: string;
 
 	@Field()
-	street: string;
+	street?: string;
 
 	@Field()
-	city: string;
+	city?: string;
 
 	@Field()
-	country: string;
+	country?: string;
 
 	@Field((_type) => [String])
-	services: [string];
+	services?: [string];
 
 	@Field(() => [Space])
-	space: Space[];
+	space?: Space[];
 }
 
 @InputType()
 export class WorkspaceInput {
 	@Field()
-	_id: string;
+	_id!: string;
 
 	@Field()
-	name: string;
+	name!: string;
 
 	@Field()
-	description: string;
+	description!: string;
 
 	@Field()
-	street: string;
+	street!: string;
 
 	@Field()
-	city: string;
+	city!: string;
 
 	@Field()
-	country: string;
+	country!: string;
 
 	@Field(() => [String])
-	services: [string];
+	services?: [string];
 }

@@ -1,11 +1,11 @@
 import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { WORKSPACE_FINDER, WorkspaceFinder } from 'apps/api/src/workspace/application/service/workspace-finder.service';
-import { WorkspaceError } from 'apps/api/src/workspace/domain/exception';
-import { WorkspaceNotFoundError } from 'apps/api/src/workspace/domain/exception/workspace-not-found-error';
-import { WorkspaceId } from 'apps/api/src/workspace/domain/model/value-objects';
-import { Err, Ok, Result } from 'ts-results';
+import { WORKSPACE_FINDER, WorkspaceFinder } from '../../../../workspace/application/service/workspace-finder.service';
+import { WorkspaceError } from '../../../../workspace/domain/exception';
+import { WorkspaceNotFoundError } from '../../../../workspace/domain/exception/workspace-not-found-error';
+import { WorkspaceId } from '../../../../workspace/domain/model/value-objects';
+import { Err, Ok, Result } from 'neverthrow';
 
 import { SpaceAlreadyExistsError } from '../../../domain/exception';
 import { SpaceError } from '../../../domain/exception/space-error';
@@ -28,28 +28,32 @@ export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
 	async execute(command: CreateSpaceCommand): Promise<Result<null, SpaceError | WorkspaceError>> {
 		const id = SpaceId.fromString(command.id);
 		if (await this.spaceFinder.find(id)) {
-			return Err(SpaceAlreadyExistsError.withId(id));
+			return new Err(SpaceAlreadyExistsError.withId(id));
 		}
 
 		const workspaceId = WorkspaceId.fromString(command.workspaceId);
 		if (!(await this.workspaceFinder.find(workspaceId))) {
-			return Err(WorkspaceNotFoundError.withId(workspaceId));
+			return new Err(WorkspaceNotFoundError.withId(workspaceId));
 		}
 
 		const name = SpaceName.fromString(command.name);
 		const quantity = SpaceQuantity.fromNumber(command.quantity);
 		const seats = SpaceSeats.fromNumber(command.seats);
 
-		const result = SpaceAmenity.fromStringList(command.amenities)
+		const spaceAmenitiesResult = SpaceAmenity.fromStringList(command.amenities)
 
-		if (result instanceof Err) {
-			return result
-		}
+		return spaceAmenitiesResult.match<Result<null, SpaceError>>(
+			(spaceAmenities) => {
 
-		const space = Space.add(id, workspaceId, name, quantity, seats, result.val);
+				const space = Space.add(id, workspaceId, name, quantity, seats, spaceAmenities);
+				this.spaceRepository.save(space);
 
-		this.spaceRepository.save(space);
+				return new Ok(null)
+			},
+			(err) => {
 
-		return Ok(null);
+				return new Err(err)
+			}
+		)
 	}
 }

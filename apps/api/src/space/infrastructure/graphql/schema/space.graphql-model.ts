@@ -1,24 +1,43 @@
-// @ts-nocheck
-
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class Space {
 	@Field()
-	_id: string;
+	_id!: string;
 
 	@Field()
-	workspaceId: string;
+	workspaceId?: string;
 
 	@Field()
-	name: string;
+	name?: string;
 
 	@Field()
-	quantity: number;
+	quantity?: number;
 
 	@Field()
-	seats: number;
+	seats?: number;
 
 	@Field((_type) => [String])
-	amenities: [string];
+	amenities?: [string];
+}
+
+@InputType()
+export class SpaceInput {
+	@Field()
+	_id!: string;
+
+	@Field()
+	workspaceId!: string;
+
+	@Field()
+	name!: string;
+
+	@Field()
+	quantity!: number;
+
+	@Field()
+	seats!: number;
+
+	@Field((_type) => [String])
+	amenities?: [string];
 }

@@ -10,9 +10,9 @@ import {
 	ValidationPipe,
 } from '@nestjs/common';
 import { CreateWorkspaceDTO, WorkspaceDTO } from '@netspaces/contracts';
-import { Err } from 'ts-results';
 
 import { WorkspaceService } from '../service/workspace.service';
+import { WorkspaceError } from '../../domain/exception';
 
 @Controller('workspaces')
 export class WorkspaceController {
@@ -24,7 +24,7 @@ export class WorkspaceController {
 		@Body(new ValidationPipe())
 		createWorkspaceDTO: CreateWorkspaceDTO,
 	) {
-		const result = await this.workspaceService.createWorkspace(
+		const createdWorkspaceResult = await this.workspaceService.createWorkspace(
 			createWorkspaceDTO._id,
 			createWorkspaceDTO.name,
 			createWorkspaceDTO.description,
@@ -34,11 +34,11 @@ export class WorkspaceController {
 			createWorkspaceDTO.services.map((service) => service.toString()),
 		);
 
-		if (result instanceof Err) {
-			throw new HttpException(result.val.message, HttpStatus.CONFLICT);
-		}
-
-		return result.val;
+		createdWorkspaceResult.mapErr<WorkspaceError>(
+			(err) => {
+				throw new HttpException(err.message, HttpStatus.CONFLICT);
+			}
+		)
 	}
 
 	@Get()
