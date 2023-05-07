@@ -14,7 +14,7 @@ export class SpaceResolver {
 		return await this.spaceService.getSpaces();
 	}
 
-	@Query((_returns) => Space)
+	@Query((_returns) => Space, { nullable: true })
 	async space(@Args('id', { type: () => String }) id: string): Promise<SpaceDTO> {
 		return await this.spaceService.getSpaceById(id);
 	}

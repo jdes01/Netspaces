@@ -16,9 +16,14 @@ export class WorkspaceResolver {
 		return await this.workspaceService.getWorkspaces();
 	}
 
-	@Query((_returns) => Workspace)
+	@Query((_returns) => Workspace, { nullable: true })
 	async workspace(@Args('id', { type: () => String }) id: string): Promise<WorkspaceDTO> {
 		return await this.workspaceService.getWorkspaceById(id);
+	}
+
+	@Query((_returns) => [Workspace], { nullable: true })
+	async workspacesByOwnerId(@Args('id', { type: () => String }) id: string): Promise<WorkspaceDTO[]> {
+		return await this.workspaceService.getWorkspacesByOwnerId(id);
 	}
 
 	@ResolveField(() => [Space])

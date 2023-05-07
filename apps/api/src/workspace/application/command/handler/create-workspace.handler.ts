@@ -16,7 +16,7 @@ import {
 import { CreateWorkspaceCommand } from '../../../application/command/create-workspace.command';
 import { WORKSPACE_FINDER, WorkspaceFinder } from '../../../application/service/workspace-finder.service';
 import { REDIS_SERVICE, RedisService } from '../../../../redis.module';
-import { WorkspaceOwner } from '../../../domain/model/value-objects/workspace-owner';
+import { WorkspaceOwnerId } from '../../../domain/model/value-objects/workspace-owner-id';
 import { USER_FINDER, UserFinder } from '../../../../user/application/service/user-finder.service';
 
 @CommandHandler(CreateWorkspaceCommand)
@@ -36,7 +36,7 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
 		const id = WorkspaceId.fromString(command.id);
 		if (await this.workspaceFinder.find(id)) return new Err(WorkspaceAlreadyExistsError.withId(id));
 
-		const owner = WorkspaceOwner.fromString(command.owner)
+		const owner = WorkspaceOwnerId.fromString(command.owner)
 
 		if (await this.userFinder.find(owner) === null) return new Err(WorkspaceOwnerNotFoundError.withOwner(owner))
 

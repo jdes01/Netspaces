@@ -7,6 +7,7 @@ import { CreateWorkspaceCommand } from '../../application/command/create-workspa
 import { GetWorkspacesQuery } from '../../application/query';
 import { GetWorkspaceByIdQuery } from '../../application/query/get-workspace-by-id.query';
 import { WorkspaceError } from '../../domain/exception';
+import { GetWorkspacesByOwnerIdQuery } from '../../application/query/get-workspaces-by-owner-id.query';
 
 @Injectable()
 export class WorkspaceService {
@@ -30,6 +31,10 @@ export class WorkspaceService {
 
 	async getWorkspaces() {
 		return this.queryBus.execute<IQuery, Array<WorkspaceDTO>>(new GetWorkspacesQuery());
+	}
+
+	async getWorkspacesByOwnerId(id: string) {
+		return this.queryBus.execute<IQuery, Array<WorkspaceDTO>>(new GetWorkspacesByOwnerIdQuery(id));
 	}
 
 	async getWorkspaceById(id: string) {

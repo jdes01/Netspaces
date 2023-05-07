@@ -17,11 +17,11 @@ import {
 	WorkspaceService,
 } from './value-objects/';
 import { WorkspaceServiceNotValidError } from '../exception/workspace-service-not-valid-error';
-import { WorkspaceOwner } from './value-objects/workspace-owner';
+import { WorkspaceOwnerId } from './value-objects/workspace-owner-id';
 
 export class Workspace extends AggregateRoot {
 	private _id!: WorkspaceId;
-	private _owner!: WorkspaceOwner;
+	private _owner!: WorkspaceOwnerId;
 	private _name!: WorkspaceName;
 	private _description!: WorkspaceDescription;
 	private _location!: WorkspaceLocation;
@@ -30,7 +30,7 @@ export class Workspace extends AggregateRoot {
 
 	public static add(
 		id: WorkspaceId,
-		owner: WorkspaceOwner,
+		owner: WorkspaceOwnerId,
 		name: WorkspaceName,
 		description: WorkspaceDescription,
 		location: WorkspaceLocation,
@@ -67,7 +67,7 @@ export class Workspace extends AggregateRoot {
 
 	private onWorkspaceWasCreatedEvent(event: WorkspaceWasCreatedEvent): void {
 		this._id = WorkspaceId.fromString(event.id);
-		this._owner = WorkspaceOwner.fromString(event.owner)
+		this._owner = WorkspaceOwnerId.fromString(event.owner)
 		this._name = WorkspaceName.fromString(event.name);
 		this._description = WorkspaceDescription.fromString(event.description);
 		this._location = new WorkspaceLocation(event.street, event.city, event.country);
@@ -98,7 +98,7 @@ export class Workspace extends AggregateRoot {
 		return this._id;
 	}
 
-	public get owner(): WorkspaceOwner {
+	public get owner(): WorkspaceOwnerId {
 		return this._owner;
 	}
 

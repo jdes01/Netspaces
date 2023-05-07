@@ -27,9 +27,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { WorkspaceGrid } from '../../../components/workspacesPage/workspacesGrid';
 import { useRouter } from 'next/router';
 
-const GET_WORKSPACES = gql`
-	query GetWorkspaces {
-		workspaces {
+const GET_WORKSPACES_BY_OWNER_ID = gql`
+	query GetWorkspacesByOwnerId($id: String!) {
+		workspacesByOwnerId(id: $id) {
 			_id
 			name
 			description
@@ -190,14 +190,16 @@ export function Index() {
 
 function getPageData(userId: string) {
 	const { userName } = getUserName(userId);
-	const { workspaces, loading } = getWorkspaces();
+	const { workspaces, loading } = getWorkspaces(userId);
 
 	return { workspaces, userName, loading };
 }
 
-function getWorkspaces() {
-	const { data, loading } = useQuery(GET_WORKSPACES);
-	const workspaces: Array<WorkspaceDTO> = data?.workspaces;
+function getWorkspaces(id: string) {
+	const { data, loading } = useQuery(GET_WORKSPACES_BY_OWNER_ID, {
+		variables: { id },
+	});
+	const workspaces: Array<WorkspaceDTO> = data?.workspacesByOwnerId;
 	return { workspaces, loading };
 }
 
