@@ -5,10 +5,10 @@ import {
 	Checkbox,
 	FormControl,
 	FormLabel,
-	Heading,
 	IconButton,
 	HStack,
 	Input,
+	Heading,
 	Text,
 	Modal,
 	ModalBody,
@@ -116,6 +116,19 @@ export function Index() {
 		<>
 			<Box p="5" bg={'#FAF9F6'} m={[0, null, 5]}>
 				<WorkspaceGrid workspaces={workspaces}></WorkspaceGrid>
+				<HStack position="fixed" bottom={10} left={10}>
+					<IconButton
+						aria-label="toggle theme"
+						rounded="full"
+						size="lg"
+						onClick={() => onOpen()}
+						icon={<BsBuildingFillAdd />}
+					/>
+					<Box pl={5}>
+						<Text fontSize={'xl'}>Welcome {userName}</Text>
+					</Box>
+				</HStack>
+
 				<Modal isOpen={isOpen} onClose={onClose}>
 					<ModalOverlay />
 					<ModalContent pb={6}>
@@ -168,21 +181,6 @@ export function Index() {
 						</ModalFooter>
 					</ModalContent>
 				</Modal>
-			</Box>
-			<Box display="flex" alignItems="baseline" mt={2}>
-				<IconButton
-					aria-label="toggle theme"
-					rounded="full"
-					size="lg"
-					position="fixed"
-					bottom={10}
-					left={10}
-					onClick={() => onOpen()}
-					icon={<BsBuildingFillAdd />}
-				/>
-				<Text pl={50} position="fixed" bottom={50} left={50} fontSize={'xl'}>
-					Welcome {userName}
-				</Text>
 			</Box>
 		</>
 	);
