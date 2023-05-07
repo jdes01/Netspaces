@@ -124,7 +124,7 @@ export function Index() {
 						onClick={() => onOpen()}
 						icon={<BsBuildingFillAdd />}
 					/>
-					<Box pl={5}>
+					<Box pl={5} bgColor={'#FAF9F6'} borderColor={'black'} rounded={70}>
 						<Text fontSize={'xl'}>Welcome {userName}</Text>
 					</Box>
 				</HStack>
