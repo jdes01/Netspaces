@@ -75,7 +75,11 @@ const CREATE_WORKSPACE_MUTATION = gql`
 	}
 `;
 
-export function Index() {
+type Props = {
+	userId: string;
+};
+
+export function Index({ userId }: Props) {
 	const router = useRouter();
 
 	const [createWorkspace] = useMutation(CREATE_WORKSPACE_MUTATION);
@@ -88,10 +92,6 @@ export function Index() {
 
 	const { isOpen, onClose, onOpen } = useDisclosure();
 
-	const userId: string | null = localStorage.getItem('userId');
-
-	if (typeof userId !== 'string') router.push('http://localhost:3000/admin');
-
 	const { workspaces, userName, loading } = getPageData(userId);
 
 	if (loading) return <Heading>Loading</Heading>;
@@ -100,7 +100,7 @@ export function Index() {
 		createWorkspace({
 			variables: {
 				_id: uuidv4(),
-				owner: localStorage.getItem('userId'),
+				owner: userId,
 				name: formName,
 				description: formDescription,
 				street: formStreet,
@@ -207,6 +207,14 @@ function getUserName(id: string) {
 	});
 	const userName: string = data?.user.name;
 	return { userName };
+}
+
+export async function getServerSideProps() {
+	const userId: string | null = `${process.env.ADMIN_UUID}`;
+
+	return {
+		props: { userId },
+	};
 }
 
 export default Index;

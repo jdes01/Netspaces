@@ -24,7 +24,6 @@ export function Landing() {
 							colorScheme="teal"
 							variant="ghost"
 							onClick={() => {
-								localStorage.setItem('userId', 'ce32ecbe-d777-4ab5-a4e8-56ce9b5219d7');
 								router.push('http://localhost:3000/admin/workspaces');
 							}}
 						>
