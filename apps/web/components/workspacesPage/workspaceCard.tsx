@@ -11,15 +11,12 @@ export function WorkspaceCard({ workspace }: WorkspaceCardProps) {
 	return (
 		<Box
 			m={1}
-			onClick={() => router.push(`/workspaces/${workspace._id}`)}
+			onClick={() => router.push(`/admin/workspaces/${workspace._id}`)}
 			borderRadius={20}
 			borderColor={'transparent'}
 			_hover={{ cursor: 'pointer', shadow: 'base' }}
 		>
-			<Image
-				borderRadius={20}
-				src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-			/>
+			<Image borderRadius={20} src="https://pbs.twimg.com/media/EnQp7n1XcAI9ZF4.jpg" />
 			<Box p="5">
 				<Stack direction="row" spacing={1} align="left">
 					{workspace.services.map((service) => (

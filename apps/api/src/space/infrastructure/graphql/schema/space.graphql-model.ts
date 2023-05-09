@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType, Int } from '@nestjs/graphql';
 
 @ObjectType()
 export class Space {
@@ -32,10 +32,10 @@ export class SpaceInput {
 	@Field()
 	name!: string;
 
-	@Field()
+	@Field(() => Int)
 	quantity!: number;
 
-	@Field()
+	@Field(() => Int)
 	seats!: number;
 
 	@Field((_type) => [String])

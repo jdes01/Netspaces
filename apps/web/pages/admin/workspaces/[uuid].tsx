@@ -1,10 +1,55 @@
-import { gql, useQuery } from '@apollo/client';
-import { Box, Heading, SimpleGrid } from '@chakra-ui/react';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import {
+	Box,
+	Button,
+	Checkbox,
+	FormControl,
+	FormLabel,
+	HStack,
+	Heading,
+	IconButton,
+	Input,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+	ModalOverlay,
+	SimpleGrid,
+	Stack,
+	useDisclosure,
+} from '@chakra-ui/react';
 import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 import { useRouter } from 'next/router';
 
 import { WorkspaceCard } from '../../../components/workspacesPage/workspaceCard';
 import { SpaceCard } from '../../../components/workspacesPage/workspaceSpaces/spaceCard';
+import { useState } from 'react';
+
+import { v4 as uuidv4 } from 'uuid';
+import { BsBuildingFillAdd } from 'react-icons/bs';
+
+const CREATE_SPACE_MUTATION = gql`
+	mutation CreateSpaceMutation(
+		$_id: String!
+		$workspaceId: String!
+		$name: String!
+		$quantity: Int!
+		$seats: Int!
+		$amenities: [String!]!
+	) {
+		createSpace(
+			spaceInput: {
+				_id: $_id
+				workspaceId: $workspaceId
+				name: $name
+				quantity: $quantity
+				seats: $seats
+				amenities: $amenities
+			}
+		)
+	}
+`;
 
 const GET_WORKSPACE = gql`
 	query GetWorkspace($id: String!) {
@@ -29,6 +74,14 @@ const GET_WORKSPACE = gql`
 `;
 
 const Workspace = () => {
+	const [formName, setFormName] = useState('');
+	const [formQuantity, setFormQuantity] = useState(0);
+	const [formSeats, setFormSeats] = useState(0);
+
+	const [createSpace] = useMutation(CREATE_SPACE_MUTATION);
+
+	const { isOpen, onClose, onOpen } = useDisclosure();
+
 	const router = useRouter();
 	const { uuid } = router.query;
 
@@ -41,17 +94,87 @@ const Workspace = () => {
 	const workspace: WorkspaceDTO = data?.workspace;
 	const spaces: Array<SpaceDTO> = data?.workspace?.spaces;
 
+	const handleSubmit = () => {
+		createSpace({
+			variables: {
+				_id: uuidv4(),
+				workspaceId: workspace._id,
+				name: formName,
+				quantity: formQuantity,
+				seats: formSeats,
+				amenities: ['AUDIO_RECORDING'],
+			},
+		});
+		router.reload(window.location.pathname);
+	};
+
 	return (
-		<Box m={1} borderRadius={20} borderColor={'transparent'}>
-			<Box p={5}>
-				<WorkspaceCard workspace={workspace}></WorkspaceCard>
-				<SimpleGrid columns={[1, null, 6]}>
-					{spaces.map((space) => (
-						<SpaceCard space={space}></SpaceCard>
-					))}
-				</SimpleGrid>
+		<>
+			<Box m={1} borderRadius={20} borderColor={'transparent'}>
+				<Box p={5}>
+					<WorkspaceCard workspace={workspace}></WorkspaceCard>
+					<SimpleGrid columns={[1, null, 6]}>
+						{spaces.map((space) => (
+							<SpaceCard space={space}></SpaceCard>
+						))}
+					</SimpleGrid>
+					<HStack position="fixed" bottom={10} left={10}>
+						<IconButton
+							aria-label="toggle theme"
+							rounded="full"
+							size="lg"
+							onClick={() => onOpen()}
+							icon={<BsBuildingFillAdd />}
+						/>
+					</HStack>
+
+					<Modal isOpen={isOpen} onClose={onClose}>
+						<ModalOverlay />
+						<ModalContent pb={6}>
+							<ModalHeader>Create Workspace</ModalHeader>
+							<ModalBody>
+								<FormControl isRequired>
+									<FormLabel>Name</FormLabel>
+									<Input onChange={(e) => setFormName(e.target.value)} />
+								</FormControl>
+								<FormControl isRequired mt={4}>
+									<FormLabel>Quantity</FormLabel>
+									<Input onChange={(e) => setFormQuantity(+e.target.value)} />
+								</FormControl>
+								<FormControl isRequired mt={4}>
+									<FormLabel>Seats</FormLabel>
+									<Input onChange={(e) => setFormSeats(+e.target.value)} />
+								</FormControl>
+								<FormControl isRequired mt={4}>
+									<FormLabel>Amenities</FormLabel>
+									<Stack spacing={5} direction="row">
+										<Checkbox defaultChecked isDisabled>
+											AUDIO_RECORDING
+										</Checkbox>
+									</Stack>
+								</FormControl>
+							</ModalBody>
+
+							<ModalFooter>
+								<Button
+									colorScheme="blue"
+									mr={3}
+									onClick={() => {
+										handleSubmit();
+										onClose();
+									}}
+								>
+									Create Space
+								</Button>
+								<Button colorScheme="gray" onClick={onClose}>
+									Close
+								</Button>
+							</ModalFooter>
+						</ModalContent>
+					</Modal>
+				</Box>
 			</Box>
-		</Box>
+		</>
 	);
 };
 
