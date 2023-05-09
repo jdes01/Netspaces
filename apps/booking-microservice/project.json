@@ -1,0 +1,64 @@
+{
+	"name": "booking-microservice",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/booking-microservice/src",
+	"projectType": "application",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/webpack:webpack",
+			"outputs": ["{options.outputPath}"],
+			"defaultConfiguration": "production",
+			"options": {
+				"target": "node",
+				"compiler": "tsc",
+				"outputPath": "dist/apps/booking-microservice",
+				"main": "apps/booking-microservice/src/main.ts",
+				"tsConfig": "apps/booking-microservice/tsconfig.app.json",
+				"assets": ["apps/booking-microservice/src/assets"],
+				"isolatedConfig": true,
+				"webpackConfig": "apps/booking-microservice/webpack.config.js"
+			},
+			"configurations": {
+				"development": {},
+				"production": {}
+			}
+		},
+		"serve": {
+			"executor": "@nrwl/js:node",
+			"defaultConfiguration": "development",
+			"options": {
+				"buildTarget": "booking-microservice:build"
+			},
+			"configurations": {
+				"development": {
+					"buildTarget": "booking-microservice:build:development"
+				},
+				"production": {
+					"buildTarget": "booking-microservice:build:production"
+				}
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": ["{options.outputFile}"],
+			"options": {
+				"lintFilePatterns": ["apps/booking-microservice/**/*.ts"]
+			}
+		},
+		"test": {
+			"executor": "@nrwl/jest:jest",
+			"outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+			"options": {
+				"jestConfig": "apps/booking-microservice/jest.config.ts",
+				"passWithNoTests": true
+			},
+			"configurations": {
+				"ci": {
+					"ci": true,
+					"codeCoverage": true
+				}
+			}
+		}
+	},
+	"tags": []
+}

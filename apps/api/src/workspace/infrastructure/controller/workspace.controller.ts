@@ -5,6 +5,7 @@ import {
 	HttpCode,
 	HttpException,
 	HttpStatus,
+	Inject,
 	Param,
 	Post,
 	ValidationPipe,
@@ -14,9 +15,15 @@ import { CreateWorkspaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 import { WorkspaceService } from '../service/workspace.service';
 import { WorkspaceError } from '../../domain/exception';
 
+import { ClientKafka } from '@nestjs/microservices';
+
+
 @Controller('workspaces')
 export class WorkspaceController {
-	constructor(private readonly workspaceService: WorkspaceService) { }
+	constructor(
+		private readonly workspaceService: WorkspaceService,
+		@Inject('BOOKING_MICROSERVICE') private readonly oleClient: ClientKafka,
+	) { }
 
 	@Post()
 	@HttpCode(200)
@@ -40,6 +47,16 @@ export class WorkspaceController {
 				throw new HttpException(err.message, HttpStatus.CONFLICT);
 			}
 		)
+
+		console.log(`
+		########################################33
+
+		AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+		###################################
+		`)
+
+		this.oleClient.emit('create_workspace', { message: "workspace was created!" });
 	}
 
 	@Get()

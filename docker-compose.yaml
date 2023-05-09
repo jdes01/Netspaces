@@ -5,8 +5,6 @@ services:
         build:
             context: ./
             target: netspaces-web
-        # environment:
-        #     - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
         ports:
             - 3000:3000
         volumes:
@@ -35,6 +33,19 @@ services:
             - netspaces-cache
         networks:
             - netspaces-network
+
+    netspaces-booking-microservice:
+        build:
+            context: ./
+            target: netspaces-booking-microservice
+        ports:
+            - 3334:3334
+        volumes:
+            - .:/app
+        networks:
+            - netspaces-network
+        depends_on:
+            - kafka
 
     netspaces-eventstore:
         container_name: netspaces-eventstore
@@ -93,6 +104,42 @@ services:
             - cache:/data
         networks:
             - netspaces-network
+
+    zookeeper:
+        container_name: zookeeper
+        image: wurstmeister/zookeeper
+        networks:
+            - netspaces-network
+        ports:
+            - 2181:2181
+        environment:
+            - ZOOKEEPER_CLIENT_PORT=2181
+            - ZOOKEEPER_TICK_TIME=2000
+            - ALLOW_ANONYMOUS_LOGIN=yes
+        restart: unless-stopped
+
+    kafka:
+        image: wurstmeister/kafka
+        container_name: kafka
+        links:
+            - zookeeper
+        networks:
+            - netspaces-network
+        ports:
+            - 9092:9092
+        environment:
+            - KAFKA_BROKER_ID=1
+            - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+            - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+            - ALLOW_PLAINTEXT_LISTENER=yes
+            - KAFKA_ADVERTISED_HOST_NAME=kafka
+            - KAFKA_DELETE_TOPIC_ENABLE=false
+            - KAFKA_AUTO_CREATE_TOPICS_ENABLE=false
+            - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+            - KAFKA_ADVERTISED_PORT=9092
+        depends_on:
+            - zookeeper
+        restart: unless-stopped
 
 volumes:
     eventstore-volume-data:

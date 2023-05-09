@@ -25,3 +25,11 @@ COPY ./apps/api .
 EXPOSE 3333
 
 CMD ["npx", "nx", "serve", "api"]
+
+FROM netspaces-base as netspaces-booking-microservice
+
+COPY ./apps/booking-microservice .
+
+EXPOSE 3334
+
+CMD ["npx", "nx", "serve", "booking-microservice"]
