@@ -23,10 +23,27 @@ import { SpaceService } from '../../space/infrastructure/service/space.service';
 import { RedisModule } from '../../redis.module'
 import { USER_PROJECTION, UserSchema } from '../../user/infrastructure/projection';
 
+import { ClientsModule, Transport } from '@nestjs/microservices'
+
 
 @Module({
 	controllers: [WorkspaceController],
 	imports: [
+		ClientsModule.register([
+			{
+				name: 'DATASERVICE',
+				transport: Transport.KAFKA,
+				options: {
+					client: {
+						clientId: 'workspace-producer',
+						brokers: ['kafka:9092'],
+					},
+					consumer: {
+						groupId: 'workspace-consumer'
+					}
+				}
+			},
+		]),
 		CqrsModule,
 		EventStoreModule.forFeature([Workspace], {
 			WorkspaceWasCreatedEvent: (event: Event<CreateWorkspaceDTO>) =>

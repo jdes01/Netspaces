@@ -7,7 +7,7 @@ import { EventPattern } from '@nestjs/microservices';
 export class AppController {
 	constructor(private readonly appService: AppService) { }
 
-	@EventPattern('booking_created')
+	@EventPattern('workspace_created')
 	handleBookingCreated(data: any) {
 		this.appService.handleBookingCreated(data)
 	}

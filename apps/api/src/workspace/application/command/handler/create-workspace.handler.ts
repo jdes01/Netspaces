@@ -18,6 +18,7 @@ import { WORKSPACE_FINDER, WorkspaceFinder } from '../../../application/service/
 import { REDIS_SERVICE, RedisService } from '../../../../redis.module';
 import { WorkspaceOwnerId } from '../../../domain/model/value-objects/workspace-owner-id';
 import { USER_FINDER, UserFinder } from '../../../../user/application/service/user-finder.service';
+import { ClientKafka } from '@nestjs/microservices';
 
 
 @CommandHandler(CreateWorkspaceCommand)
@@ -31,6 +32,8 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
 		private readonly userFinder: UserFinder,
 		@Inject(REDIS_SERVICE)
 		private readonly redisService: RedisService,
+		@Inject('DATASERVICE')
+		private readonly workspaceProducerClient: ClientKafka
 	) { }
 
 	async execute(command: CreateWorkspaceCommand): Promise<Result<null, WorkspaceError>> {
@@ -53,6 +56,9 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
 
 				const workspace = Workspace.add(id, owner, name, description, location, workspaceServices);
 				this.workspaceRepository.save(workspace);
+
+				console.log('workspace was created!')
+				this.workspaceProducerClient.emit('workspace_created', { workspaceId: id.value })
 
 				return new Ok(null)
 			},
