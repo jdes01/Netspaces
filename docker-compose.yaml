@@ -47,6 +47,19 @@ services:
         depends_on:
             - kafka
 
+    netspaces-gateway:
+        build:
+            context: ./
+            target: netspaces-gateway
+        ports:
+            - 3335:3335
+        volumes:
+            - .:/app
+        networks:
+            - netspaces-network
+        depends_on:
+            - kafka
+
     netspaces-eventstore:
         container_name: netspaces-eventstore
         image: eventstore/eventstore:20.10.2-buster-slim
@@ -128,15 +141,15 @@ services:
         ports:
             - 9092:9092
         environment:
-            - KAFKA_BROKER_ID=1
+            - KAFKA_ADVERTISED_HOST_NAME=kafka
             - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+            - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+            - KAFKA_DELETE_TOPIC_ENABLE=true
+            - KAFKA_CREATE_TOPICS='create-workspace-topic'
             - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
             - ALLOW_PLAINTEXT_LISTENER=yes
-            - KAFKA_ADVERTISED_HOST_NAME=kafka
-            - KAFKA_DELETE_TOPIC_ENABLE=false
-            - KAFKA_AUTO_CREATE_TOPICS_ENABLE=false
             - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-            - KAFKA_ADVERTISED_PORT=9092
+
         depends_on:
             - zookeeper
         restart: unless-stopped
