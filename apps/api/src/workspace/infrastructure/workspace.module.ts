@@ -22,27 +22,11 @@ import { SpaceService } from '../../space/infrastructure/service/space.service';
 
 import { RedisModule } from '../../redis.module'
 import { USER_PROJECTION, UserSchema } from '../../user/infrastructure/projection';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 
 
 @Module({
 	controllers: [WorkspaceController],
 	imports: [
-		ClientsModule.register([
-			{
-				name: 'BOOKING_MICROSERVICE',
-				transport: Transport.KAFKA,
-				options: {
-					client: {
-						clientId: 'booking',
-						brokers: ['kafka:9092'],
-					},
-					consumer: {
-						groupId: 'booking-consumer',
-					},
-				},
-			},
-		]),
 		CqrsModule,
 		EventStoreModule.forFeature([Workspace], {
 			WorkspaceWasCreatedEvent: (event: Event<CreateWorkspaceDTO>) =>
@@ -71,7 +55,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 			autoSchemaFile: true,
 			driver: ApolloDriver,
 		}),
-		RedisModule
+		RedisModule,
 	],
 	providers: [
 		...CommandHandlers,
@@ -81,7 +65,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 		WorkspaceResolver,
 		SpaceService,
 		WorkspaceService,
-		RedisModule
+		RedisModule,
 	],
 })
 export class WorkspaceModule { }

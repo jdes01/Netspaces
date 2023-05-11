@@ -19,6 +19,7 @@ import { REDIS_SERVICE, RedisService } from '../../../../redis.module';
 import { WorkspaceOwnerId } from '../../../domain/model/value-objects/workspace-owner-id';
 import { USER_FINDER, UserFinder } from '../../../../user/application/service/user-finder.service';
 
+
 @CommandHandler(CreateWorkspaceCommand)
 export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCommand> {
 	constructor(
@@ -29,10 +30,11 @@ export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCo
 		@Inject(USER_FINDER)
 		private readonly userFinder: UserFinder,
 		@Inject(REDIS_SERVICE)
-		private readonly redisService: RedisService
+		private readonly redisService: RedisService,
 	) { }
 
 	async execute(command: CreateWorkspaceCommand): Promise<Result<null, WorkspaceError>> {
+
 		const id = WorkspaceId.fromString(command.id);
 		if (await this.workspaceFinder.find(id)) return new Err(WorkspaceAlreadyExistsError.withId(id));
 

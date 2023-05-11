@@ -30,7 +30,7 @@ import { UserModule } from './user/infrastructure/user.module';
 		WorkspaceModule,
 		SpaceModule,
 		UserModule,
-		RedisModule
+		RedisModule,
 	],
 })
 export class BootstrapModule { }
