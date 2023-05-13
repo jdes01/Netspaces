@@ -19,11 +19,14 @@ import { WORKSPACE_PROJECTION, WorkspaceSchema } from './projection/workspace.sc
 import { WorkspaceService } from './service/workspace.service';
 import { WorkspaceProviders } from './workspace.providers';
 import { SpaceService } from '../../space/infrastructure/service/space.service';
+import { MessageProducers } from './message-producer';
+
 
 import { RedisModule } from '../../redis.module'
 import { USER_PROJECTION, UserSchema } from '../../user/infrastructure/projection';
 
 import { ClientsModule, Transport } from '@nestjs/microservices'
+import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 
 
 @Module({
@@ -37,9 +40,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
 					client: {
 						clientId: 'workspace-producer',
 						brokers: ['kafka:9092'],
+						logLevel: logLevel.ERROR
 					},
 					consumer: {
-						groupId: 'workspace-consumer'
+						groupId: 'booking-consumer'
 					}
 				}
 			},
@@ -78,6 +82,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
 		...CommandHandlers,
 		...QueryHandlers,
 		...ProjectionHandlers,
+		...MessageProducers,
 		...WorkspaceProviders,
 		WorkspaceResolver,
 		SpaceService,

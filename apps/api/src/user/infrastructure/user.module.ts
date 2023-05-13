@@ -17,11 +17,30 @@ import { UserService } from './service/user.service';
 import { UserProviders } from './user.providers';
 
 import { RedisModule } from '../../redis.module'
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { MessageProducers } from './message-producer';
+import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 
 @Module({
     controllers: [],
     imports: [
         CqrsModule,
+        ClientsModule.register([
+            {
+                name: 'DATASERVICE',
+                transport: Transport.KAFKA,
+                options: {
+                    client: {
+                        clientId: 'user-producer',
+                        brokers: ['kafka:9092'],
+                        logLevel: logLevel.ERROR
+                    },
+                    consumer: {
+                        groupId: 'booking-consumer'
+                    }
+                }
+            },
+        ]),
         EventStoreModule.forFeature([User], {
             UserWasCreatedEvent: (event: Event<CreateUserDTO>) =>
                 new UserWasCreatedEvent(
@@ -45,6 +64,7 @@ import { RedisModule } from '../../redis.module'
         ...CommandHandlers,
         ...QueryHandlers,
         ...ProjectionHandlers,
+        ...MessageProducers,
         ...UserProviders,
         UserResolver,
         UserService,

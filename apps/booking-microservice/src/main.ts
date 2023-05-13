@@ -5,21 +5,23 @@
 
 import { NestFactory } from '@nestjs/core';
 
-import { AppModule } from './app/app.module';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { BookingModule } from './app/app.module';
+import { KafkaOptions, MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 
 async function bootstrap() {
-	const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-		AppModule, {
+	const app = await NestFactory.createMicroservice<KafkaOptions>(
+		BookingModule, {
 		transport: Transport.KAFKA,
 		options: {
 			client: {
 				brokers: ['kafka:9092'],
+				logLevel: logLevel.ERROR
 			},
 			consumer: {
-				groupId: 'workspace-consumer'
-			}
-		}
+				groupId: 'booking-consumer'
+			},
+		},
 	}
 	)
 	await app.listen();

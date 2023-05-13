@@ -46,6 +46,7 @@ services:
             - netspaces-network
         depends_on:
             - kafka
+            - netspaces-booking-microservice-mongodb
 
     netspaces-gateway:
         build:
@@ -87,7 +88,7 @@ services:
 
     netspaces-mongodb:
         container_name: netspaces-mongodb
-        image: mongo:latest
+        image: bitnami/mongodb:latest
         ports:
             - 27017:27017
         volumes:
@@ -96,6 +97,24 @@ services:
               target: /data/db
         networks:
             - netspaces-network
+        environment:
+            - MONGODB_DISABLE_SYSTEM_LOG=true
+            - MONGODB_SYSTEM_LOG_VERBOSITY=1
+
+    netspaces-booking-microservice-mongodb:
+        container_name: netspaces-booking-microservice-mongodb
+        image: bitnami/mongodb:latest
+        ports:
+            - 27018:27017
+        volumes:
+            - type: volume
+              source: mongo-booking-microservice-volume-data
+              target: /data/db
+        networks:
+            - netspaces-network
+        environment:
+            - MONGODB_DISABLE_SYSTEM_LOG=true
+            - MONGODB_SYSTEM_LOG_VERBOSITY=1
 
     mongo-express:
         container_name: mongo-express
@@ -149,16 +168,23 @@ services:
             - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
             - ALLOW_PLAINTEXT_LISTENER=yes
             - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+            - KAFKA_LOG4J_LOGGERS="kafka.server=ERROR,kafka.network=ERROR"
 
         depends_on:
             - zookeeper
         restart: unless-stopped
+        volumes:
+            - type: volume
+              source: kafka-volume-data
+              target: /var/lib/kafka
 
 volumes:
     eventstore-volume-data:
     eventstore-volume-logs:
     mongo-volume-data:
     mongoclient-volume-data:
+    mongo-booking-microservice-volume-data:
+    kafka-volume-data:
     cache:
         driver: local
 

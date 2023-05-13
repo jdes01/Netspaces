@@ -28,6 +28,10 @@ export class WorkspaceService extends ValueObject<{
 
 	}
 
+	public static toStringList(services: Array<WorkspaceService>): Array<string> {
+		return services.map((service) => service.value)
+	}
+
 	get value(): WorkspaceServicesTypes {
 		return this.props.value;
 	}

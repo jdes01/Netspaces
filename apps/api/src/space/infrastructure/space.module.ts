@@ -14,15 +14,34 @@ import { Space } from '../domain/model';
 import { SpaceController } from './controller';
 import { SpaceResolver } from './graphql/resolvers/space.resolver';
 import { ProjectionHandlers } from './projection';
+import { MessageProducers } from './message-producer';
 import { SPACE_PROJECTION, SpaceSchema } from './projection/space.schema';
 import { SpaceService } from './service/space.service';
 import { SpaceProviders } from './space.providers';
 import { SpaceAmenity } from '../domain/model/value-objects';
+import { ClientsModule, Transport } from '@nestjs/microservices'
+import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 
 @Module({
 	controllers: [SpaceController],
 	imports: [
 		CqrsModule,
+		ClientsModule.register([
+			{
+				name: 'DATASERVICE',
+				transport: Transport.KAFKA,
+				options: {
+					client: {
+						clientId: 'space-producer',
+						brokers: ['kafka:9092'],
+						logLevel: logLevel.ERROR
+					},
+					consumer: {
+						groupId: 'booking-consumer'
+					}
+				}
+			},
+		]),
 		EventStoreModule.forFeature([Space], {
 			SpaceWasCreatedEvent: (event: Event<CreateSpaceDTO>) =>
 				new SpaceWasCreatedEvent(
@@ -53,6 +72,7 @@ import { SpaceAmenity } from '../domain/model/value-objects';
 		...CommandHandlers,
 		...QueryHandlers,
 		...ProjectionHandlers,
+		...MessageProducers,
 		...SpaceProviders,
 		SpaceResolver,
 		SpaceService,
