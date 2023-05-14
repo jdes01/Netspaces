@@ -46,6 +46,7 @@ services:
             - netspaces-network
         depends_on:
             - kafka
+            - netspaces-booking-microservice-eventstore
             - netspaces-booking-microservice-mongodb
 
     netspaces-gateway:
@@ -86,9 +87,34 @@ services:
         networks:
             - netspaces-network
 
+    netspaces-booking-microservice-eventstore:
+        container_name: netspaces-booking-microservice-eventstore
+        image: eventstore/eventstore:20.10.2-buster-slim
+        environment:
+            - EVENTSTORE_CLUSTER_SIZE=1
+            - EVENTSTORE_RUN_PROJECTIONS=All
+            - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+            - EVENTSTORE_EXT_TCP_PORT=1113
+            - EVENTSTORE_EXT_HTTP_PORT=2113
+            - EVENTSTORE_INSECURE=true
+            - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
+            - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+        ports:
+            - '1114:1113'
+            - '2114:2113'
+        volumes:
+            - type: volume
+              source: booking-microservice-eventstore-volume-data
+              target: /var/lib/eventstore
+            - type: volume
+              source: booking-microservice-eventstore-volume-logs
+              target: /var/log/eventstore
+        networks:
+            - netspaces-network
+
     netspaces-mongodb:
         container_name: netspaces-mongodb
-        image: bitnami/mongodb:latest
+        image: mongo:latest
         ports:
             - 27017:27017
         volumes:
@@ -97,13 +123,14 @@ services:
               target: /data/db
         networks:
             - netspaces-network
-        environment:
-            - MONGODB_DISABLE_SYSTEM_LOG=true
-            - MONGODB_SYSTEM_LOG_VERBOSITY=1
+        # environment:
+        #     - MONGODB_DISABLE_SYSTEM_LOG=true
+        #     - MONGODB_SYSTEM_LOG_VERBOSITY=0
 
     netspaces-booking-microservice-mongodb:
         container_name: netspaces-booking-microservice-mongodb
-        image: bitnami/mongodb:latest
+        image: mongo:latest
+        command: mongod --port 27017
         ports:
             - 27018:27017
         volumes:
@@ -112,9 +139,9 @@ services:
               target: /data/db
         networks:
             - netspaces-network
-        environment:
-            - MONGODB_DISABLE_SYSTEM_LOG=true
-            - MONGODB_SYSTEM_LOG_VERBOSITY=1
+        # environment:
+        #     - MONGODB_DISABLE_SYSTEM_LOG=true
+        #     - MONGODB_SYSTEM_LOG_VERBOSITY=0
 
     mongo-express:
         container_name: mongo-express
@@ -181,6 +208,8 @@ services:
 volumes:
     eventstore-volume-data:
     eventstore-volume-logs:
+    booking-microservice-eventstore-volume-data:
+    booking-microservice-eventstore-volume-logs:
     mongo-volume-data:
     mongoclient-volume-data:
     mongo-booking-microservice-volume-data:

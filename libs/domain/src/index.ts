@@ -3,3 +3,4 @@ export * from "./lib/nullable"
 export * from "./lib/workspace-service-types"
 export * from "./lib/value-object"
 export * from "./lib/space-amenity-types"
+export * from './lib/serialized-date'

@@ -9,3 +9,6 @@ export * from './lib/user/request/create-user.dto'
 export * from './lib/workspace/message/workspace-was-created.message'
 export * from './lib/space/message/space-was-created.mesasge'
 export * from './lib/user/message/user-was-created.message'
+
+export * from './lib/booking/response/booking.dto'
+export * from './lib/booking/request/create-booking.dto'
