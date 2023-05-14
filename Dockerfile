@@ -30,7 +30,7 @@ FROM netspaces-base as netspaces-booking-microservice
 
 COPY ./apps/booking-microservice .
 
-EXPOSE 3334
+EXPOSE 3333
 
 CMD ["npx", "nx", "serve", "booking-microservice"]
 

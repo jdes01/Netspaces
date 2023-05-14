@@ -39,7 +39,7 @@ services:
             context: ./
             target: netspaces-booking-microservice
         ports:
-            - 3334:3334
+            - 3334:3333
         volumes:
             - .:/app
         networks:
@@ -63,7 +63,6 @@ services:
             - kafka
 
     netspaces-eventstore:
-        container_name: netspaces-eventstore
         image: eventstore/eventstore:20.10.2-buster-slim
         environment:
             - EVENTSTORE_CLUSTER_SIZE=1
@@ -74,9 +73,6 @@ services:
             - EVENTSTORE_INSECURE=true
             - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
             - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
-        ports:
-            - '1113:1113'
-            - '2113:2113'
         volumes:
             - type: volume
               source: eventstore-volume-data
@@ -88,7 +84,6 @@ services:
             - netspaces-network
 
     netspaces-booking-microservice-eventstore:
-        container_name: netspaces-booking-microservice-eventstore
         image: eventstore/eventstore:20.10.2-buster-slim
         environment:
             - EVENTSTORE_CLUSTER_SIZE=1
@@ -99,9 +94,6 @@ services:
             - EVENTSTORE_INSECURE=true
             - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
             - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
-        ports:
-            - '1114:1113'
-            - '2114:2113'
         volumes:
             - type: volume
               source: booking-microservice-eventstore-volume-data
@@ -113,38 +105,25 @@ services:
             - netspaces-network
 
     netspaces-mongodb:
-        container_name: netspaces-mongodb
         image: mongo:latest
-        ports:
-            - 27017:27017
         volumes:
             - type: volume
               source: mongo-volume-data
               target: /data/db
         networks:
             - netspaces-network
-        # environment:
-        #     - MONGODB_DISABLE_SYSTEM_LOG=true
-        #     - MONGODB_SYSTEM_LOG_VERBOSITY=0
 
     netspaces-booking-microservice-mongodb:
-        container_name: netspaces-booking-microservice-mongodb
         image: mongo:latest
-        command: mongod --port 27017
-        ports:
-            - 27018:27017
         volumes:
             - type: volume
               source: mongo-booking-microservice-volume-data
               target: /data/db
         networks:
             - netspaces-network
-        # environment:
-        #     - MONGODB_DISABLE_SYSTEM_LOG=true
-        #     - MONGODB_SYSTEM_LOG_VERBOSITY=0
+
 
     mongo-express:
-        container_name: mongo-express
         depends_on:
             - netspaces-mongodb
         image: mongo-express:latest
@@ -154,7 +133,6 @@ services:
             - netspaces-network
 
     netspaces-cache:
-        container_name: netspaces-cache
         image: redis:6.2-alpine
         restart: always
         ports:
@@ -165,7 +143,6 @@ services:
             - netspaces-network
 
     zookeeper:
-        container_name: zookeeper
         image: wurstmeister/zookeeper
         networks:
             - netspaces-network
@@ -179,7 +156,6 @@ services:
 
     kafka:
         image: wurstmeister/kafka
-        container_name: kafka
         links:
             - zookeeper
         networks:
