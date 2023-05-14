@@ -18,7 +18,7 @@ export class BookingResolver {
 	@Mutation((_returns) => String)
 	async createBooking(@Args('bookingInput') bookingInput: BookingInput): Promise<string> {
 
-		const serializedDate: SerializedDate = JSON.parse(bookingInput.date)
+		const serializedDate: SerializedDate = { day: bookingInput.day, month: bookingInput.month, year: bookingInput.year }
 
 		const createdBookingResult = await this.bookingService.createBooking(
 			bookingInput._id,

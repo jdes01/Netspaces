@@ -42,7 +42,7 @@ export class CreateBookingHandler implements ICommandHandler<CreateBookingComman
         if (await this.spaceFinder.find(spaceId) === null) return new Err(BookingSpaceNotFoundError.withSpaceId(spaceId))
 
         const userId = BookingUserId.fromString(command.userId)
-        if (await this.spaceFinder.find(userId) === null) return new Err(BookingUserNotFoundError.withUserId(userId))
+        if (await this.userFinder.find(userId) === null) return new Err(BookingUserNotFoundError.withUserId(userId))
 
         const booking = Booking.add(id, userId, workspaceId, spaceId, BookingDate.fromSerializedDate(command.serializedDate));
 

@@ -38,6 +38,8 @@ services:
         build:
             context: ./
             target: netspaces-booking-microservice
+        environment:
+            - PORT=3333
         ports:
             - 3334:3333
         volumes:

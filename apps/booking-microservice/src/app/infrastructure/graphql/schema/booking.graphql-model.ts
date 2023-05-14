@@ -7,9 +7,6 @@ export class Booking {
 	_id!: string;
 
 	@Field()
-	owner?: string;
-
-	@Field()
 	userId?: string;
 
 	@Field()
@@ -19,16 +16,19 @@ export class Booking {
 	spaceId?: string;
 
 	@Field()
-	date?: string;
+	day?: number;
+
+	@Field()
+	month?: number;
+
+	@Field()
+	year?: number;
 }
 
 @InputType()
 export class BookingInput {
 	@Field()
 	_id!: string;
-
-	@Field()
-	owner!: string;
 
 	@Field()
 	userId!: string;
@@ -40,5 +40,11 @@ export class BookingInput {
 	spaceId!: string;
 
 	@Field()
-	date!: string;
+	day!: number;
+
+	@Field()
+	month!: number;
+
+	@Field()
+	year!: number;
 }
