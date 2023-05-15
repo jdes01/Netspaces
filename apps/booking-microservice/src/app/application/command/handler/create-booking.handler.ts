@@ -22,12 +22,12 @@ export class CreateBookingHandler implements ICommandHandler<CreateBookingComman
 		const bookingId = BookingId.random();
 		const userId = BookingUserId.fromString(command.userId);
 		const spaceId = BookingSpaceId.fromString(command.spaceId);
+		const bookingDate = BookingDate.fromSerializedDate(command.serializedDate);
 
-		const validatorResult = await this.bookingValidator.validate(userId, spaceId, bookingId);
+		const validatorResult = await this.bookingValidator.validate(userId, spaceId, bookingId, bookingDate);
 
 		return validatorResult.match<Result<null, BookingError>>(
 			(_) => {
-				const bookingDate = BookingDate.fromSerializedDate(command.serializedDate);
 				const booking = Booking.add(bookingId, userId, spaceId, bookingDate);
 				this.bookingRepository.save(booking);
 

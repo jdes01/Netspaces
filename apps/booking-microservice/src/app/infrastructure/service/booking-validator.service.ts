@@ -5,8 +5,14 @@ import { BOOKING_FINDER, BookingFinder } from '../../application/service/booking
 import { BookingValidator } from '../../application/service/booking-validator.service';
 import { SPACE_FINDER, SpaceFinder } from '../../application/service/space-finder.service';
 import { USER_FINDER, UserFinder } from '../../application/service/user-finder.service';
-import { BookingAlreadyExistsError, BookingError, BookingSpaceNotFoundError, BookingUserNotFoundError } from '../../domain/exception';
-import { BookingId, BookingSpaceId, BookingUserId } from '../../domain/model/value-objects';
+import {
+	BookingAlreadyExistsError,
+	BookingError,
+	BookingSpaceNotFoundError,
+	BookingUserNotFoundError,
+	SpaceBookingNotAvailableError,
+} from '../../domain/exception';
+import { BookingDate, BookingId, BookingSpaceId, BookingUserId } from '../../domain/model/value-objects';
 
 @Injectable()
 export class MongoDBBookingValidator implements BookingValidator {
@@ -19,10 +25,33 @@ export class MongoDBBookingValidator implements BookingValidator {
 		private readonly spaceFinder: SpaceFinder,
 	) {}
 
-	async validate(userId: BookingUserId, spaceId: BookingSpaceId, bookingId: BookingId): Promise<Result<null, BookingError>> {
+	async validate(
+		userId: BookingUserId,
+		spaceId: BookingSpaceId,
+		bookingId: BookingId,
+		bookingDate: BookingDate,
+	): Promise<Result<null, BookingError>> {
 		if (await this.bookingFinder.find(bookingId)) return new Err(BookingAlreadyExistsError.withId(bookingId));
-		if ((await this.spaceFinder.find(spaceId)) === null) return new Err(BookingSpaceNotFoundError.withSpaceId(spaceId));
 		if ((await this.userFinder.find(userId)) === null) return new Err(BookingUserNotFoundError.withUserId(userId));
+
+		return (await this.checkForAvailability(spaceId, bookingDate)).match<Result<null, SpaceBookingNotAvailableError>>(
+			(_) => {
+				return new Ok(null);
+			},
+			(err) => {
+				return new Err(err);
+			},
+		);
+	}
+
+	async checkForAvailability(spaceId: BookingSpaceId, bookingDate: BookingDate): Promise<Result<null, SpaceBookingNotAvailableError>> {
+		const space = await this.spaceFinder.find(spaceId);
+		if (space === null) return new Err(BookingSpaceNotFoundError.withSpaceId(spaceId));
+
+		const existingBookings = await this.bookingFinder.findByDateForSpace(spaceId, bookingDate);
+
+		if (space.quantity <= existingBookings.length) return new Err(SpaceBookingNotAvailableError.withSpaceId(spaceId));
+
 		return new Ok(null);
 	}
 }
