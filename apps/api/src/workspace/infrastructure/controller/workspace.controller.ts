@@ -5,22 +5,18 @@ import {
 	HttpCode,
 	HttpException,
 	HttpStatus,
-	Inject,
 	Param,
 	Post,
 	ValidationPipe,
 } from '@nestjs/common';
 import { CreateWorkspaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 
-import { WorkspaceService } from '../service/workspace.service';
 import { WorkspaceError } from '../../domain/exception';
+import { WorkspaceService } from '../service/workspace.service';
 
 @Controller('workspaces')
 export class WorkspaceController {
-
-	constructor(
-		private readonly workspaceService: WorkspaceService,
-	) { }
+	constructor(private readonly workspaceService: WorkspaceService) {}
 
 	@Post()
 	@HttpCode(200)
@@ -39,11 +35,9 @@ export class WorkspaceController {
 			createWorkspaceDTO.services.map((service) => service.toString()),
 		);
 
-		createdWorkspaceResult.mapErr<WorkspaceError>(
-			(err) => {
-				throw new HttpException(err.message, HttpStatus.CONFLICT);
-			}
-		)
+		createdWorkspaceResult.mapErr<WorkspaceError>((err) => {
+			throw new HttpException(err.message, HttpStatus.CONFLICT);
+		});
 	}
 
 	@Get()

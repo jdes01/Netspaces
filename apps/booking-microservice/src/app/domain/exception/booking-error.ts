@@ -1,1 +1,1 @@
-export class BookingError extends Error { }
+export class BookingError extends Error {}

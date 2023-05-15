@@ -5,8 +5,8 @@ import {
 	Checkbox,
 	FormControl,
 	FormLabel,
-	HStack,
 	Heading,
+	HStack,
 	IconButton,
 	Input,
 	Modal,
@@ -21,13 +21,12 @@ import {
 } from '@chakra-ui/react';
 import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { BsBuildingFillAdd } from 'react-icons/bs';
+import { v4 as uuidv4 } from 'uuid';
 
 import { WorkspaceCard } from '../../../components/workspacesPage/workspaceCard';
 import { SpaceCard } from '../../../components/workspacesPage/workspaceSpaces/spaceCard';
-import { useState } from 'react';
-
-import { v4 as uuidv4 } from 'uuid';
-import { BsBuildingFillAdd } from 'react-icons/bs';
 
 const CREATE_SPACE_MUTATION = gql`
 	mutation CreateSpaceMutation(
@@ -98,11 +97,11 @@ const Workspace = () => {
 		createSpace({
 			variables: {
 				_id: uuidv4(),
-				workspaceId: workspace._id,
+				amenities: ['AUDIO_RECORDING'],
 				name: formName,
 				quantity: formQuantity,
 				seats: formSeats,
-				amenities: ['AUDIO_RECORDING'],
+				workspaceId: workspace._id,
 			},
 		});
 		router.reload(window.location.pathname);

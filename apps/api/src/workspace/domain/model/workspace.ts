@@ -1,14 +1,9 @@
 import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
-import { Space } from '../../../space/domain/model';
-import {
-	SpaceAmenity,
-	SpaceId,
-	SpaceName,
-	SpaceQuantity,
-	SpaceSeats,
-} from '../../../space/domain/model/value-objects';
 
+import { Space } from '../../../space/domain/model';
+import { SpaceAmenity, SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from '../../../space/domain/model/value-objects';
 import { WorkspaceWasCreatedEvent, WorkspaceWasDeleted } from '../event';
+import { WorkspaceServiceNotValidError } from '../exception/workspace-service-not-valid-error';
 import {
 	WorkspaceDescription,
 	WorkspaceId,
@@ -16,7 +11,6 @@ import {
 	WorkspaceName,
 	WorkspaceService,
 } from './value-objects/';
-import { WorkspaceServiceNotValidError } from '../exception/workspace-service-not-valid-error';
 import { WorkspaceOwnerId } from './value-objects/workspace-owner-id';
 
 export class Workspace extends AggregateRoot {
@@ -36,7 +30,6 @@ export class Workspace extends AggregateRoot {
 		location: WorkspaceLocation,
 		services: Array<WorkspaceService>,
 	): Workspace {
-
 		const workspace = new Workspace();
 
 		const event = new WorkspaceWasCreatedEvent(
@@ -67,21 +60,21 @@ export class Workspace extends AggregateRoot {
 
 	private onWorkspaceWasCreatedEvent(event: WorkspaceWasCreatedEvent): void {
 		this._id = WorkspaceId.fromString(event.id);
-		this._owner = WorkspaceOwnerId.fromString(event.owner)
+		this._owner = WorkspaceOwnerId.fromString(event.owner);
 		this._name = WorkspaceName.fromString(event.name);
 		this._description = WorkspaceDescription.fromString(event.description);
 		this._location = new WorkspaceLocation(event.street, event.city, event.country);
 
-		const servicesResult = WorkspaceService.fromStringList(event.services)
+		const servicesResult = WorkspaceService.fromStringList(event.services);
 
 		servicesResult.match(
 			(services) => {
-				this._services = services
+				this._services = services;
 			},
 			(_) => {
-				throw new WorkspaceServiceNotValidError()
-			}
-		)
+				throw new WorkspaceServiceNotValidError();
+			},
+		);
 
 		this._deleted = false;
 	}

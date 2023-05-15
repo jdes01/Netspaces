@@ -1,8 +1,7 @@
-
 import { ValueObject, WorkspaceServicesTypes } from '@netspaces/domain';
+import { Err, Ok, Result } from 'neverthrow';
 
 import { WorkspaceServiceNotValidError } from '../../exception/workspace-service-not-valid-error';
-import { Err, Ok, Result } from 'neverthrow';
 
 export class WorkspaceService extends ValueObject<{
 	value: WorkspaceServicesTypes;
@@ -12,24 +11,32 @@ export class WorkspaceService extends ValueObject<{
 			return new Err(WorkspaceServiceNotValidError.withService(service));
 		}
 
-		return new Ok(new WorkspaceService({
-			value: WorkspaceServicesTypes[service],
-		}));
+		return new Ok(
+			new WorkspaceService({
+				value: WorkspaceServicesTypes[service],
+			}),
+		);
 	}
 
-	public static fromStringList(services: Array<string>): Result<Array<WorkspaceService>, WorkspaceServiceNotValidError> {
+	public static fromStringList(
+		services: Array<string>,
+	): Result<Array<WorkspaceService>, WorkspaceServiceNotValidError> {
 		try {
-			return new Ok(services.map((service) => new WorkspaceService({
-				value: WorkspaceServicesTypes[service],
-			})))
+			return new Ok(
+				services.map(
+					(service) =>
+						new WorkspaceService({
+							value: WorkspaceServicesTypes[service],
+						}),
+				),
+			);
 		} catch (e: any) {
 			return new Err(new WorkspaceServiceNotValidError(e.message));
 		}
-
 	}
 
 	public static toStringList(services: Array<WorkspaceService>): Array<string> {
-		return services.map((service) => service.value)
+		return services.map((service) => service.value);
 	}
 
 	get value(): WorkspaceServicesTypes {

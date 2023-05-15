@@ -1,21 +1,21 @@
 import { Event } from '@aulasoftwarelibre/nestjs-eventstore';
 
 export class BookingWasCreatedEvent extends Event {
-    constructor(
-        public readonly id: string,
-        public readonly userId: string,
-        public readonly spaceId: string,
-        public readonly day: number,
-        public readonly month: number,
-        public readonly year: number,
-    ) {
-        super(id, {
-            _id: id,
-            userId,
-            spaceId,
-            day,
-            month,
-            year
-        });
-    }
+	constructor(
+		public readonly id: string,
+		public readonly userId: string,
+		public readonly spaceId: string,
+		public readonly day: number,
+		public readonly month: number,
+		public readonly year: number,
+	) {
+		super(id, {
+			_id: id,
+			day,
+			month,
+			spaceId,
+			userId,
+			year,
+		});
+	}
 }

@@ -1,13 +1,13 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { SpaceDTO } from '@netspaces/contracts';
+import { GraphQLError } from 'graphql';
 
 import { SpaceService } from '../../service/space.service';
 import { Space, SpaceInput } from '../schema/space.graphql-model';
-import { GraphQLError } from 'graphql';
 
 @Resolver((_of: any) => Space)
 export class SpaceResolver {
-	constructor(private readonly spaceService: SpaceService) { }
+	constructor(private readonly spaceService: SpaceService) {}
 
 	@Query((_returns) => [Space])
 	async spaces(): Promise<SpaceDTO[]> {
@@ -32,11 +32,11 @@ export class SpaceResolver {
 
 		return createdSpaceResult.match<string>(
 			(_) => {
-				return 'Space created successfully'
+				return 'Space created successfully';
 			},
 			(err) => {
 				throw new GraphQLError(err.message);
-			}
-		)
+			},
+		);
 	}
 }

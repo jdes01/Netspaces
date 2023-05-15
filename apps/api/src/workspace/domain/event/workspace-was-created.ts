@@ -13,13 +13,13 @@ export class WorkspaceWasCreatedEvent extends Event {
 	) {
 		super(id, {
 			_id: id,
-			owner,
-			name,
-			description,
-			street,
 			city,
 			country,
+			description,
+			name,
+			owner,
 			services,
+			street,
 		});
 	}
 }

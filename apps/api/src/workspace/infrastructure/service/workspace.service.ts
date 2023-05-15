@@ -6,12 +6,12 @@ import { Result } from 'neverthrow';
 import { CreateWorkspaceCommand } from '../../application/command/create-workspace.command';
 import { GetWorkspacesQuery } from '../../application/query';
 import { GetWorkspaceByIdQuery } from '../../application/query/get-workspace-by-id.query';
-import { WorkspaceError } from '../../domain/exception';
 import { GetWorkspacesByOwnerIdQuery } from '../../application/query/get-workspaces-by-owner-id.query';
+import { WorkspaceError } from '../../domain/exception';
 
 @Injectable()
 export class WorkspaceService {
-	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) { }
+	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
 
 	async createWorkspace(
 		id: string,
@@ -23,7 +23,6 @@ export class WorkspaceService {
 		country: string,
 		services: Array<string>,
 	): Promise<Result<null, WorkspaceError>> {
-
 		return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(
 			new CreateWorkspaceCommand(id, owner, name, description, street, city, country, services),
 		);

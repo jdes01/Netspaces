@@ -5,11 +5,10 @@ import {
 	Checkbox,
 	FormControl,
 	FormLabel,
-	IconButton,
-	HStack,
-	Input,
 	Heading,
-	Text,
+	HStack,
+	IconButton,
+	Input,
 	Modal,
 	ModalBody,
 	ModalContent,
@@ -17,15 +16,16 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	Stack,
+	Text,
 	useDisclosure,
 } from '@chakra-ui/react';
 import { WorkspaceDTO } from '@netspaces/contracts';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { BsBuildingFillAdd } from 'react-icons/bs';
 import { v4 as uuidv4 } from 'uuid';
 
 import { WorkspaceGrid } from '../../../components/workspacesPage/workspacesGrid';
-import { useRouter } from 'next/router';
 
 const GET_WORKSPACES_BY_OWNER_ID = gql`
 	query GetWorkspacesByOwnerId($id: String!) {
@@ -92,7 +92,7 @@ export function Index({ userId }: Props) {
 
 	const { isOpen, onClose, onOpen } = useDisclosure();
 
-	const { workspaces, userName, loading } = getPageData(userId);
+	const { loading, userName, workspaces } = getPageData(userId);
 
 	if (loading) return <Heading>Loading</Heading>;
 
@@ -100,13 +100,13 @@ export function Index({ userId }: Props) {
 		createWorkspace({
 			variables: {
 				_id: uuidv4(),
-				owner: userId,
-				name: formName,
-				description: formDescription,
-				street: formStreet,
 				city: formCity,
 				country: formCountry,
+				description: formDescription,
+				name: formName,
+				owner: userId,
 				services: ['WIFI'],
+				street: formStreet,
 			},
 		});
 		router.reload(window.location.pathname);
@@ -188,9 +188,9 @@ export function Index({ userId }: Props) {
 
 function getPageData(userId: string) {
 	const { userName } = getUserName(userId);
-	const { workspaces, loading } = getWorkspaces(userId);
+	const { loading, workspaces } = getWorkspaces(userId);
 
-	return { workspaces, userName, loading };
+	return { loading, userName, workspaces };
 }
 
 function getWorkspaces(id: string) {
@@ -198,7 +198,7 @@ function getWorkspaces(id: string) {
 		variables: { id },
 	});
 	const workspaces: Array<WorkspaceDTO> = data?.workspacesByOwnerId;
-	return { workspaces, loading };
+	return { loading, workspaces };
 }
 
 function getUserName(id: string) {

@@ -3,6 +3,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CreateSpaceDTO } from '@netspaces/contracts';
 
@@ -11,16 +13,14 @@ import { CommandHandlers } from '../application/command';
 import { QueryHandlers } from '../application/query';
 import { SpaceWasCreatedEvent } from '../domain/event';
 import { Space } from '../domain/model';
+import { SpaceAmenity } from '../domain/model/value-objects';
 import { SpaceController } from './controller';
 import { SpaceResolver } from './graphql/resolvers/space.resolver';
-import { ProjectionHandlers } from './projection';
 import { MessageProducers } from './message-producer';
+import { ProjectionHandlers } from './projection';
 import { SPACE_PROJECTION, SpaceSchema } from './projection/space.schema';
 import { SpaceService } from './service/space.service';
 import { SpaceProviders } from './space.providers';
-import { SpaceAmenity } from '../domain/model/value-objects';
-import { ClientsModule, Transport } from '@nestjs/microservices'
-import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 
 @Module({
 	controllers: [SpaceController],
@@ -29,18 +29,18 @@ import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 		ClientsModule.register([
 			{
 				name: 'DATASERVICE',
-				transport: Transport.KAFKA,
 				options: {
 					client: {
-						clientId: 'space-producer',
 						brokers: ['kafka:9092'],
-						logLevel: logLevel.ERROR
+						clientId: 'space-producer',
+						logLevel: logLevel.ERROR,
 					},
 					consumer: {
-						groupId: 'booking-consumer'
+						groupId: 'booking-consumer',
 					},
-					producerOnlyMode: true
-				}
+					producerOnlyMode: true,
+				},
+				transport: Transport.KAFKA,
 			},
 		]),
 		EventStoreModule.forFeature([Space], {
@@ -79,4 +79,4 @@ import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 		SpaceService,
 	],
 })
-export class SpaceModule { }
+export class SpaceModule {}

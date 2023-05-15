@@ -11,7 +11,7 @@ export class GetWorkspaceByIdHandler implements IQueryHandler {
 	constructor(
 		@Inject(WORKSPACE_FINDER)
 		private readonly workspaceFinder: WorkspaceFinder,
-	) { }
+	) {}
 
 	async execute(query: GetWorkspaceByIdQuery): Promise<WorkspaceDTO | null> {
 		return this.workspaceFinder.find(WorkspaceId.fromString(query.id));

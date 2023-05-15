@@ -6,12 +6,12 @@ import { Result } from 'neverthrow';
 import { CreateSpaceCommand } from '../../application/command/create-space.command';
 import { GetSpacesQuery } from '../../application/query';
 import { GetSpaceByIdQuery } from '../../application/query/get-space-by-id.query';
-import { SpaceError } from '../../domain/exception';
 import { GetSpacesByWorkspaceIdQuery } from '../../application/query/get-spaces-by-workspace-id.query';
+import { SpaceError } from '../../domain/exception';
 
 @Injectable()
 export class SpaceService {
-	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) { }
+	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
 
 	async createSpace(
 		id: string,

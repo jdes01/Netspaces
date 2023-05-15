@@ -1,15 +1,15 @@
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
+import { GraphQLError } from 'graphql';
 
 import { SpaceService } from '../../../../space/infrastructure//service/space.service';
 import { Space } from '../../../../space/infrastructure/graphql/schema/space.graphql-model';
 import { WorkspaceService } from '../../service/workspace.service';
 import { Workspace, WorkspaceInput } from '../schema/workspace.graphql-model';
-import { GraphQLError } from 'graphql';
 
 @Resolver((_of: any) => Workspace)
 export class WorkspaceResolver {
-	constructor(private readonly workspaceService: WorkspaceService, private readonly spaceService: SpaceService) { }
+	constructor(private readonly workspaceService: WorkspaceService, private readonly spaceService: SpaceService) {}
 
 	@Query((_returns) => [Workspace])
 	async workspaces(): Promise<WorkspaceDTO[]> {
@@ -46,11 +46,11 @@ export class WorkspaceResolver {
 
 		return createdWorkspaceResult.match<string>(
 			(_) => {
-				return 'Workspace created successfully'
+				return 'Workspace created successfully';
 			},
 			(err) => {
 				throw new GraphQLError(err.message);
-			}
-		)
+			},
+		);
 	}
 }

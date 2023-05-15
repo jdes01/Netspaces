@@ -9,12 +9,12 @@ import { BOOKING_PROJECTION, BookingDocument } from '../projection/schema/bookin
 
 @Injectable()
 export class MongoDBBookingFinder implements BookingFinder {
-    constructor(
-        @InjectModel(BOOKING_PROJECTION)
-        private readonly bookingProjection: Model<BookingDocument>,
-    ) { }
+	constructor(
+		@InjectModel(BOOKING_PROJECTION)
+		private readonly bookingProjection: Model<BookingDocument>,
+	) {}
 
-    find(id: BookingId): Promise<BookingDTO | null> {
-        return this.bookingProjection.findById(id.value).exec();
-    }
+	find(id: BookingId): Promise<BookingDTO | null> {
+		return this.bookingProjection.findById(id.value).exec();
+	}
 }

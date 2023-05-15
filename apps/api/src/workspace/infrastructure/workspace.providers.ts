@@ -15,6 +15,6 @@ export const WorkspaceProviders = [
 	},
 	{
 		provide: REDIS_SERVICE,
-		useClass: RedisService
-	}
+		useClass: RedisService,
+	},
 ];

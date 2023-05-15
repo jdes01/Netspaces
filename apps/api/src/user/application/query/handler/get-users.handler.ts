@@ -7,12 +7,12 @@ import { GetUsersQuery } from '../get-users.query';
 
 @QueryHandler(GetUsersQuery)
 export class GetUsersHandler implements IQueryHandler {
-    constructor(
-        @Inject(USER_FINDER)
-        private readonly workspaceFinder: UserFinder,
-    ) { }
+	constructor(
+		@Inject(USER_FINDER)
+		private readonly workspaceFinder: UserFinder,
+	) {}
 
-    async execute(_: GetUsersQuery): Promise<Array<UserDTO>> {
-        return this.workspaceFinder.findAll();
-    }
+	async execute(_: GetUsersQuery): Promise<Array<UserDTO>> {
+		return this.workspaceFinder.findAll();
+	}
 }

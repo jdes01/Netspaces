@@ -6,10 +6,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConsoleModule } from 'nestjs-console';
 
 import configuration from './config/configuration';
-import { SpaceModule } from './space';
-import { WorkspaceModule } from './workspace';
 import { RedisModule } from './redis.module';
+import { SpaceModule } from './space';
 import { UserModule } from './user/infrastructure/user.module';
+import { WorkspaceModule } from './workspace';
 
 @Module({
 	imports: [
@@ -21,10 +21,10 @@ import { UserModule } from './user/infrastructure/user.module';
 		CqrsModule,
 		ConsoleModule,
 		EventStoreModule.forRoot({
-			connection: process.env.EVENTSTORE_URI || "",
+			connection: process.env.EVENTSTORE_URI || '',
 		}),
-		MongooseModule.forRoot(process.env.MONGO_URI || "", {}),
-		MongooseModule.forRoot(process.env.KEYSTORE_URI || "", {
+		MongooseModule.forRoot(process.env.MONGO_URI || '', {}),
+		MongooseModule.forRoot(process.env.KEYSTORE_URI || '', {
 			connectionName: EVENTSTORE_KEYSTORE_CONNECTION,
 		}),
 		WorkspaceModule,
@@ -33,4 +33,4 @@ import { UserModule } from './user/infrastructure/user.module';
 		RedisModule,
 	],
 })
-export class BootstrapModule { }
+export class BootstrapModule {}

@@ -6,15 +6,15 @@ export const BOOKING_PROJECTION = 'bookings';
 export type BookingDocument = BookingDTO & Document;
 
 export const BookingSchema = new Schema(
-    {
-        _id: String,
-        userId: String,
-        spaceId: String,
-        day: Number,
-        month: Number,
-        year: Number
-    },
-    {
-        versionKey: false,
-    },
+	{
+		_id: String,
+		day: Number,
+		month: Number,
+		spaceId: String,
+		userId: String,
+		year: Number,
+	},
+	{
+		versionKey: false,
+	},
 );

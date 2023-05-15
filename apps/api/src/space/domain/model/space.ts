@@ -1,10 +1,10 @@
 import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
-import { WorkspaceId } from '../../../workspace/domain/model/value-objects';
 
+import { WorkspaceId } from '../../../workspace/domain/model/value-objects';
 import { SpaceWasCreatedEvent } from '../event';
+import { SpaceAmenityNotValidError } from '../exception';
 import { SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from './value-objects';
 import { SpaceAmenity } from './value-objects/space-amenities';
-import { SpaceAmenityNotValidError } from '../exception';
 
 export class Space extends AggregateRoot {
 	private _id!: SpaceId;
@@ -48,12 +48,12 @@ export class Space extends AggregateRoot {
 
 		SpaceAmenity.fromStringList(event.amenities).match(
 			(amenities) => {
-				this._amenities = amenities
+				this._amenities = amenities;
 			},
 			(_) => {
-				throw new SpaceAmenityNotValidError()
-			}
-		)
+				throw new SpaceAmenityNotValidError();
+			},
+		);
 
 		this._deleted = null;
 	}

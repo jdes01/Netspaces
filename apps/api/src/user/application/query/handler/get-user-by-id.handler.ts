@@ -8,12 +8,12 @@ import { GetUserByIdQuery } from '../get-user-by-id.query';
 
 @QueryHandler(GetUserByIdQuery)
 export class GetUserByIdHandler implements IQueryHandler {
-    constructor(
-        @Inject(USER_FINDER)
-        private readonly userFinder: UserFinder,
-    ) { }
+	constructor(
+		@Inject(USER_FINDER)
+		private readonly userFinder: UserFinder,
+	) {}
 
-    async execute(query: GetUserByIdQuery): Promise<UserDTO | null> {
-        return this.userFinder.find(UserId.fromString(query.id));
-    }
+	async execute(query: GetUserByIdQuery): Promise<UserDTO | null> {
+		return this.userFinder.find(UserId.fromString(query.id));
+	}
 }

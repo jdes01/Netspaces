@@ -1,7 +1,7 @@
 const { composePlugins, withNx } = require('@nrwl/webpack');
 
 // Nx plugins for webpack.
-module.exports = composePlugins(withNx(), (config, { options, context }) => {
+module.exports = composePlugins(withNx(), (config, { context, options }) => {
 	// Note: This was added by an Nx migration.
 	// You should consider inlining the logic into this file.
 	// For more information on webpack config and Nx see:

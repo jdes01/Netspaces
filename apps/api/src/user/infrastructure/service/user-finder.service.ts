@@ -9,16 +9,16 @@ import { USER_PROJECTION, UserDocument } from '../projection';
 
 @Injectable()
 export class MongoDBUserFinder implements UserFinder {
-    constructor(
-        @InjectModel(USER_PROJECTION)
-        private readonly userProjection: Model<UserDocument>,
-    ) { }
+	constructor(
+		@InjectModel(USER_PROJECTION)
+		private readonly userProjection: Model<UserDocument>,
+	) {}
 
-    findAll(): Promise<UserDTO[]> {
-        return this.userProjection.find().exec();
-    }
+	findAll(): Promise<UserDTO[]> {
+		return this.userProjection.find().exec();
+	}
 
-    find(id: UserId): Promise<UserDTO | null> {
-        return this.userProjection.findById(id.value).exec();
-    }
+	find(id: UserId): Promise<UserDTO | null> {
+		return this.userProjection.findById(id.value).exec();
+	}
 }

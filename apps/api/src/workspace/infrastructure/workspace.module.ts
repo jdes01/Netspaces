@@ -8,6 +8,9 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CreateWorkspaceDTO } from '@netspaces/contracts';
 
+import { RedisModule } from '../../redis.module';
+import { SpaceService } from '../../space/infrastructure/service/space.service';
+import { USER_PROJECTION, UserSchema } from '../../user/infrastructure/projection';
 import { CommandHandlers } from '../application/command';
 import { QueryHandlers } from '../application/query';
 import { WorkspaceWasCreatedEvent } from '../domain/event';
@@ -18,12 +21,6 @@ import { ProjectionHandlers } from './projection';
 import { WORKSPACE_PROJECTION, WorkspaceSchema } from './projection/workspace.schema';
 import { WorkspaceService } from './service/workspace.service';
 import { WorkspaceProviders } from './workspace.providers';
-import { SpaceService } from '../../space/infrastructure/service/space.service';
-
-
-import { RedisModule } from '../../redis.module'
-import { USER_PROJECTION, UserSchema } from '../../user/infrastructure/projection';
-
 
 @Module({
 	controllers: [WorkspaceController],
@@ -69,4 +66,4 @@ import { USER_PROJECTION, UserSchema } from '../../user/infrastructure/projectio
 		RedisModule,
 	],
 })
-export class WorkspaceModule { }
+export class WorkspaceModule {}

@@ -11,12 +11,12 @@ import {
 } from '@nestjs/common';
 import { CreateSpaceDTO, SpaceDTO } from '@netspaces/contracts';
 
-import { SpaceService } from '../service/space.service';
 import { SpaceError } from '../../domain/exception';
+import { SpaceService } from '../service/space.service';
 
 @Controller('spaces')
 export class SpaceController {
-	constructor(private readonly spaceService: SpaceService) { }
+	constructor(private readonly spaceService: SpaceService) {}
 
 	@Post()
 	@HttpCode(200)
@@ -30,12 +30,9 @@ export class SpaceController {
 			createSpaceDTO.amenities.map((amenity) => amenity.toString()),
 		);
 
-		createdSpaceResult.mapErr<SpaceError>(
-			(err) => {
-				throw new HttpException(err.message, HttpStatus.CONFLICT);
-			}
-		)
-
+		createdSpaceResult.mapErr<SpaceError>((err) => {
+			throw new HttpException(err.message, HttpStatus.CONFLICT);
+		});
 	}
 
 	@Get()

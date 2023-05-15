@@ -10,5 +10,5 @@ export class CreateWorkspaceCommand implements ICommand {
 		public readonly city: string,
 		public readonly country: string,
 		public readonly services: Array<string>,
-	) { }
+	) {}
 }

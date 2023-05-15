@@ -8,13 +8,13 @@ export type WorkspaceDocument = WorkspaceDTO & Document;
 export const WorkspaceSchema = new Schema(
 	{
 		_id: String,
-		owner: String,
-		name: String,
-		description: String,
-		street: String,
 		city: String,
 		country: String,
+		description: String,
+		name: String,
+		owner: String,
 		services: Array<string>,
+		street: String,
 	},
 	{
 		versionKey: false,

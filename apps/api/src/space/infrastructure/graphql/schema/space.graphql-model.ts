@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType, Int } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class Space {

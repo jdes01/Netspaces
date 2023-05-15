@@ -1,29 +1,26 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-
-import { SpaceProjections, UserProjections, BookingProjections } from './infrastructure/projection';
-import { SPACE_PROJECTION, SpaceSchema } from './infrastructure/projection/schema/space.schema';
-import { USER_PROJECTION, UserSchema } from './infrastructure/projection/schema/user.schema';
-
-import { GraphQLModule } from '@nestjs/graphql';
+import { Event, EVENTSTORE_KEYSTORE_CONNECTION, EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { BookingWasCreatedEvent } from './domain/event';
-import { CreateBookingDTO } from '@netspaces/contracts';
-import { Booking } from './domain/model/booking';
-
-import { Event, EventStoreModule, EVENTSTORE_KEYSTORE_CONNECTION } from '@aulasoftwarelibre/nestjs-eventstore';
-import { BOOKING_PROJECTION, BookingSchema } from './infrastructure/projection/schema/booking.schema';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
+import { GraphQLModule } from '@nestjs/graphql';
+import { MongooseModule } from '@nestjs/mongoose';
+import { CreateBookingDTO } from '@netspaces/contracts';
+
+import configuration from '../config/configuration';
 import { BookingProviders } from './app.providers';
 import { CommandHandlers } from './application/command';
-import { BookingService } from './infrastructure/service/booking.service';
+import { BookingWasCreatedEvent } from './domain/event';
+import { Booking } from './domain/model/booking';
 import { BookingResolver } from './infrastructure/graphql/resolvers/booking.resolver';
-import { ConfigModule } from '@nestjs/config';
-import configuration from '../config/configuration';
-
-
+import { BookingProjections, SpaceProjections, UserProjections } from './infrastructure/projection';
+import { BOOKING_PROJECTION, BookingSchema } from './infrastructure/projection/schema/booking.schema';
+import { SPACE_PROJECTION, SpaceSchema } from './infrastructure/projection/schema/space.schema';
+import { USER_PROJECTION, UserSchema } from './infrastructure/projection/schema/user.schema';
+import { BookingService } from './infrastructure/service/booking.service';
 
 @Module({
+	controllers: [...SpaceProjections, ...UserProjections],
 	imports: [
 		ConfigModule.forRoot({
 			envFilePath: [`.env.${process.env.NODE_ENV}.local`, `.env.${process.env.NODE_ENV}`, '.env.local', '.env'],
@@ -36,7 +33,7 @@ import configuration from '../config/configuration';
 		}),
 		CqrsModule,
 		EventStoreModule.forRoot({
-			connection: process.env.BOOKING_MICROSERVICE_EVENTSTORE_URI || "",
+			connection: process.env.BOOKING_MICROSERVICE_EVENTSTORE_URI || '',
 		}),
 		EventStoreModule.forFeature([Booking], {
 			BookingWasCreatedEvent: (event: Event<CreateBookingDTO>) =>
@@ -49,8 +46,8 @@ import configuration from '../config/configuration';
 					event.payload.year,
 				),
 		}),
-		MongooseModule.forRoot(process.env.BOOKING_MICROSERVICE_MONGO_URI || "", {}),
-		MongooseModule.forRoot(process.env.BOOKING_MICROSERVICE_KEYSTORE_URI || "", {
+		MongooseModule.forRoot(process.env.BOOKING_MICROSERVICE_MONGO_URI || '', {}),
+		MongooseModule.forRoot(process.env.BOOKING_MICROSERVICE_KEYSTORE_URI || '', {
 			connectionName: EVENTSTORE_KEYSTORE_CONNECTION,
 		}),
 
@@ -69,13 +66,6 @@ import configuration from '../config/configuration';
 			},
 		]),
 	],
-	controllers: [...SpaceProjections, ...UserProjections],
-	providers: [
-		...CommandHandlers,
-		...BookingProjections,
-		...BookingProviders,
-		BookingService,
-		BookingResolver,
-	],
+	providers: [...CommandHandlers, ...BookingProjections, ...BookingProviders, BookingService, BookingResolver],
 })
-export class BookingModule { }
+export class BookingModule {}

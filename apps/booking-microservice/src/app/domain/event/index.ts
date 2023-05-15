@@ -1,2 +1,2 @@
-export * from './booking-was-created'
-export * from './booking-was-deleted'
+export * from './booking-was-created';
+export * from './booking-was-deleted';

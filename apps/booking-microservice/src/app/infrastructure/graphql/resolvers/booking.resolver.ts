@@ -1,13 +1,13 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-
-import { GraphQLError } from 'graphql';
-import { Booking, BookingInput } from '../schema/booking.graphql-model';
-import { BookingService } from '../../service/booking.service';
 import { SerializedDate } from '@netspaces/domain';
+import { GraphQLError } from 'graphql';
+
+import { BookingService } from '../../service/booking.service';
+import { Booking, BookingInput } from '../schema/booking.graphql-model';
 
 @Resolver((_of: any) => Booking)
 export class BookingResolver {
-	constructor(private readonly bookingService: BookingService) { }
+	constructor(private readonly bookingService: BookingService) {}
 
 	@Query(() => String)
 	sayHello(): string {
@@ -16,7 +16,11 @@ export class BookingResolver {
 
 	@Mutation((_returns) => String)
 	async createBooking(@Args('bookingInput') bookingInput: BookingInput): Promise<string> {
-		const serializedDate: SerializedDate = { day: bookingInput.day, month: bookingInput.month, year: bookingInput.year }
+		const serializedDate: SerializedDate = {
+			day: bookingInput.day,
+			month: bookingInput.month,
+			year: bookingInput.year,
+		};
 		const createdBookingResult = await this.bookingService.createBooking(
 			bookingInput.userId,
 			bookingInput.spaceId,
@@ -25,11 +29,11 @@ export class BookingResolver {
 
 		return createdBookingResult.match<string>(
 			(_) => {
-				return 'Booking created successfully'
+				return 'Booking created successfully';
 			},
 			(err) => {
 				throw new GraphQLError(err.message);
-			}
-		)
+			},
+		);
 	}
 }
