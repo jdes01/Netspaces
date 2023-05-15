@@ -13,14 +13,7 @@ export class Booking extends AggregateRoot {
 	public static add(id: BookingId, userId: BookingUserId, spaceId: BookingSpaceId, date: BookingDate): Booking {
 		const booking = new Booking();
 
-		const event = new BookingWasCreatedEvent(
-			id.value,
-			userId.value,
-			spaceId.value,
-			date.day,
-			date.month,
-			date.year,
-		);
+		const event = new BookingWasCreatedEvent(id.value, userId.value, spaceId.value, date.day, date.month, date.year);
 
 		booking.apply(event);
 

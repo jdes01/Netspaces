@@ -10,13 +10,7 @@ import { WORKSPACE_FINDER, WorkspaceFinder } from '../../../application/service/
 import { WorkspaceAlreadyExistsError, WorkspaceOwnerNotFoundError } from '../../../domain/exception';
 import { WorkspaceError } from '../../../domain/exception/workspace-error';
 import { Workspace } from '../../../domain/model';
-import {
-	WorkspaceDescription,
-	WorkspaceId,
-	WorkspaceLocation,
-	WorkspaceName,
-	WorkspaceService,
-} from '../../../domain/model/value-objects';
+import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, WorkspaceService } from '../../../domain/model/value-objects';
 import { WorkspaceOwnerId } from '../../../domain/model/value-objects/workspace-owner-id';
 
 @CommandHandler(CreateWorkspaceCommand)

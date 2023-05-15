@@ -29,24 +29,8 @@ import { WorkspaceCard } from '../../../components/workspacesPage/workspaceCard'
 import { SpaceCard } from '../../../components/workspacesPage/workspaceSpaces/spaceCard';
 
 const CREATE_SPACE_MUTATION = gql`
-	mutation CreateSpaceMutation(
-		$_id: String!
-		$workspaceId: String!
-		$name: String!
-		$quantity: Int!
-		$seats: Int!
-		$amenities: [String!]!
-	) {
-		createSpace(
-			spaceInput: {
-				_id: $_id
-				workspaceId: $workspaceId
-				name: $name
-				quantity: $quantity
-				seats: $seats
-				amenities: $amenities
-			}
-		)
+	mutation CreateSpaceMutation($_id: String!, $workspaceId: String!, $name: String!, $quantity: Int!, $seats: Int!, $amenities: [String!]!) {
+		createSpace(spaceInput: { _id: $_id, workspaceId: $workspaceId, name: $name, quantity: $quantity, seats: $seats, amenities: $amenities })
 	}
 `;
 
@@ -118,13 +102,7 @@ const Workspace = () => {
 						))}
 					</SimpleGrid>
 					<HStack position="fixed" bottom={10} left={10}>
-						<IconButton
-							aria-label="toggle theme"
-							rounded="full"
-							size="lg"
-							onClick={() => onOpen()}
-							icon={<BsBuildingFillAdd />}
-						/>
+						<IconButton aria-label="toggle theme" rounded="full" size="lg" onClick={() => onOpen()} icon={<BsBuildingFillAdd />} />
 					</HStack>
 
 					<Modal isOpen={isOpen} onClose={onClose}>

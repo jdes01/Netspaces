@@ -18,9 +18,7 @@ export class WorkspaceService extends ValueObject<{
 		);
 	}
 
-	public static fromStringList(
-		services: Array<string>,
-	): Result<Array<WorkspaceService>, WorkspaceServiceNotValidError> {
+	public static fromStringList(services: Array<string>): Result<Array<WorkspaceService>, WorkspaceServiceNotValidError> {
 		try {
 			return new Ok(
 				services.map(

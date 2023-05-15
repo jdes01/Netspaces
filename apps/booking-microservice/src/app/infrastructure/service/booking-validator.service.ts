@@ -5,12 +5,7 @@ import { BOOKING_FINDER, BookingFinder } from '../../application/service/booking
 import { BookingValidator } from '../../application/service/booking-validator.service';
 import { SPACE_FINDER, SpaceFinder } from '../../application/service/space-finder.service';
 import { USER_FINDER, UserFinder } from '../../application/service/user-finder.service';
-import {
-	BookingAlreadyExistsError,
-	BookingError,
-	BookingSpaceNotFoundError,
-	BookingUserNotFoundError,
-} from '../../domain/exception';
+import { BookingAlreadyExistsError, BookingError, BookingSpaceNotFoundError, BookingUserNotFoundError } from '../../domain/exception';
 import { BookingId, BookingSpaceId, BookingUserId } from '../../domain/model/value-objects';
 
 @Injectable()
@@ -24,14 +19,9 @@ export class MongoDBBookingValidator implements BookingValidator {
 		private readonly spaceFinder: SpaceFinder,
 	) {}
 
-	async validate(
-		userId: BookingUserId,
-		spaceId: BookingSpaceId,
-		bookingId: BookingId,
-	): Promise<Result<null, BookingError>> {
+	async validate(userId: BookingUserId, spaceId: BookingSpaceId, bookingId: BookingId): Promise<Result<null, BookingError>> {
 		if (await this.bookingFinder.find(bookingId)) return new Err(BookingAlreadyExistsError.withId(bookingId));
-		if ((await this.spaceFinder.find(spaceId)) === null)
-			return new Err(BookingSpaceNotFoundError.withSpaceId(spaceId));
+		if ((await this.spaceFinder.find(spaceId)) === null) return new Err(BookingSpaceNotFoundError.withSpaceId(spaceId));
 		if ((await this.userFinder.find(userId)) === null) return new Err(BookingUserNotFoundError.withUserId(userId));
 		return new Ok(null);
 	}

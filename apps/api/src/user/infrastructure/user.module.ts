@@ -42,8 +42,7 @@ import { UserProviders } from './user.providers';
 			},
 		]),
 		EventStoreModule.forFeature([User], {
-			UserWasCreatedEvent: (event: Event<CreateUserDTO>) =>
-				new UserWasCreatedEvent(event.payload._id, event.payload.name),
+			UserWasCreatedEvent: (event: Event<CreateUserDTO>) => new UserWasCreatedEvent(event.payload._id, event.payload.name),
 		}),
 		MongooseModule.forFeature([
 			{

@@ -12,14 +12,7 @@ export type SpaceWasCreatedMessage = {
 };
 
 export class SpaceWasCreatedMessageBuilder {
-	static build(
-		_id: string,
-		workspaceId: string,
-		name: string,
-		quantity: number,
-		seats: number,
-		amenities: Array<SpaceAmenitiesTypes>,
-	) {
+	static build(_id: string, workspaceId: string, name: string, quantity: number, seats: number, amenities: Array<SpaceAmenitiesTypes>) {
 		return {
 			_id,
 			amenities,

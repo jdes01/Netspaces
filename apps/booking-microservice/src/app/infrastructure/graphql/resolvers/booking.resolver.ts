@@ -21,11 +21,7 @@ export class BookingResolver {
 			month: bookingInput.month,
 			year: bookingInput.year,
 		};
-		const createdBookingResult = await this.bookingService.createBooking(
-			bookingInput.userId,
-			bookingInput.spaceId,
-			serializedDate,
-		);
+		const createdBookingResult = await this.bookingService.createBooking(bookingInput.userId, bookingInput.spaceId, serializedDate);
 
 		return createdBookingResult.match<string>(
 			(_) => {

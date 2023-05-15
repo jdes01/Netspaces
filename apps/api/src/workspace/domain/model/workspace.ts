@@ -4,13 +4,7 @@ import { Space } from '../../../space/domain/model';
 import { SpaceAmenity, SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from '../../../space/domain/model/value-objects';
 import { WorkspaceWasCreatedEvent, WorkspaceWasDeleted } from '../event';
 import { WorkspaceServiceNotValidError } from '../exception/workspace-service-not-valid-error';
-import {
-	WorkspaceDescription,
-	WorkspaceId,
-	WorkspaceLocation,
-	WorkspaceName,
-	WorkspaceService,
-} from './value-objects/';
+import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, WorkspaceService } from './value-objects/';
 import { WorkspaceOwnerId } from './value-objects/workspace-owner-id';
 
 export class Workspace extends AggregateRoot {
@@ -48,13 +42,7 @@ export class Workspace extends AggregateRoot {
 		return workspace;
 	}
 
-	public addSpace(
-		spaceId: SpaceId,
-		name: SpaceName,
-		quantity: SpaceQuantity,
-		seats: SpaceSeats,
-		amenities: Array<SpaceAmenity>,
-	): Space {
+	public addSpace(spaceId: SpaceId, name: SpaceName, quantity: SpaceQuantity, seats: SpaceSeats, amenities: Array<SpaceAmenity>): Space {
 		return Space.add(spaceId, this.id, name, quantity, seats, amenities);
 	}
 

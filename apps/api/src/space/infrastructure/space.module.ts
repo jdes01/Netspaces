@@ -69,14 +69,6 @@ import { SpaceProviders } from './space.providers';
 			driver: ApolloDriver,
 		}),
 	],
-	providers: [
-		...CommandHandlers,
-		...QueryHandlers,
-		...ProjectionHandlers,
-		...MessageProducers,
-		...SpaceProviders,
-		SpaceResolver,
-		SpaceService,
-	],
+	providers: [...CommandHandlers, ...QueryHandlers, ...ProjectionHandlers, ...MessageProducers, ...SpaceProviders, SpaceResolver, SpaceService],
 })
 export class SpaceModule {}

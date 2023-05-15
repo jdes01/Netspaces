@@ -117,13 +117,7 @@ export function Index({ userId }: Props) {
 			<Box p="5" bg={'#FAF9F6'} m={[0, null, 5]}>
 				<WorkspaceGrid workspaces={workspaces}></WorkspaceGrid>
 				<HStack position="fixed" bottom={10} left={10}>
-					<IconButton
-						aria-label="toggle theme"
-						rounded="full"
-						size="lg"
-						onClick={() => onOpen()}
-						icon={<BsBuildingFillAdd />}
-					/>
+					<IconButton aria-label="toggle theme" rounded="full" size="lg" onClick={() => onOpen()} icon={<BsBuildingFillAdd />} />
 					<Box pl={5} bgColor={'#FAF9F6'} borderColor={'black'} rounded={70}>
 						<Text fontSize={'xl'}>Welcome {userName}</Text>
 					</Box>

@@ -1,14 +1,4 @@
-import {
-	Body,
-	Controller,
-	Get,
-	HttpCode,
-	HttpException,
-	HttpStatus,
-	Param,
-	Post,
-	ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpException, HttpStatus, Param, Post, ValidationPipe } from '@nestjs/common';
 import { CreateSpaceDTO, SpaceDTO } from '@netspaces/contracts';
 
 import { SpaceError } from '../../domain/exception';

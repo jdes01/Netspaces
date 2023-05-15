@@ -1,12 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import {
-	WorkspaceDescription,
-	WorkspaceId,
-	WorkspaceLocation,
-	WorkspaceName,
-	WorkspaceService,
-} from '../../../domain/model/value-objects';
+import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, WorkspaceService } from '../../../domain/model/value-objects';
 import { Workspace } from '../../../domain/model/workspace';
 import { WORKSPACE_REPOSITORY, WorkspaceRepository } from '../../../domain/repository';
 import { WORKSPACE_FINDER, WorkspaceFinder } from '../../service/workspace-finder.service';

@@ -31,13 +31,7 @@ export function WorkspaceCard({ workspace }: WorkspaceCardProps) {
 				</Box>
 
 				<Box display="flex" alignItems="baseline" mt={2}>
-					<Box
-						color="gray.500"
-						fontWeight="semibold"
-						letterSpacing="wide"
-						fontSize="xs"
-						textTransform="uppercase"
-					>
+					<Box color="gray.500" fontWeight="semibold" letterSpacing="wide" fontSize="xs" textTransform="uppercase">
 						{workspace.city}, {workspace.country}
 					</Box>
 				</Box>

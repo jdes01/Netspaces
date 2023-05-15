@@ -21,9 +21,7 @@ export class SpaceService {
 		seats: number,
 		amenities: Array<string>,
 	): Promise<Result<null, SpaceError>> {
-		return this.commandBus.execute<ICommand, Result<null, SpaceError>>(
-			new CreateSpaceCommand(id, workspaceId, name, quantity, seats, amenities),
-		);
+		return this.commandBus.execute<ICommand, Result<null, SpaceError>>(new CreateSpaceCommand(id, workspaceId, name, quantity, seats, amenities));
 	}
 
 	async getSpaces(): Promise<Array<SpaceDTO>> {
