@@ -11,9 +11,6 @@ export class BookingDTO {
     readonly userId: string;
 
     @ApiProperty()
-    readonly workspaceId: string;
-
-    @ApiProperty()
     readonly spaceId: string;
 
     @ApiProperty()

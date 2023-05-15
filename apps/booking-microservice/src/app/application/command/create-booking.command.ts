@@ -4,7 +4,6 @@ import { SerializedDate } from '@netspaces/domain';
 export class CreateBookingCommand implements ICommand {
     constructor(
         public readonly userId: string,
-        public readonly workspaceId: string,
         public readonly spaceId: string,
         public readonly serializedDate: SerializedDate,
     ) { }

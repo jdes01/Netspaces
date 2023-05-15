@@ -2,7 +2,6 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
-import { SerializedDate } from '../../../../../domain/src/lib/serialized-date'
 
 export class CreateBookingDTO {
     @ApiProperty()
@@ -14,11 +13,6 @@ export class CreateBookingDTO {
     @IsNotEmpty()
     @IsUUID()
     readonly userId: string;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
-    readonly workspaceId: string;
 
     @ApiProperty()
     @IsNotEmpty()

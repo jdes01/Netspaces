@@ -12,13 +12,12 @@ export class BookingService {
 
     async createBooking(
         userId: string,
-        workspaceId: string,
         spaceId: string,
         date: SerializedDate
     ): Promise<Result<null, BookingError>> {
 
         return this.commandBus.execute<ICommand, Result<null, BookingError>>(
-            new CreateBookingCommand(userId, workspaceId, spaceId, date),
+            new CreateBookingCommand(userId, spaceId, date),
         );
     }
 

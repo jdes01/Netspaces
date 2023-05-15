@@ -1,5 +1,4 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { SerializedDate } from '@netspaces/domain';
 
 @ObjectType()
 export class Booking {
@@ -8,9 +7,6 @@ export class Booking {
 
 	@Field()
 	userId?: string;
-
-	@Field()
-	workspaceId?: string;
 
 	@Field()
 	spaceId?: string;
@@ -29,9 +25,6 @@ export class Booking {
 export class BookingInput {
 	@Field()
 	userId!: string;
-
-	@Field()
-	workspaceId!: string;
 
 	@Field()
 	spaceId!: string;

@@ -1,12 +1,10 @@
 import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
 import { BookingWasCreatedEvent, BookingWasDeleted } from '../event';
-import { BookingId, BookingDate, BookingSpaceId, BookingUserId, BookingWorkspaceId } from './value-objects';
-import { Logger } from '@nestjs/common';
+import { BookingId, BookingDate, BookingSpaceId, BookingUserId } from './value-objects';
 
 export class Booking extends AggregateRoot {
     private _id!: BookingId;
     private _userId!: BookingUserId;
-    private _workspaceId!: BookingWorkspaceId;
     private _spaceId!: BookingSpaceId;
     private _date!: BookingDate;
     private _deleted: Boolean;
@@ -14,7 +12,6 @@ export class Booking extends AggregateRoot {
     public static add(
         id: BookingId,
         userId: BookingUserId,
-        workspaceId: BookingWorkspaceId,
         spaceId: BookingSpaceId,
         date: BookingDate,
     ): Booking {
@@ -24,7 +21,6 @@ export class Booking extends AggregateRoot {
         const event = new BookingWasCreatedEvent(
             id.value,
             userId.value,
-            workspaceId.value,
             spaceId.value,
             date.day,
             date.month,
@@ -39,7 +35,6 @@ export class Booking extends AggregateRoot {
     private onBookingWasCreatedEvent(event: BookingWasCreatedEvent): void {
         this._id = BookingId.fromString(event.id);
         this._userId = BookingUserId.fromString(event.userId)
-        this._workspaceId = BookingWorkspaceId.fromString(event.workspaceId)
         this._spaceId = BookingSpaceId.fromString(event.spaceId)
         this._date = BookingDate.fromNumbers(event.day, event.month, event.year)
 
@@ -60,10 +55,6 @@ export class Booking extends AggregateRoot {
 
     public get userId(): BookingUserId {
         return this._userId;
-    }
-
-    public get workspaceId(): BookingWorkspaceId {
-        return this._workspaceId;
     }
 
     public get spaceId(): BookingSpaceId {

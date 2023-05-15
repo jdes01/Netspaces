@@ -3,9 +3,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GraphQLError } from 'graphql';
 import { Booking, BookingInput } from '../schema/booking.graphql-model';
 import { BookingService } from '../../service/booking.service';
-import { BookingDate } from '../../../domain/model/value-objects';
 import { SerializedDate } from '@netspaces/domain';
-import { Logger } from '@nestjs/common';
 
 @Resolver((_of: any) => Booking)
 export class BookingResolver {
@@ -21,7 +19,6 @@ export class BookingResolver {
 		const serializedDate: SerializedDate = { day: bookingInput.day, month: bookingInput.month, year: bookingInput.year }
 		const createdBookingResult = await this.bookingService.createBooking(
 			bookingInput.userId,
-			bookingInput.workspaceId,
 			bookingInput.spaceId,
 			serializedDate,
 		);

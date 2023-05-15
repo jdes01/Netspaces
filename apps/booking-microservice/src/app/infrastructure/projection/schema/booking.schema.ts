@@ -9,7 +9,6 @@ export const BookingSchema = new Schema(
     {
         _id: String,
         userId: String,
-        workspaceId: String,
         spaceId: String,
         day: Number,
         month: Number,

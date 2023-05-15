@@ -9,7 +9,7 @@ import { KafkaOptions, Transport } from '@nestjs/microservices';
 import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 
 
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppLoggerMiddleware } from './app.middleware';
 import { BookingModule } from './app/app.module';
 
@@ -27,7 +27,6 @@ export class AppModule implements NestModule {
 
 
 async function bootstrap() {
-
 	const app = await NestFactory.create(AppModule);
 
 	app.setGlobalPrefix(GLOBAL_PREFIX);
@@ -38,26 +37,30 @@ async function bootstrap() {
 		origin: true,
 	});
 
-	const port = process.env.PORT || 3333;
-
-	app.connectMicroservice<KafkaOptions>(
-		{
-			transport: Transport.KAFKA,
-			options: {
-				client: {
-					brokers: ['kafka:9092'],
-					logLevel: logLevel.ERROR
-				},
-				consumer: {
-					groupId: 'booking-consumer'
-				},
+	app.enableShutdownHooks();
+	app.connectMicroservice<KafkaOptions>({
+		options: {
+			client: {
+				brokers: ['kafka:9092'],
+				clientId: 'booking-microservice',
+				logLevel: logLevel.INFO,
 			},
-		}
-	)
+			consumer: {
+				allowAutoTopicCreation: true,
+				groupId: 'booking-consumer',
+			},
+		},
+		transport: Transport.KAFKA,
+	});
 
-	await app.startAllMicroservices();
+	app.startAllMicroservices().then(() => {
+		Logger.log('Microservices are ready');
+	});
 
-	await app.listen(port);
+	const port = process.env.PORT || 3333;
+	await app.listen(port, () => {
+		Logger.log('Listening at http://localhost:' + port + '/' + GLOBAL_PREFIX);
+	});
 }
 
 bootstrap();

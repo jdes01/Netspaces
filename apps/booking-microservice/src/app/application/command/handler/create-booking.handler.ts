@@ -1,19 +1,14 @@
 import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
-import { Inject, Logger } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'neverthrow';
-
-import { BookingAlreadyExistsError, BookingError, BookingWorkspaceNotFoundError, BookingSpaceNotFoundError, BookingUserNotFoundError } from '../../../domain/exception';
+import { BookingError } from '../../../domain/exception';
 import { Booking } from '../../../domain/model/booking';
 import {
-    BookingWorkspaceId, BookingId, BookingSpaceId, BookingUserId, BookingDate
+    BookingId, BookingSpaceId, BookingUserId, BookingDate
 } from '../../../domain/model/value-objects';
 import { CreateBookingCommand } from '../create-booking.command';
-import { BookingFinder, BOOKING_FINDER } from '../../service/booking-finder.service';
-import { WORKSPACE_FINDER, WorkspaceFinder } from '../../service/workspace-finder.service';
-import { USER_FINDER, UserFinder } from '../../service/user-finder.service';
-import { SPACE_FINDER, SpaceFinder } from '../../service/space-finder.service';
-import { BookingSpaceDoesNotBelongsToWorkspaceError } from '../../../domain/exception/booking-space-does-not-belongs-to-workspace-error';
+import { BOOKING_VALIDATOR, BookingValidator } from '../../service/booking-validator.service';
 
 
 @CommandHandler(CreateBookingCommand)
@@ -21,37 +16,31 @@ export class CreateBookingHandler implements ICommandHandler<CreateBookingComman
     constructor(
         @InjectAggregateRepository(Booking)
         private readonly bookingRepository: AggregateRepository<Booking, BookingId>,
-        @Inject(BOOKING_FINDER)
-        private readonly bookingFinder: BookingFinder,
-        @Inject(WORKSPACE_FINDER)
-        private readonly workspaceFinder: WorkspaceFinder,
-        @Inject(USER_FINDER)
-        private readonly userFinder: UserFinder,
-        @Inject(SPACE_FINDER)
-        private readonly spaceFinder: SpaceFinder,
+        @Inject(BOOKING_VALIDATOR)
+        private readonly bookingValidator: BookingValidator
     ) { }
 
     async execute(command: CreateBookingCommand): Promise<Result<null, BookingError>> {
 
-        const id = BookingId.random();
-        if (await this.bookingFinder.find(id)) return new Err(BookingAlreadyExistsError.withId(id));
-
-        const workspaceId = BookingWorkspaceId.fromString(command.workspaceId)
-        if (await this.workspaceFinder.find(workspaceId) === null) return new Err(BookingWorkspaceNotFoundError.withWorkspaceId(workspaceId))
-
-        const spaceId = BookingSpaceId.fromString(command.spaceId)
-        if (await this.spaceFinder.find(spaceId) === null) return new Err(BookingSpaceNotFoundError.withSpaceId(spaceId))
-
-        if (await this.spaceFinder.findSpaceInWorkspace(workspaceId, spaceId) === false) return new Err(BookingSpaceDoesNotBelongsToWorkspaceError.withIds(workspaceId, spaceId))
-
+        const bookingId = BookingId.random();
         const userId = BookingUserId.fromString(command.userId)
-        if (await this.userFinder.find(userId) === null) return new Err(BookingUserNotFoundError.withUserId(userId))
+        const spaceId = BookingSpaceId.fromString(command.spaceId)
 
-        const bookingDate = BookingDate.fromSerializedDate(command.serializedDate)
+        const validatorResult = await this.bookingValidator.validate(userId, spaceId, bookingId)
 
-        const booking = Booking.add(id, userId, workspaceId, spaceId, bookingDate);
+        return validatorResult.match<Result<null, BookingError>>(
+            (_) => {
+                const bookingDate = BookingDate.fromSerializedDate(command.serializedDate)
+                const booking = Booking.add(bookingId, userId, spaceId, bookingDate);
+                this.bookingRepository.save(booking);
 
-        this.bookingRepository.save(booking);
-        return new Ok(null)
+                return new Ok(null)
+            },
+            (err) => {
+
+                return new Err(err)
+            }
+        )
+
     }
 }

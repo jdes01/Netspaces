@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { WORKSPACE_PROJECTION, WorkspaceSchema } from './infrastructure/projection/schema/workspace.schema';
-import { SpaceProjections, WorkspaceProjections, UserProjections, BookingProjections } from './infrastructure/projection';
+import { SpaceProjections, UserProjections, BookingProjections } from './infrastructure/projection';
 import { SPACE_PROJECTION, SpaceSchema } from './infrastructure/projection/schema/space.schema';
 import { USER_PROJECTION, UserSchema } from './infrastructure/projection/schema/user.schema';
 
@@ -44,7 +43,6 @@ import configuration from '../config/configuration';
 				new BookingWasCreatedEvent(
 					event.payload._id,
 					event.payload.userId,
-					event.payload.workspaceId,
 					event.payload.spaceId,
 					event.payload.day,
 					event.payload.month,
@@ -62,10 +60,6 @@ import configuration from '../config/configuration';
 				schema: BookingSchema,
 			},
 			{
-				name: WORKSPACE_PROJECTION,
-				schema: WorkspaceSchema,
-			},
-			{
 				name: SPACE_PROJECTION,
 				schema: SpaceSchema,
 			},
@@ -75,7 +69,7 @@ import configuration from '../config/configuration';
 			},
 		]),
 	],
-	controllers: [...WorkspaceProjections, ...SpaceProjections, ...UserProjections],
+	controllers: [...SpaceProjections, ...UserProjections],
 	providers: [
 		...CommandHandlers,
 		...BookingProjections,
