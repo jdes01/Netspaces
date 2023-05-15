@@ -13,6 +13,7 @@ import { BookingFinder, BOOKING_FINDER } from '../../service/booking-finder.serv
 import { WORKSPACE_FINDER, WorkspaceFinder } from '../../service/workspace-finder.service';
 import { USER_FINDER, UserFinder } from '../../service/user-finder.service';
 import { SPACE_FINDER, SpaceFinder } from '../../service/space-finder.service';
+import { BookingSpaceDoesNotBelongsToWorkspaceError } from '../../../domain/exception/booking-space-does-not-belongs-to-workspace-error';
 
 
 @CommandHandler(CreateBookingCommand)
@@ -40,6 +41,8 @@ export class CreateBookingHandler implements ICommandHandler<CreateBookingComman
 
         const spaceId = BookingSpaceId.fromString(command.spaceId)
         if (await this.spaceFinder.find(spaceId) === null) return new Err(BookingSpaceNotFoundError.withSpaceId(spaceId))
+
+        if (await this.spaceFinder.findSpaceInWorkspace(workspaceId, spaceId) === false) return new Err(BookingSpaceDoesNotBelongsToWorkspaceError.withIds(workspaceId, spaceId))
 
         const userId = BookingUserId.fromString(command.userId)
         if (await this.userFinder.find(userId) === null) return new Err(BookingUserNotFoundError.withUserId(userId))

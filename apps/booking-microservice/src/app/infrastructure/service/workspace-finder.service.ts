@@ -17,5 +17,4 @@ export class MongoDBWorkspaceFinder implements WorkspaceFinder {
     find(id: BookingWorkspaceId): Promise<WorkspaceDTO | null> {
         return this.workspaceProjection.findById(id.value).exec();
     }
-
 }
