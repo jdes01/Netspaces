@@ -16,13 +16,13 @@ export class CreateBookingHandler implements ICommandHandler<CreateBookingComman
 		private readonly bookingRepository: AggregateRepository<Booking, BookingId>,
 		@Inject(BOOKING_VALIDATOR)
 		private readonly bookingValidator: BookingValidator,
-	) {}
+	) { }
 
 	async execute(command: CreateBookingCommand): Promise<Result<null, BookingError>> {
 		const bookingId = BookingId.random();
 		const userId = BookingUserId.fromString(command.userId);
 		const spaceId = BookingSpaceId.fromString(command.spaceId);
-		const bookingDate = BookingDate.fromSerializedDate(command.serializedDate);
+		const bookingDate = BookingDate.fromSerializedDate(command.date);
 
 		const validatorResult = await this.bookingValidator.validate(userId, spaceId, bookingId, bookingDate);
 

@@ -13,11 +13,5 @@ export class BookingDTO {
 	readonly spaceId: string;
 
 	@ApiProperty()
-	readonly day: number;
-
-	@ApiProperty()
-	readonly day: month;
-
-	@ApiProperty()
-	readonly day: year;
+	readonly date: string;
 }

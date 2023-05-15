@@ -5,17 +5,13 @@ export class BookingWasCreatedEvent extends Event {
 		public readonly id: string,
 		public readonly userId: string,
 		public readonly spaceId: string,
-		public readonly day: number,
-		public readonly month: number,
-		public readonly year: number,
+		public readonly date: string,
 	) {
 		super(id, {
 			_id: id,
-			day,
-			month,
-			spaceId,
 			userId,
-			year,
+			spaceId,
+			date,
 		});
 	}
 }

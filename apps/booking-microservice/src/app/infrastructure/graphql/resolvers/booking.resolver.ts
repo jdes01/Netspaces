@@ -7,7 +7,7 @@ import { Booking, BookingInput } from '../schema/booking.graphql-model';
 
 @Resolver((_of: any) => Booking)
 export class BookingResolver {
-	constructor(private readonly bookingService: BookingService) {}
+	constructor(private readonly bookingService: BookingService) { }
 
 	@Query(() => String)
 	sayHello(): string {
@@ -16,12 +16,8 @@ export class BookingResolver {
 
 	@Mutation((_returns) => String)
 	async createBooking(@Args('bookingInput') bookingInput: BookingInput): Promise<string> {
-		const serializedDate: SerializedDate = {
-			day: bookingInput.day,
-			month: bookingInput.month,
-			year: bookingInput.year,
-		};
-		const createdBookingResult = await this.bookingService.createBooking(bookingInput.userId, bookingInput.spaceId, serializedDate);
+
+		const createdBookingResult = await this.bookingService.createBooking(bookingInput.userId, bookingInput.spaceId, bookingInput.date);
 
 		return createdBookingResult.match<string>(
 			(_) => {

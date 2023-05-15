@@ -1,27 +1,14 @@
-import { SerializedDate, ValueObject } from '@netspaces/domain';
+import { ValueObject } from '@netspaces/domain';
+import { format, parse } from 'date-fns'
 
-export class BookingDate extends ValueObject<{ day: number; month: number; year: number }> {
-	public static fromNumbers(day: number, month: number, year: number): BookingDate {
-		return new BookingDate({ day: day, month: month, year: year });
+export class BookingDate extends ValueObject<{ date: Date }> {
+
+	public static fromSerializedDate(serializedDate: string): BookingDate {
+		return new BookingDate({ date: parse(serializedDate, 'dd-MM-yyyy', new Date()) });
 	}
 
-	get day() {
-		return this.props.day;
+	public toSerializedDate(): string {
+		return format(this.props.date, 'dd-MM-yyyy');
 	}
 
-	get month() {
-		return this.props.month;
-	}
-
-	get year() {
-		return this.props.year;
-	}
-
-	public static fromSerializedDate(serializedDate: SerializedDate): BookingDate {
-		return this.fromNumbers(serializedDate.day, serializedDate.month, serializedDate.year);
-	}
-
-	public toSerializedDate(): SerializedDate {
-		return { day: this.day, month: this.month, year: this.year };
-	}
 }

@@ -12,13 +12,7 @@ export class Booking {
 	spaceId?: string;
 
 	@Field()
-	day?: number;
-
-	@Field()
-	month?: number;
-
-	@Field()
-	year?: number;
+	date?: string;
 }
 
 @InputType()
@@ -30,11 +24,5 @@ export class BookingInput {
 	spaceId!: string;
 
 	@Field()
-	day!: number;
-
-	@Field()
-	month!: number;
-
-	@Field()
-	year!: number;
+	date!: string;
 }

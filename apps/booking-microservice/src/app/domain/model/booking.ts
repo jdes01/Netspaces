@@ -13,7 +13,7 @@ export class Booking extends AggregateRoot {
 	public static add(id: BookingId, userId: BookingUserId, spaceId: BookingSpaceId, date: BookingDate): Booking {
 		const booking = new Booking();
 
-		const event = new BookingWasCreatedEvent(id.value, userId.value, spaceId.value, date.day, date.month, date.year);
+		const event = new BookingWasCreatedEvent(id.value, userId.value, spaceId.value, date.toSerializedDate());
 
 		booking.apply(event);
 
@@ -24,7 +24,7 @@ export class Booking extends AggregateRoot {
 		this._id = BookingId.fromString(event.id);
 		this._userId = BookingUserId.fromString(event.userId);
 		this._spaceId = BookingSpaceId.fromString(event.spaceId);
-		this._date = BookingDate.fromNumbers(event.day, event.month, event.year);
+		this._date = BookingDate.fromSerializedDate(event.date);
 
 		this._deleted = false;
 	}

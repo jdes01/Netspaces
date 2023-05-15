@@ -41,9 +41,7 @@ import { BookingService } from './infrastructure/service/booking.service';
 					event.payload._id,
 					event.payload.userId,
 					event.payload.spaceId,
-					event.payload.day,
-					event.payload.month,
-					event.payload.year,
+					event.payload.date,
 				),
 		}),
 		MongooseModule.forRoot(process.env.BOOKING_MICROSERVICE_MONGO_URI || '', {}),
@@ -68,4 +66,4 @@ import { BookingService } from './infrastructure/service/booking.service';
 	],
 	providers: [...CommandHandlers, ...BookingProjections, ...BookingProviders, BookingService, BookingResolver],
 })
-export class BookingModule {}
+export class BookingModule { }

@@ -8,9 +8,9 @@ import { BookingError } from '../../domain/exception';
 
 @Injectable()
 export class BookingService {
-	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
+	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) { }
 
-	async createBooking(userId: string, spaceId: string, date: SerializedDate): Promise<Result<null, BookingError>> {
+	async createBooking(userId: string, spaceId: string, date: string): Promise<Result<null, BookingError>> {
 		return this.commandBus.execute<ICommand, Result<null, BookingError>>(new CreateBookingCommand(userId, spaceId, date));
 	}
 }
