@@ -18,11 +18,7 @@ export class BookingDate extends ValueObject<{ day: number, month: number, year:
     }
 
     public static fromSerializedDate(serializedDate: SerializedDate): BookingDate {
-        return new BookingDate({ day: serializedDate.day, month: serializedDate.month, year: serializedDate.year });
-    }
-
-    public static toSerializedDate(date: BookingDate): SerializedDate {
-        return { day: date.day, month: date.month, year: date.year }
+        return this.fromNumbers(serializedDate.day, serializedDate.month, serializedDate.year)
     }
 
     public toSerializedDate(): SerializedDate {

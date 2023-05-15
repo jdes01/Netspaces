@@ -1,6 +1,7 @@
 import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
 import { BookingWasCreatedEvent, BookingWasDeleted } from '../event';
 import { BookingId, BookingDate, BookingSpaceId, BookingUserId, BookingWorkspaceId } from './value-objects';
+import { Logger } from '@nestjs/common';
 
 export class Booking extends AggregateRoot {
     private _id!: BookingId;
@@ -25,7 +26,9 @@ export class Booking extends AggregateRoot {
             userId.value,
             workspaceId.value,
             spaceId.value,
-            date.toSerializedDate(),
+            date.day,
+            date.month,
+            date.year
         );
 
         booking.apply(event);
@@ -38,7 +41,7 @@ export class Booking extends AggregateRoot {
         this._userId = BookingUserId.fromString(event.userId)
         this._workspaceId = BookingWorkspaceId.fromString(event.workspaceId)
         this._spaceId = BookingSpaceId.fromString(event.spaceId)
-        this._date = BookingDate.fromSerializedDate(event.date)
+        this._date = BookingDate.fromNumbers(event.day, event.month, event.year)
 
         this._deleted = false;
     }

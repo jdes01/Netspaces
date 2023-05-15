@@ -1,5 +1,4 @@
 import { Event } from '@aulasoftwarelibre/nestjs-eventstore';
-import { SerializedDate } from '@netspaces/domain';
 
 export class BookingWasCreatedEvent extends Event {
     constructor(
@@ -7,14 +6,18 @@ export class BookingWasCreatedEvent extends Event {
         public readonly userId: string,
         public readonly workspaceId: string,
         public readonly spaceId: string,
-        public readonly date: SerializedDate,
+        public readonly day: number,
+        public readonly month: number,
+        public readonly year: number,
     ) {
         super(id, {
             _id: id,
             userId,
             workspaceId,
             spaceId,
-            date
+            day,
+            month,
+            year
         });
     }
 }

@@ -28,9 +28,6 @@ export class Booking {
 @InputType()
 export class BookingInput {
 	@Field()
-	_id!: string;
-
-	@Field()
 	userId!: string;
 
 	@Field()

@@ -1,7 +1,6 @@
 // @ts-nocheck
 
 import { ApiProperty } from '@nestjs/swagger';
-import { SerializedDate } from '../../../../../domain/src/lib/serialized-date';
 
 
 export class BookingDTO {
@@ -18,6 +17,11 @@ export class BookingDTO {
     readonly spaceId: string;
 
     @ApiProperty()
-    readonly date: SerializedDate;
+    readonly day: number;
 
+    @ApiProperty()
+    readonly day: month;
+
+    @ApiProperty()
+    readonly day: year;
 }

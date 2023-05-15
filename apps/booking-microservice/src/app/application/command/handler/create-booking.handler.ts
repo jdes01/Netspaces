@@ -1,5 +1,5 @@
 import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
-import { Inject } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'neverthrow';
 
@@ -32,7 +32,7 @@ export class CreateBookingHandler implements ICommandHandler<CreateBookingComman
 
     async execute(command: CreateBookingCommand): Promise<Result<null, BookingError>> {
 
-        const id = BookingId.fromString(command.id);
+        const id = BookingId.random();
         if (await this.bookingFinder.find(id)) return new Err(BookingAlreadyExistsError.withId(id));
 
         const workspaceId = BookingWorkspaceId.fromString(command.workspaceId)
@@ -44,7 +44,9 @@ export class CreateBookingHandler implements ICommandHandler<CreateBookingComman
         const userId = BookingUserId.fromString(command.userId)
         if (await this.userFinder.find(userId) === null) return new Err(BookingUserNotFoundError.withUserId(userId))
 
-        const booking = Booking.add(id, userId, workspaceId, spaceId, BookingDate.fromSerializedDate(command.serializedDate));
+        const bookingDate = BookingDate.fromSerializedDate(command.serializedDate)
+
+        const booking = Booking.add(id, userId, workspaceId, spaceId, bookingDate);
 
         this.bookingRepository.save(booking);
         return new Ok(null)

@@ -11,7 +11,9 @@ export const BookingSchema = new Schema(
         userId: String,
         workspaceId: String,
         spaceId: String,
-        date: String
+        day: Number,
+        month: Number,
+        year: Number
     },
     {
         versionKey: false,

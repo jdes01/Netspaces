@@ -5,6 +5,7 @@ import { Booking, BookingInput } from '../schema/booking.graphql-model';
 import { BookingService } from '../../service/booking.service';
 import { BookingDate } from '../../../domain/model/value-objects';
 import { SerializedDate } from '@netspaces/domain';
+import { Logger } from '@nestjs/common';
 
 @Resolver((_of: any) => Booking)
 export class BookingResolver {
@@ -17,11 +18,8 @@ export class BookingResolver {
 
 	@Mutation((_returns) => String)
 	async createBooking(@Args('bookingInput') bookingInput: BookingInput): Promise<string> {
-
 		const serializedDate: SerializedDate = { day: bookingInput.day, month: bookingInput.month, year: bookingInput.year }
-
 		const createdBookingResult = await this.bookingService.createBooking(
-			bookingInput._id,
 			bookingInput.userId,
 			bookingInput.workspaceId,
 			bookingInput.spaceId,

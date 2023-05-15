@@ -37,7 +37,8 @@ import { logLevel } from '@nestjs/microservices/external/kafka.interface';
                     },
                     consumer: {
                         groupId: 'booking-consumer'
-                    }
+                    },
+                    producerOnlyMode: true
                 }
             },
         ]),

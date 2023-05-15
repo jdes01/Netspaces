@@ -4,21 +4,22 @@ import { Model } from 'mongoose';
 import { BOOKING_PROJECTION, BookingDocument } from './schema/booking.schema';
 import { Controller, Logger } from '@nestjs/common';
 import { BookingWasCreatedEvent } from '../../domain/event';
+import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 
-@Controller()
-export class BookingWasCreatedProjection {
+@EventsHandler(BookingWasCreatedEvent)
+export class BookingWasCreatedProjection implements IEventHandler<BookingWasCreatedEvent>  {
     constructor(
         @InjectModel(BOOKING_PROJECTION)
         private readonly bookingProjection: Model<BookingDocument>,
     ) { }
 
-    async handle(message: BookingWasCreatedEvent) {
+    async handle(event: BookingWasCreatedEvent) {
 
         const booking = new this.bookingProjection({
-            ...message,
+            ...event.payload,
         });
         await booking.save();
 
-        Logger.log(`Booking ${message._id} stored`)
+        Logger.log(`Booking ${event.id} stored`)
     }
 }

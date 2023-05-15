@@ -6,6 +6,10 @@ export class BookingId extends Id {
         return new BookingId(uuid());
     }
 
+    public static random(): BookingId {
+        return new BookingId(uuid());
+    }
+
     public static fromString(id: string): BookingId {
         return new BookingId(id);
     }

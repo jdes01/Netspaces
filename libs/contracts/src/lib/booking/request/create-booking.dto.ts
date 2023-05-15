@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 import { SerializedDate } from '../../../../../domain/src/lib/serialized-date'
 
 export class CreateBookingDTO {
@@ -27,6 +27,16 @@ export class CreateBookingDTO {
 
     @ApiProperty()
     @IsNotEmpty()
-    @IsString()
-    readonly date: SerializedDate;
+    @IsNumber()
+    readonly day: number;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly month: number;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
+    readonly year: number;
 }
