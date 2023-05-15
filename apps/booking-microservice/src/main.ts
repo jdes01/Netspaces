@@ -5,14 +5,13 @@
 
 import { NestFactory } from '@nestjs/core';
 
-import { BookingModule } from './app/app.module';
-import { KafkaOptions, MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { KafkaOptions, Transport } from '@nestjs/microservices';
 import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppLoggerMiddleware } from './app.middleware';
+import { BookingModule } from './app/app.module';
 
 const GLOBAL_PREFIX = 'api';
 
@@ -41,7 +40,7 @@ async function bootstrap() {
 
 	const port = process.env.PORT || 3333;
 
-	const kafkaMicroservice = app.connectMicroservice<KafkaOptions>(
+	app.connectMicroservice<KafkaOptions>(
 		{
 			transport: Transport.KAFKA,
 			options: {
