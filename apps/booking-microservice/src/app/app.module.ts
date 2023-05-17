@@ -10,6 +10,7 @@ import { CreateBookingDTO } from '@netspaces/contracts';
 import configuration from '../config/configuration';
 import { BookingProviders } from './app.providers';
 import { CommandHandlers } from './application/command';
+import { QueryHandlers } from './application/query';
 import { BookingWasCreatedEvent } from './domain/event';
 import { Booking } from './domain/model/booking';
 import { BookingResolver } from './infrastructure/graphql/resolvers/booking.resolver';
@@ -37,12 +38,7 @@ import { BookingService } from './infrastructure/service/booking.service';
 		}),
 		EventStoreModule.forFeature([Booking], {
 			BookingWasCreatedEvent: (event: Event<CreateBookingDTO>) =>
-				new BookingWasCreatedEvent(
-					event.payload._id,
-					event.payload.userId,
-					event.payload.spaceId,
-					event.payload.date,
-				),
+				new BookingWasCreatedEvent(event.payload._id, event.payload.userId, event.payload.spaceId, event.payload.date),
 		}),
 		MongooseModule.forRoot(process.env.BOOKING_MICROSERVICE_MONGO_URI || '', {}),
 		MongooseModule.forRoot(process.env.BOOKING_MICROSERVICE_KEYSTORE_URI || '', {
@@ -64,6 +60,6 @@ import { BookingService } from './infrastructure/service/booking.service';
 			},
 		]),
 	],
-	providers: [...CommandHandlers, ...BookingProjections, ...BookingProviders, BookingService, BookingResolver],
+	providers: [...CommandHandlers, ...QueryHandlers, ...BookingProjections, ...BookingProviders, BookingService, BookingResolver],
 })
-export class BookingModule { }
+export class BookingModule {}

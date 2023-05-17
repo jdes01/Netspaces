@@ -12,7 +12,7 @@ export class MongoDBBookingFinder implements BookingFinder {
 	constructor(
 		@InjectModel(BOOKING_PROJECTION)
 		private readonly bookingProjection: Model<BookingDocument>,
-	) { }
+	) {}
 
 	find(id: BookingId): Promise<BookingDTO | null> {
 		return this.bookingProjection.findById(id.value).exec();
@@ -21,8 +21,16 @@ export class MongoDBBookingFinder implements BookingFinder {
 	async findByDateForSpace(spaceId: BookingSpaceId, bookingDate: BookingDate): Promise<Array<BookingDTO>> {
 		return await this.bookingProjection
 			.find({
-				spaceId: { $eq: spaceId.value },
 				date: bookingDate.toSerializedDate(),
+				spaceId: { $eq: spaceId.value },
+			})
+			.exec();
+	}
+
+	async findBySpace(spaceId: BookingSpaceId): Promise<Array<BookingDTO>> {
+		return await this.bookingProjection
+			.find({
+				spaceId: { $eq: spaceId.value },
 			})
 			.exec();
 	}

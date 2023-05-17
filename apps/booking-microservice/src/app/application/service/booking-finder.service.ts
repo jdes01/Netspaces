@@ -7,4 +7,5 @@ export const BOOKING_FINDER = 'BOOKING_FINDER';
 export interface BookingFinder {
 	find(id: BookingId): Promise<BookingDTO | null>;
 	findByDateForSpace(spaceId: BookingSpaceId, bookingDate: BookingDate): Promise<Array<BookingDTO>>;
+	findBySpace(spaceId: BookingSpaceId): Promise<Array<BookingDTO>>;
 }

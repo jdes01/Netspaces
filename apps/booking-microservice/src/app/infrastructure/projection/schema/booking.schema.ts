@@ -8,12 +8,11 @@ export type BookingDocument = BookingDTO & Document;
 export const BookingSchema = new Schema(
 	{
 		_id: String,
-		userId: String,
-		spaceId: String,
 		date: String,
+		spaceId: String,
+		userId: String,
 	},
 	{
 		versionKey: false,
 	},
-).index({ spaceId: 1 })
-
+).index({ spaceId: 1 });

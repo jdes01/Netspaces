@@ -16,7 +16,7 @@ export class CreateBookingHandler implements ICommandHandler<CreateBookingComman
 		private readonly bookingRepository: AggregateRepository<Booking, BookingId>,
 		@Inject(BOOKING_VALIDATOR)
 		private readonly bookingValidator: BookingValidator,
-	) { }
+	) {}
 
 	async execute(command: CreateBookingCommand): Promise<Result<null, BookingError>> {
 		const bookingId = BookingId.random();
