@@ -21,7 +21,6 @@ export class BookingService {
 	}
 
 	async getSpaceUnavailableDates(spaceId: string): Promise<Result<Array<String>, BookingSpaceNotFoundError>> {
-		console.log('AAAAAAAAAAAAAAAAAAA')
 		return this.queryBus.execute<IQuery, Result<Array<String>, BookingSpaceNotFoundError>>(new GetSpaceUnavailableDatesQuery(spaceId));
 	}
 }
