@@ -33,11 +33,3 @@ COPY ./apps/booking-microservice .
 EXPOSE 3333
 
 CMD ["npx", "nx", "serve", "booking-microservice"]
-
-FROM netspaces-base as netspaces-gateway
-
-COPY ./apps/gateway .
-
-EXPOSE 3335
-
-CMD ["npx", "nx", "serve", "gateway"]

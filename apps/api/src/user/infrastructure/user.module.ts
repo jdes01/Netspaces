@@ -67,4 +67,4 @@ import { UserProviders } from './user.providers';
 		RedisModule,
 	],
 })
-export class UserModule {}
+export class UserModule { }

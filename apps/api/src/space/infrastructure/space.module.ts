@@ -71,4 +71,4 @@ import { SpaceProviders } from './space.providers';
 	],
 	providers: [...CommandHandlers, ...QueryHandlers, ...ProjectionHandlers, ...MessageProducers, ...SpaceProviders, SpaceResolver, SpaceService],
 })
-export class SpaceModule {}
+export class SpaceModule { }

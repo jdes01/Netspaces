@@ -66,4 +66,4 @@ import { WorkspaceProviders } from './workspace.providers';
 		RedisModule,
 	],
 })
-export class WorkspaceModule {}
+export class WorkspaceModule { }

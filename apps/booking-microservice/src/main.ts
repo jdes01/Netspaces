@@ -30,7 +30,7 @@ async function bootstrap() {
 	app.enableCors({
 		credentials: true,
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-		origin: true,
+		origin: "http://localhost:3000",
 	});
 
 	app.enableShutdownHooks();

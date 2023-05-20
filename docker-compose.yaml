@@ -52,18 +52,15 @@ services:
             - netspaces-booking-microservice-mongodb
 
     netspaces-gateway:
-        build:
-            context: ./
-            target: netspaces-gateway
+        image: devopsfaith/krakend:watch
         ports:
-            - 3335:3335
+        - "8080:8080"
         volumes:
-            - .:/app
+        - "./krakend:/etc/krakend"
         networks:
             - netspaces-network
-        depends_on:
-            - kafka
-
+        command: [ "run", "-dc", "krakend.json" ]
+    
     netspaces-eventstore:
         image: eventstore/eventstore:20.10.2-buster-slim
         environment:

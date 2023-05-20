@@ -11,6 +11,12 @@ function createApolloClient() {
 		link: new HttpLink({
 			uri: `${process.env.NEXT_PUBLIC_API_URL}`,
 		}),
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+			'Accept-Language': '*',
+			'Access-Control-Allow-Methods': '*',
+			'Access-Control-Allow-Headers': '*'
+		},
 		ssrMode: typeof window === 'undefined',
 	});
 }
