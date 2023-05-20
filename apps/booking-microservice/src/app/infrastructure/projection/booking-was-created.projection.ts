@@ -11,7 +11,7 @@ export class BookingWasCreatedProjection implements IEventHandler<BookingWasCrea
 	constructor(
 		@InjectModel(BOOKING_PROJECTION)
 		private readonly bookingProjection: Model<BookingDocument>,
-	) {}
+	) { }
 
 	async handle(event: BookingWasCreatedEvent) {
 		const booking = new this.bookingProjection({

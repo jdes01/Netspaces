@@ -7,11 +7,25 @@ import { Booking, BookingInput } from '../schema/booking.graphql-model';
 
 @Resolver((_of: any) => Booking)
 export class BookingResolver {
-	constructor(private readonly bookingService: BookingService) {}
+	constructor(private readonly bookingService: BookingService) { }
 
 	@Query((_returns) => [Booking])
 	async getBookingsBySpace(@Args('spaceId', { type: () => String }) spaceId: string): Promise<Array<BookingDTO>> {
 		return await this.bookingService.getBookingsBySpace(spaceId);
+	}
+
+	@Query((_returns) => [String])
+	async getSpaceUnavailableDates(@Args('spaceId', { type: () => String }) spaceId: string): Promise<Array<String>> {
+		const spaceUnavailableDatesResult = await this.bookingService.getSpaceUnavailableDates(spaceId);
+
+		return spaceUnavailableDatesResult.match<Array<String>>(
+			(spaceUnavailableDate) => {
+				return spaceUnavailableDate;
+			},
+			(err) => {
+				throw new GraphQLError(err.message);
+			}
+		);
 	}
 
 	@Mutation((_returns) => String)
