@@ -200,7 +200,6 @@ function getUserName(id: string) {
 		variables: { id },
 	});
 	const userName: string = data?.user.name;
-	console.log(userName)
 	return { userName };
 }
 

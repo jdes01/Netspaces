@@ -9,43 +9,29 @@
 				{
 					"host": ["netspaces_netspaces-api_1:3333"],
 					"url_pattern": "/graphql",
-					"method": "POST"
+					"method": "POST",
+					"extra_config": {
+						"backend/http": {
+							"return_error_code": true
+						}
+					}
 				}
 			],
 			"input_query_strings": ["*"]
 		},
 		{
-			"endpoint": "/api/createBooking",
+			"endpoint": "/booking",
 			"method": "POST",
 			"backend": [
 				{
 					"host": ["netspaces_netspaces-booking-microservice_1:3333"],
 					"url_pattern": "/graphql",
-					"method": "POST"
-				}
-			],
-			"input_query_strings": ["*"]
-		},
-		{
-			"endpoint": "/api/getBookingsBySpace",
-			"method": "POST",
-			"backend": [
-				{
-					"host": ["netspaces_netspaces-booking-microservice_1:3333"],
-					"url_pattern": "/graphql",
-					"method": "POST"
-				}
-			],
-			"input_query_strings": ["*"]
-		},
-		{
-			"endpoint": "/api/getSpaceUnavailableDates",
-			"method": "POST",
-			"backend": [
-				{
-					"host": ["netspaces_netspaces-booking-microservice_1:3333"],
-					"url_pattern": "/graphql",
-					"method": "POST"
+					"method": "POST",
+					"extra_config": {
+						"backend/http": {
+							"return_error_code": true
+						}
+					}
 				}
 			],
 			"input_query_strings": ["*"]
@@ -63,13 +49,20 @@
 				"Access-Control-Allow-Methods",
 				"Access-Control-Allow-Headers"
 			],
-			"allow_headers": ["Accept-Language", "Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers"],
+			"allow_headers": [
+				"Accept-Language",
+				"Content-Type",
+				"Access-Control-Allow-Origin",
+				"Access-Control-Allow-Methods",
+				"Access-Control-Allow-Headers"
+			],
 			"max_age": "12h",
 			"allow_credentials": true,
 			"debug": false
 		},
 		"router": {
-			"auto_options": true
+			"auto_options": true,
+			"return_error_msg": true
 		}
 	}
 }

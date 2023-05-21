@@ -1,16 +1,32 @@
 // Credits: https://www.apollographql.com/blog/apollo-client/next-js/building-a-next-js-app-with-slash-graphql/
 
-import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, NormalizedCacheObject, split } from '@apollo/client';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { RetryLink } from '@apollo/client/link/retry';
+
 import { useMemo } from 'react';
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
+const apiHttpLink = new HttpLink({
+	uri: `${process.env.NEXT_PUBLIC_API_URL}`,
+});
+
+const bookingApiHttpLink = new HttpLink({
+	uri: `${process.env.NEXT_PUBLIC_BOOKING_API_URL}`,
+});
+
+const link = split(
+	(operation) => operation.operationName === 'GetSpaceUnavailableDates' || operation.operationName === 'GetBookingsBySpace' || operation.operationName === 'CreateBooking',
+	bookingApiHttpLink,
+	apiHttpLink
+);
+
+
 function createApolloClient() {
 	return new ApolloClient({
 		cache: new InMemoryCache(), // set to true for SSR
-		link: new HttpLink({
-			uri: `${process.env.NEXT_PUBLIC_API_URL}`,
-		}),
+		link,
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			'Accept-Language': '*',

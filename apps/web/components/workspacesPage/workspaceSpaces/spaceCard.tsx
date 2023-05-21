@@ -1,8 +1,11 @@
-import { Badge, Box, Button, IconButton, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, useDisclosure } from '@chakra-ui/react';
+import { Badge, Box, Button, Heading, IconButton, Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, useDisclosure } from '@chakra-ui/react';
 import { SpaceDTO } from '@netspaces/contracts';
 import { useState } from 'react';
 import { SingleDatepicker } from 'chakra-dayzed-datepicker'
 import { gql, useMutation, useQuery } from '@apollo/client';
+import { format } from 'date-fns';
+import { useRouter } from 'next/router';
+
 
 const GET_SPACE_UNAVAILABLE_DATES = gql`
 	query GetSpaceUnavailableDates($spaceId: String!) {
@@ -11,23 +14,61 @@ const GET_SPACE_UNAVAILABLE_DATES = gql`
 `;
 
 
+const CREATE_BOOKING_MUTATION = gql`
+	mutation CreateBooking(
+		$userId: String!
+		$spaceId: String!
+		$date: String!
+	) {
+		createBooking(
+			bookingInput: {
+				userId: $userId
+				spaceId: $spaceId
+				date: $date
+			}
+		)
+	}
+`;
+
+
 type SpaceCardProps = {
 	space: SpaceDTO;
 };
 
-function handleSubmit(){
-	console.log("booking requested!")
-}
-
 
 export function SpaceCard({ space }: SpaceCardProps) {
-
-	// const bookedDates = [new Date(2023, 4, 29).getTime()]
-	const { bookedDates } = getPageData(space._id)
-	const [selectedDate, setSelectedDate] = useState([]);
-
-	const [disabledDates] = useState(bookedDates);
+	const router = useRouter();
+	const [spaceId] = useState(space._id)
+	const currentDate = new Date()
+	const [selectedDate, setSelectedDate] = useState(currentDate);
+	const [createBooking] = useMutation(CREATE_BOOKING_MUTATION);
 	const { isOpen, onClose, onOpen } = useDisclosure();
+
+	const { loading, serializedBookedDates} = getPageData(spaceId)
+
+	if (loading) return <Heading>Loading</Heading>;
+
+
+	const bookedDates = serializedBookedDates.length ? serializedBookedDates.map((serializedBookedDate) => {
+		const [day, month, year] = serializedBookedDate.split('-');
+		const dateObject = new Date(Number(year), Number(month) - 1, Number(day));
+		return new Date(dateObject).getTime()
+	}) : []
+
+	const handleSubmit = () => {
+		const date = format(selectedDate, 'dd-MM-yyyy')
+		console.log(date)
+		console.log(spaceId)
+		
+		createBooking({
+			variables: {
+				userId: `23079366-ca99-4351-b3dc-4f4db2255372`,
+				spaceId: spaceId,
+				date: date,
+			},
+		});
+		router.reload(window.location.pathname);
+	}
 	
 	return (
 		<Box m={1} borderRadius={20} borderColor={'transparent'} _hover={{ cursor: 'pointer', shadow: 'base' }} onClick={() => onOpen()}>
@@ -70,7 +111,7 @@ export function SpaceCard({ space }: SpaceCardProps) {
 								  defaultIsOpen={true}
 								  date={selectedDate}
   								  onDateChange={setSelectedDate}
-					    		  disabledDates={new Set(disabledDates)}
+					    		  disabledDates={new Set(bookedDates)}
 								  closeOnSelect={false}
   								/>
 							</Box>
@@ -102,9 +143,9 @@ function getPageData(spaceId: string) {
 
 	const { loading, serializedBookedDates } = getBookedDates(spaceId)
 
-	const bookedDates = serializedBookedDates.map((serializedBookedDate) => new Date(serializedBookedDate).getTime())
+	// const bookedDates = serializedBookedDates.map((serializedBookedDate) => new Date(serializedBookedDate).getTime())
 
-	return { loading, bookedDates }
+	return { loading, serializedBookedDates }
 }
 
 function getBookedDates(spaceId: string){
