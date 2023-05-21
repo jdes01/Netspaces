@@ -15,7 +15,9 @@ function createApolloClient() {
 			'Access-Control-Allow-Origin': '*',
 			'Accept-Language': '*',
 			'Access-Control-Allow-Methods': '*',
-			'Access-Control-Allow-Headers': '*'
+			'Access-Control-Allow-Headers': '*',
+			'Apollo-Require-Preflight': 'true',
+			'x-apollo-operation-name': 'graphql post',
 		},
 		ssrMode: typeof window === 'undefined',
 	});
