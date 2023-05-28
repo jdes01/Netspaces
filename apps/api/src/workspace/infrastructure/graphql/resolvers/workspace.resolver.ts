@@ -1,4 +1,4 @@
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, ResolveReference, Resolver } from '@nestjs/graphql';
 import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 import { GraphQLError } from 'graphql';
 
@@ -9,7 +9,10 @@ import { Workspace, WorkspaceInput } from '../schema/workspace.graphql-model';
 
 @Resolver((_of: any) => Workspace)
 export class WorkspaceResolver {
-	constructor(private readonly workspaceService: WorkspaceService, private readonly spaceService: SpaceService) {}
+	constructor(
+		private readonly workspaceService: WorkspaceService,
+		private readonly spaceService: SpaceService
+	) { }
 
 	@Query((_returns) => [Workspace])
 	async workspaces(): Promise<WorkspaceDTO[]> {
@@ -19,6 +22,11 @@ export class WorkspaceResolver {
 	@Query((_returns) => Workspace, { nullable: true })
 	async workspace(@Args('id', { type: () => String }) id: string): Promise<WorkspaceDTO> {
 		return await this.workspaceService.getWorkspaceById(id);
+	}
+
+	@ResolveReference()
+	async resolveReference(reference: { __typename: string; _id: string }): Promise<WorkspaceDTO> {
+		return await this.workspaceService.getWorkspaceById(reference._id);
 	}
 
 	@Query((_returns) => [Workspace], { nullable: true })

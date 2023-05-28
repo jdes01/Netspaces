@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { Event, EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriver, ApolloDriverConfig, ApolloFederationDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -49,9 +49,9 @@ import { WorkspaceProviders } from './workspace.providers';
 				schema: UserSchema,
 			},
 		]),
-		GraphQLModule.forRoot<ApolloDriverConfig>({
+		GraphQLModule.forRoot<ApolloFederationDriverConfig>({
 			autoSchemaFile: true,
-			driver: ApolloDriver,
+			driver: ApolloFederationDriver,
 		}),
 		RedisModule,
 	],

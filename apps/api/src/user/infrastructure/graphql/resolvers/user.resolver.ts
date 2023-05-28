@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, ResolveReference } from '@nestjs/graphql';
 import { UserDTO } from '@netspaces/contracts';
 import { GraphQLError } from 'graphql';
 
@@ -7,7 +7,7 @@ import { User, UserInput } from '../schema/user.graphql-model';
 
 @Resolver((_of: undefined) => User)
 export class UserResolver {
-	constructor(private readonly userService: UserService) {}
+	constructor(private readonly userService: UserService) { }
 
 	@Query((_returns) => [User])
 	async users(): Promise<UserDTO[]> {
@@ -17,6 +17,11 @@ export class UserResolver {
 	@Query((_returns) => User)
 	async user(@Args('id', { type: () => String }) id: string): Promise<UserDTO> {
 		return await this.userService.getUserById(id);
+	}
+
+	@ResolveReference()
+	async resolveReference(reference: { __typename: string; _id: string }): Promise<UserDTO> {
+		return await this.userService.getUserById(reference._id);
 	}
 
 	@Mutation((_returns) => String)

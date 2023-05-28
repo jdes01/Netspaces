@@ -66,7 +66,10 @@
 	},
 	"dependencies": {
 		"@apollo/client": "^3.7.12",
-		"@apollo/server": "^4.6.0",
+		"@apollo/federation": "^0.38.1",
+		"@apollo/gateway": "2.4.0",
+		"@apollo/server": "4.5.0",
+		"@apollo/subgraph": "2.2.3",
 		"@aulasoftwarelibre/nestjs-eventstore": "^0.7.0",
 		"@chakra-ui/next-js": "^2.1.2",
 		"@chakra-ui/react": "^2.5.5",
@@ -106,7 +109,6 @@
 		"ts-results": "^3.3.0",
 		"tslib": "^2.3.0"
 	},
-	"proxy": "http://netspaces_netspaces-api_1:3333/",
 	"_moduleAliases": {
 		"@modules": "build/modules",
 		"@core": "build/core"

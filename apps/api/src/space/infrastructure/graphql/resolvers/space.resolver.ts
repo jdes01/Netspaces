@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver, ResolveReference } from '@nestjs/graphql';
 import { SpaceDTO } from '@netspaces/contracts';
 import { GraphQLError } from 'graphql';
 
@@ -7,7 +7,7 @@ import { Space, SpaceInput } from '../schema/space.graphql-model';
 
 @Resolver((_of: any) => Space)
 export class SpaceResolver {
-	constructor(private readonly spaceService: SpaceService) {}
+	constructor(private readonly spaceService: SpaceService) { }
 
 	@Query((_returns) => [Space])
 	async spaces(): Promise<SpaceDTO[]> {
@@ -17,6 +17,11 @@ export class SpaceResolver {
 	@Query((_returns) => Space, { nullable: true })
 	async space(@Args('id', { type: () => String }) id: string): Promise<SpaceDTO> {
 		return await this.spaceService.getSpaceById(id);
+	}
+
+	@ResolveReference()
+	async resolveReference(reference: { __typename: string; _id: string }): Promise<SpaceDTO> {
+		return await this.spaceService.getSpaceById(reference._id);
 	}
 
 	@Mutation((_returns) => String)

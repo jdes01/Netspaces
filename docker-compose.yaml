@@ -51,16 +51,29 @@ services:
             - netspaces-booking-microservice-eventstore
             - netspaces-booking-microservice-mongodb
 
+    netspaces-federation-gateway:
+        build:
+            context: ./
+            target: netspaces-federation-gateway
+        environment:
+            - PORT=3333
+        ports:
+            - 3335:3333
+        volumes:
+            - .:/app
+        networks:
+            - netspaces-network
+
     netspaces-gateway:
         image: devopsfaith/krakend:watch
         ports:
-        - "8080:8080"
+            - '8080:8080'
         volumes:
-        - "./krakend:/etc/krakend"
+            - './krakend:/etc/krakend'
         networks:
             - netspaces-network
-        command: [ "run", "-dc", "krakend.json" ]
-    
+        command: ['run', '-dc', 'krakend.json']
+
     netspaces-eventstore:
         image: eventstore/eventstore:20.10.2-buster-slim
         environment:

@@ -1,8 +1,9 @@
-import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, ID, InputType, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
+@Directive('@key(fields: "_id")')
 export class Space {
-	@Field()
+	@Field((type) => ID)
 	_id!: string;
 
 	@Field()

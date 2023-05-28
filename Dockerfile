@@ -33,3 +33,11 @@ COPY ./apps/booking-microservice .
 EXPOSE 3333
 
 CMD ["npx", "nx", "serve", "booking-microservice"]
+
+FROM netspaces-base as netspaces-federation-gateway
+
+COPY ./apps/federation-gateway .
+
+EXPOSE 3333
+
+CMD ["npx", "nx", "serve", "federation-gateway"]

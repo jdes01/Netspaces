@@ -1,10 +1,11 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, ID, InputType, ObjectType } from '@nestjs/graphql';
 
 import { Space } from '../../../../space/infrastructure/graphql/schema/space.graphql-model';
 
 @ObjectType()
+@Directive('@key(fields: "_id")')
 export class Workspace {
-	@Field()
+	@Field((type) => ID)
 	_id!: string;
 
 	@Field()
