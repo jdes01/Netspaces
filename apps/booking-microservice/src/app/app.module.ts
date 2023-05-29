@@ -29,7 +29,9 @@ import { BookingService } from './infrastructure/service/booking.service';
 			load: [configuration],
 		}),
 		GraphQLModule.forRoot<ApolloDriverConfig>({
-			autoSchemaFile: true,
+			autoSchemaFile: {
+				federation: 2,
+			},
 			driver: ApolloDriver,
 		}),
 		CqrsModule,
@@ -62,4 +64,4 @@ import { BookingService } from './infrastructure/service/booking.service';
 	],
 	providers: [...CommandHandlers, ...QueryHandlers, ...BookingProjections, ...BookingProviders, BookingService, BookingResolver],
 })
-export class BookingModule {}
+export class BookingModule { }

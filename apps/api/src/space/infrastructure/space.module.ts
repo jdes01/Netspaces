@@ -65,7 +65,9 @@ import { SpaceProviders } from './space.providers';
 			},
 		]),
 		GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-			autoSchemaFile: true,
+			autoSchemaFile: {
+				federation: 2,
+			},
 			driver: ApolloFederationDriver,
 		}),
 	],

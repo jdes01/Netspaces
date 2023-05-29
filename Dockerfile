@@ -38,6 +38,6 @@ FROM netspaces-base as netspaces-federation-gateway
 
 COPY ./apps/federation-gateway .
 
-EXPOSE 3333
+EXPOSE 3000
 
 CMD ["npx", "nx", "serve", "federation-gateway"]

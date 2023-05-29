@@ -50,7 +50,9 @@ import { WorkspaceProviders } from './workspace.providers';
 			},
 		]),
 		GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-			autoSchemaFile: true,
+			autoSchemaFile: {
+				federation: 2,
+			},
 			driver: ApolloFederationDriver,
 		}),
 		RedisModule,

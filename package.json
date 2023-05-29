@@ -65,11 +65,10 @@
 		"url-loader": "^4.1.1"
 	},
 	"dependencies": {
-		"@apollo/client": "^3.7.12",
-		"@apollo/federation": "^0.38.1",
-		"@apollo/gateway": "2.4.0",
-		"@apollo/server": "4.5.0",
-		"@apollo/subgraph": "2.2.3",
+		"@apollo/client": "^3.7.14",
+		"@apollo/gateway": "^2.4.6",
+		"@apollo/server": "4.7.1",
+		"@apollo/subgraph": "2.4.6",
 		"@aulasoftwarelibre/nestjs-eventstore": "^0.7.0",
 		"@chakra-ui/next-js": "^2.1.2",
 		"@chakra-ui/react": "^2.5.5",

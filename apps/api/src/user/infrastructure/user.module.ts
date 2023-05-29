@@ -51,7 +51,9 @@ import { UserProviders } from './user.providers';
 			},
 		]),
 		GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-			autoSchemaFile: true,
+			autoSchemaFile: {
+				federation: 2,
+			},
 			driver: ApolloFederationDriver,
 		}),
 		RedisModule,
