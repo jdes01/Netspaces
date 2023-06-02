@@ -1,5 +1,5 @@
 import { Event, EVENTSTORE_KEYSTORE_CONNECTION, EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriver, ApolloDriverConfig, ApolloFederationDriver, ApolloFederationDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -28,11 +28,11 @@ import { BookingService } from './infrastructure/service/booking.service';
 			isGlobal: true,
 			load: [configuration],
 		}),
-		GraphQLModule.forRoot<ApolloDriverConfig>({
+		GraphQLModule.forRoot<ApolloFederationDriverConfig>({
 			autoSchemaFile: {
 				federation: 2,
 			},
-			driver: ApolloDriver,
+			driver: ApolloFederationDriver,
 		}),
 		CqrsModule,
 		EventStoreModule.forRoot({

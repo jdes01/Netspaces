@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, ResolveReference, Resolver } from '@nestjs/graphql';
 import { BookingDTO } from '@netspaces/contracts';
 import { GraphQLError } from 'graphql';
 
@@ -12,6 +12,11 @@ export class BookingResolver {
 	@Query((_returns) => [Booking])
 	async getBookingsBySpace(@Args('spaceId', { type: () => String }) spaceId: string): Promise<Array<BookingDTO>> {
 		return await this.bookingService.getBookingsBySpace(spaceId);
+	}
+
+	@ResolveReference()
+	async resolveReference(reference: { __typename: string; spaceId: string }): Promise<Array<BookingDTO>> {
+		return await this.bookingService.getBookingsBySpace(reference.spaceId);
 	}
 
 	@Query((_returns) => [String])
