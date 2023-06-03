@@ -6,16 +6,16 @@ import { Result } from 'neverthrow';
 import { CreateWorkspaceCommand } from '../../application/command/create-workspace.command';
 import { GetWorkspacesQuery } from '../../application/query';
 import { GetWorkspaceByIdQuery } from '../../application/query/get-workspace-by-id.query';
-import { GetWorkspacesByOwnerIdQuery } from '../../application/query/get-workspaces-by-owner-id.query';
+import { GetWorkspacesByCompanyIdQuery } from '../../application/query/get-workspaces-by-company-id.query';
 import { WorkspaceError } from '../../domain/exception';
 
 @Injectable()
 export class WorkspaceService {
-	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
+	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) { }
 
 	async createWorkspace(
 		id: string,
-		owner: string,
+		companyId: string,
 		name: string,
 		description: string,
 		street: string,
@@ -24,7 +24,7 @@ export class WorkspaceService {
 		services: Array<string>,
 	): Promise<Result<null, WorkspaceError>> {
 		return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(
-			new CreateWorkspaceCommand(id, owner, name, description, street, city, country, services),
+			new CreateWorkspaceCommand(id, companyId, name, description, street, city, country, services),
 		);
 	}
 
@@ -32,8 +32,8 @@ export class WorkspaceService {
 		return this.queryBus.execute<IQuery, Array<WorkspaceDTO>>(new GetWorkspacesQuery());
 	}
 
-	async getWorkspacesByOwnerId(id: string) {
-		return this.queryBus.execute<IQuery, Array<WorkspaceDTO>>(new GetWorkspacesByOwnerIdQuery(id));
+	async getWorkspacesByCompanyId(id: string) {
+		return this.queryBus.execute<IQuery, Array<WorkspaceDTO>>(new GetWorkspacesByCompanyIdQuery(id));
 	}
 
 	async getWorkspaceById(id: string) {

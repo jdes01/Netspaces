@@ -6,7 +6,7 @@ import { WorkspaceService } from '../service/workspace.service';
 
 @Controller('workspaces')
 export class WorkspaceController {
-	constructor(private readonly workspaceService: WorkspaceService) {}
+	constructor(private readonly workspaceService: WorkspaceService) { }
 
 	@Post()
 	@HttpCode(200)
@@ -16,7 +16,7 @@ export class WorkspaceController {
 	) {
 		const createdWorkspaceResult = await this.workspaceService.createWorkspace(
 			createWorkspaceDTO._id,
-			createWorkspaceDTO.owner,
+			createWorkspaceDTO.companyId,
 			createWorkspaceDTO.name,
 			createWorkspaceDTO.description,
 			createWorkspaceDTO.street,

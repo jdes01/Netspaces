@@ -13,7 +13,7 @@ export class CreateWorkspaceDTO {
 	@ApiProperty()
 	@IsNotEmpty()
 	@IsUUID()
-	readonly owner: string;
+	readonly companyId: string;
 
 	@ApiProperty()
 	@IsNotEmpty()

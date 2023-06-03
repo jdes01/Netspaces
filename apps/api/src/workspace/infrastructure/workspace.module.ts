@@ -21,6 +21,7 @@ import { ProjectionHandlers } from './projection';
 import { WORKSPACE_PROJECTION, WorkspaceSchema } from './projection/workspace.schema';
 import { WorkspaceService } from './service/workspace.service';
 import { WorkspaceProviders } from './workspace.providers';
+import { COMPANY_PROJECTION, CompanySchema } from '../../company/infrastructure/projection';
 
 @Module({
 	controllers: [WorkspaceController],
@@ -30,7 +31,7 @@ import { WorkspaceProviders } from './workspace.providers';
 			WorkspaceWasCreatedEvent: (event: Event<CreateWorkspaceDTO>) =>
 				new WorkspaceWasCreatedEvent(
 					event.payload._id,
-					event.payload.owner,
+					event.payload.companyId,
 					event.payload.name,
 					event.payload.description,
 					event.payload.street,
@@ -47,6 +48,10 @@ import { WorkspaceProviders } from './workspace.providers';
 			{
 				name: USER_PROJECTION,
 				schema: UserSchema,
+			},
+			{
+				name: COMPANY_PROJECTION,
+				schema: CompanySchema,
 			},
 		]),
 		GraphQLModule.forRoot<ApolloFederationDriverConfig>({

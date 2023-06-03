@@ -9,7 +9,7 @@ export class Workspace {
 	_id!: string;
 
 	@Field()
-	owner?: string;
+	companyId?: string;
 
 	@Field()
 	name?: string;
@@ -39,7 +39,7 @@ export class WorkspaceInput {
 	_id!: string;
 
 	@Field()
-	owner!: string;
+	companyId!: string;
 
 	@Field()
 	name!: string;

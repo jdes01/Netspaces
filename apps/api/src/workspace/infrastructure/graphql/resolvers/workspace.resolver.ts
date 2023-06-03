@@ -30,8 +30,8 @@ export class WorkspaceResolver {
 	}
 
 	@Query((_returns) => [Workspace], { nullable: true })
-	async workspacesByOwnerId(@Args('id', { type: () => String }) id: string): Promise<WorkspaceDTO[]> {
-		return await this.workspaceService.getWorkspacesByOwnerId(id);
+	async workspacesByCompanyId(@Args('id', { type: () => String }) id: string): Promise<WorkspaceDTO[]> {
+		return await this.workspaceService.getWorkspacesByCompanyId(id);
 	}
 
 	@ResolveField(() => [Space])
@@ -43,7 +43,7 @@ export class WorkspaceResolver {
 	async createWorkspace(@Args('workspaceInput') workspaceInput: WorkspaceInput): Promise<string> {
 		const createdWorkspaceResult = await this.workspaceService.createWorkspace(
 			workspaceInput._id,
-			workspaceInput.owner,
+			workspaceInput.companyId,
 			workspaceInput.name,
 			workspaceInput.description,
 			workspaceInput.street,

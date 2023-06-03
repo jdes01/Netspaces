@@ -8,7 +8,7 @@ export type WorkspaceWasCreatedMessage = {
 	readonly country: string;
 	readonly description: string;
 	readonly name: string;
-	readonly owner: string;
+	readonly companyId: string;
 	readonly services: Array<string>;
 	readonly street: string;
 };
@@ -16,7 +16,7 @@ export type WorkspaceWasCreatedMessage = {
 export class WorkspaceWasCreatedMessageBuilder {
 	static build(
 		_id: string,
-		owner: string,
+		companyId: string,
 		name: string,
 		description: string,
 		street: string,
@@ -30,7 +30,7 @@ export class WorkspaceWasCreatedMessageBuilder {
 			country,
 			description,
 			name,
-			owner,
+			companyId,
 			services,
 			street,
 		};

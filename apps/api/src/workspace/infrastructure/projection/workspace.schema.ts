@@ -12,7 +12,7 @@ export const WorkspaceSchema = new Schema(
 		country: String,
 		description: String,
 		name: String,
-		owner: String,
+		companyId: String,
 		services: Array<string>,
 		street: String,
 	},
