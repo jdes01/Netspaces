@@ -25,8 +25,22 @@ export class UserResolver {
 	}
 
 	@Mutation((_returns) => String)
-	async createUser(@Args('userInput') userInput: UserInput): Promise<string> {
-		const createdUserResult = await this.userService.createUser(userInput._id, userInput.name);
+	async createUserWithoutCompany(@Args('userInput') userInput: UserInput): Promise<string> {
+		const createdUserResult = await this.userService.createUserWithoutCompany(userInput._id, userInput.name);
+
+		return createdUserResult.match<string>(
+			(_) => {
+				return 'User created successfully';
+			},
+			(err) => {
+				throw new GraphQLError(err.message);
+			},
+		);
+	}
+
+	@Mutation((_returns) => String)
+	async createUserWithCompany(@Args('userInput') userInput: UserInput): Promise<string> {
+		const createdUserResult = await this.userService.createUserWithCompany(userInput._id, userInput.name, userInput.companyId);
 
 		return createdUserResult.match<string>(
 			(_) => {

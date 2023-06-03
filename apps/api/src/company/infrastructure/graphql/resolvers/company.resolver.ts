@@ -1,13 +1,18 @@
-import { Args, Mutation, Query, Resolver, ResolveReference } from '@nestjs/graphql';
-import { CompanyDTO } from '@netspaces/contracts';
+import { Args, Mutation, Query, Resolver, ResolveReference, ResolveField, Parent } from '@nestjs/graphql';
+import { CompanyDTO, UserDTO } from '@netspaces/contracts';
 import { GraphQLError } from 'graphql';
 
 import { CompanyService } from '../../service/company.service';
 import { Company, CompanyInput } from '../schema/company.graphql-model';
+import { User } from 'apps/api/src/user/infrastructure/graphql/schema/user.graphql-model';
+import { UserService } from 'apps/api/src/user/infrastructure/service/user.service';
 
 @Resolver((_of: undefined) => Company)
 export class CompanyResolver {
-	constructor(private readonly companyService: CompanyService) { }
+	constructor(
+		private readonly companyService: CompanyService,
+		private readonly userService: UserService,
+	) { }
 
 	@Query((_returns) => [Company])
 	async companys(): Promise<CompanyDTO[]> {
@@ -22,6 +27,11 @@ export class CompanyResolver {
 	@ResolveReference()
 	async resolveReference(reference: { __typename: string; _id: string }): Promise<CompanyDTO> {
 		return await this.companyService.getCompanyById(reference._id);
+	}
+
+	@ResolveField(() => [User])
+	async users(@Parent() company: Company): Promise<UserDTO[]> {
+		return this.userService.getUsersByCompanyId(company._id);
 	}
 
 	@Mutation((_returns) => String)

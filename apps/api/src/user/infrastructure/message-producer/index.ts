@@ -1,3 +1,4 @@
-import { UserWasCreatedMessageProducer } from './user-was-created.message-producer';
+import { UserWasCreatedWithCompanyMessageProducer } from './user-was-created-with-company.message-producer';
+import { UserWasCreatedWithoutCompanyMessageProducer } from './user-was-created-without-company.message-producer';
 
-export const MessageProducers = [UserWasCreatedMessageProducer];
+export const MessageProducers = [UserWasCreatedWithoutCompanyMessageProducer, UserWasCreatedWithCompanyMessageProducer];

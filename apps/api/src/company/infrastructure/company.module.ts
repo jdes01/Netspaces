@@ -19,6 +19,7 @@ import { ProjectionHandlers } from './projection';
 import { COMPANY_PROJECTION, CompanySchema } from './projection/company.schema';
 import { CompanyService } from './service/company.service';
 import { CompanyProviders } from './company.providers';
+import { UserService } from '../../user/infrastructure/service/user.service';
 
 @Module({
 	controllers: [],
@@ -65,6 +66,7 @@ import { CompanyProviders } from './company.providers';
 		...MessageProducers,
 		...CompanyProviders,
 		CompanyResolver,
+		UserService,
 		CompanyService,
 		RedisModule,
 	],

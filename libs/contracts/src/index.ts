@@ -5,8 +5,10 @@ export * from './lib/space/message/space-was-created.mesasge';
 export * from './lib/space/request/create-space.dto';
 export * from './lib/space/response/space.dto';
 
-export * from './lib/user/message/user-was-created.message';
-export * from './lib/user/request/create-user.dto';
+export * from './lib/user/message/user-was-created-without-company.message';
+export * from './lib/user/message/user-was-created-with-company.message';
+export * from './lib/user/request/create-user-without-company.dto';
+export * from './lib/user/request/create-user-with-company.dto';
 export * from './lib/user/response/user.dto';
 
 export * from './lib/workspace/message/workspace-was-created.message';

@@ -1,4 +1,5 @@
 import { Directive, Field, ID, InputType, ObjectType } from '@nestjs/graphql';
+import { User } from 'apps/api/src/user/infrastructure/graphql/schema/user.graphql-model';
 
 @ObjectType()
 @Directive('@key(fields: "_id")')
@@ -8,6 +9,9 @@ export class Company {
 
 	@Field()
 	name!: string;
+
+	@Field(() => [User])
+	user?: User[];
 }
 
 @InputType()

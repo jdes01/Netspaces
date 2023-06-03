@@ -1,7 +1,7 @@
-import { CreateUserHandler } from '../../command/handler/create-user.handler'
+import { CreateUserWithoutCompanyHandler } from '../../command/handler/create-user-without-company.handler'
 
 import { InMemoryUserFinder, InMemoryUserRepository } from '../../../../test/'
-import { CreateUserCommand } from '../../command/create-user.command';
+import { CreateUserWithoutCompanyCommand } from '../../command/create-user-without-company.command';
 
 describe('CreateUserHandler', () => {
 
@@ -10,11 +10,11 @@ describe('CreateUserHandler', () => {
         const userRepository = new InMemoryUserRepository([]);
         const userFinder = new InMemoryUserFinder([]);
 
-        const handler = new CreateUserHandler(userRepository, userFinder)
+        const handler = new CreateUserWithoutCompanyHandler(userRepository, userFinder)
 
         const id = 'e847261d-5539-49da-876d-bfc245e50974'
         const name = 'userName'
-        const command = new CreateUserCommand(id, name)
+        const command = new CreateUserWithoutCompanyCommand(id, name)
 
         const result = await handler.execute(command)
     });

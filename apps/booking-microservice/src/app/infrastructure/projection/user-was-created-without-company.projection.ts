@@ -1,20 +1,20 @@
 import { Controller, Logger } from '@nestjs/common';
 import { EventPattern } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
-import { USER_WAS_CREATED_MESSAGE, UserWasCreatedMessage } from '@netspaces/contracts';
+import { USER_WAS_CREATED_WITHOUT_COMPANY_MESSAGE, UserWasCreatedWithoutCompanyMessage } from '@netspaces/contracts';
 import { Model } from 'mongoose';
 
 import { USER_PROJECTION, UserDocument } from './schema/user.schema';
 
 @Controller()
-export class UserWasCreatedProjection {
+export class UserWasCreatedWithoutCompanyProjection {
 	constructor(
 		@InjectModel(USER_PROJECTION)
 		private readonly userProjection: Model<UserDocument>,
-	) {}
+	) { }
 
-	@EventPattern(USER_WAS_CREATED_MESSAGE)
-	async handle(message: UserWasCreatedMessage) {
+	@EventPattern(USER_WAS_CREATED_WITHOUT_COMPANY_MESSAGE)
+	async handle(message: UserWasCreatedWithoutCompanyMessage) {
 		const user = new this.userProjection({
 			...message,
 		});

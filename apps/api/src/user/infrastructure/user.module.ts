@@ -6,12 +6,12 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CreateUserDTO } from '@netspaces/contracts';
+import { CreateUserWithoutCompanyDTO } from '@netspaces/contracts';
 
 import { RedisModule } from '../../redis.module';
 import { CommandHandlers } from '../application/command';
 import { QueryHandlers } from '../application/query';
-import { UserWasCreatedEvent } from '../domain/event';
+import { UserWasCreatedWithoutCompanyEvent, UserWasCreatedWithCompanyEvent } from '../domain/event';
 import { User } from '../domain/model';
 import { UserResolver } from './graphql/resolvers/user.resolver';
 import { MessageProducers } from './message-producer';
@@ -19,6 +19,7 @@ import { ProjectionHandlers } from './projection';
 import { USER_PROJECTION, UserSchema } from './projection/user.schema';
 import { UserService } from './service/user.service';
 import { UserProviders } from './user.providers';
+import { COMPANY_PROJECTION, CompanySchema } from '../../company/infrastructure/projection';
 
 @Module({
 	controllers: [],
@@ -42,12 +43,17 @@ import { UserProviders } from './user.providers';
 			},
 		]),
 		EventStoreModule.forFeature([User], {
-			UserWasCreatedEvent: (event: Event<CreateUserDTO>) => new UserWasCreatedEvent(event.payload._id, event.payload.name),
+			UserWasCreatedWithoutCompanyEvent: (event: Event<CreateUserWithoutCompanyDTO>) => new UserWasCreatedWithoutCompanyEvent(event.payload._id, event.payload.name),
+			UserWasCreatedWithCompanyEvent: (event: Event<CreateUserWithoutCompanyDTO>) => new UserWasCreatedWithCompanyEvent(event.payload._id, event.payload.name, event.payload.companyId),
 		}),
 		MongooseModule.forFeature([
 			{
 				name: USER_PROJECTION,
 				schema: UserSchema,
+			},
+			{
+				name: COMPANY_PROJECTION,
+				schema: CompanySchema,
 			},
 		]),
 		GraphQLModule.forRoot<ApolloFederationDriverConfig>({

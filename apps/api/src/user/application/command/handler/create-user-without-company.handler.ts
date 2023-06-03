@@ -4,14 +4,14 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'neverthrow';
 
 import { REDIS_SERVICE, RedisService } from '../../../../redis.module';
-import { CreateUserCommand } from '../../../application/command/create-user.command';
-import { USER_FINDER, UserFinder } from '../../../application/service/user-finder.service';
+import { CreateUserWithoutCompanyCommand } from '../create-user-without-company.command';
+import { USER_FINDER, UserFinder } from '../../service/user-finder.service';
 import { UserAlreadyExistsError, UserError } from '../../../domain/exception';
 import { User } from '../../../domain/model';
 import { UserId, UserName } from '../../../domain/model/value-objects';
 
-@CommandHandler(CreateUserCommand)
-export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
+@CommandHandler(CreateUserWithoutCompanyCommand)
+export class CreateUserWithoutCompanyHandler implements ICommandHandler<CreateUserWithoutCompanyCommand> {
 	constructor(
 		@InjectAggregateRepository(User)
 		private readonly userRepository: AggregateRepository<User, UserId>,
@@ -19,9 +19,9 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
 		private readonly userFinder: UserFinder,
 		@Inject(REDIS_SERVICE)
 		private readonly redisService: RedisService,
-	) {}
+	) { }
 
-	async execute(command: CreateUserCommand): Promise<Result<null, UserError>> {
+	async execute(command: CreateUserWithoutCompanyCommand): Promise<Result<null, UserError>> {
 		const id = UserId.fromString(command.id);
 
 		if (await this.userFinder.find(id)) {
@@ -30,7 +30,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
 
 		const name = UserName.fromString(command.name);
 
-		const user = User.add(id, name);
+		const user = User.addWithoutCompany(id, name);
 
 		this.userRepository.save(user);
 
