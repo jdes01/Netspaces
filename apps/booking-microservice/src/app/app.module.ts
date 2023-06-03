@@ -14,14 +14,15 @@ import { QueryHandlers } from './application/query';
 import { BookingWasCreatedEvent } from './domain/event';
 import { Booking } from './domain/model/booking';
 import { BookingResolver } from './infrastructure/graphql/resolvers/booking.resolver';
-import { BookingProjections, SpaceProjections, UserProjections } from './infrastructure/projection';
+import { BookingProjections, SpaceProjections, UserProjections, CompanyProjections } from './infrastructure/projection';
 import { BOOKING_PROJECTION, BookingSchema } from './infrastructure/projection/schema/booking.schema';
 import { SPACE_PROJECTION, SpaceSchema } from './infrastructure/projection/schema/space.schema';
 import { USER_PROJECTION, UserSchema } from './infrastructure/projection/schema/user.schema';
+import { COMPANY_PROJECTION, CompanySchema } from './infrastructure/projection/schema/company.schema';
 import { BookingService } from './infrastructure/service/booking.service';
 
 @Module({
-	controllers: [...SpaceProjections, ...UserProjections],
+	controllers: [...SpaceProjections, ...UserProjections, ...CompanyProjections],
 	imports: [
 		ConfigModule.forRoot({
 			envFilePath: [`.env.${process.env.NODE_ENV}.local`, `.env.${process.env.NODE_ENV}`, '.env.local', '.env'],
@@ -59,6 +60,10 @@ import { BookingService } from './infrastructure/service/booking.service';
 			{
 				name: USER_PROJECTION,
 				schema: UserSchema,
+			},
+			{
+				name: COMPANY_PROJECTION,
+				schema: CompanySchema,
 			},
 		]),
 	],

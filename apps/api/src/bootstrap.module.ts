@@ -10,6 +10,7 @@ import { RedisModule } from './redis.module';
 import { SpaceModule } from './space';
 import { UserModule } from './user/infrastructure/user.module';
 import { WorkspaceModule } from './workspace';
+import { CompanyModule } from './company';
 
 @Module({
 	imports: [
@@ -30,7 +31,8 @@ import { WorkspaceModule } from './workspace';
 		WorkspaceModule,
 		SpaceModule,
 		UserModule,
+		CompanyModule,
 		RedisModule,
 	],
 })
-export class BootstrapModule {}
+export class BootstrapModule { }

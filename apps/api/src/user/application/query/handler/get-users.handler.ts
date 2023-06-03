@@ -9,10 +9,10 @@ import { GetUsersQuery } from '../get-users.query';
 export class GetUsersHandler implements IQueryHandler {
 	constructor(
 		@Inject(USER_FINDER)
-		private readonly workspaceFinder: UserFinder,
-	) {}
+		private readonly userFinder: UserFinder,
+	) { }
 
 	async execute(_: GetUsersQuery): Promise<Array<UserDTO>> {
-		return this.workspaceFinder.findAll();
+		return this.userFinder.findAll();
 	}
 }
