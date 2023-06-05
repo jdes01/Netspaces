@@ -11,11 +11,6 @@
 		}
 	],
 	"compilerOptions": {
-		"esModuleInterop": true,
-		"experimentalDecorators": true,
-		"target": "es5",
-		"module": "commonjs",
-		"outDir": "out",
-		"sourceMap": true
+		"esModuleInterop": true
 	}
 }

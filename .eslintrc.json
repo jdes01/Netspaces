@@ -1,17 +1,12 @@
 {
-	"env": { "browser": true },
-	"extends": [
-		"plugin:@typescript-eslint/recommended",
-		"plugin:cypress/recommended",
-		"plugin:jsx-a11y/recommended",
-		"plugin:prettier/recommended",
-		"plugin:react-hooks/recommended"
-	],
+	"root": true,
+	"ignorePatterns": ["**/*"],
+	"plugins": ["@nx"],
 	"overrides": [
 		{
 			"files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
 			"rules": {
-				"@nrwl/nx/enforce-module-boundaries": [
+				"@nx/enforce-module-boundaries": [
 					"error",
 					{
 						"enforceBuildableLibDependency": true,
@@ -25,37 +20,23 @@
 					}
 				]
 			}
+		},
+		{
+			"files": ["*.ts", "*.tsx"],
+			"extends": ["plugin:@nx/typescript"],
+			"rules": {}
+		},
+		{
+			"files": ["*.js", "*.jsx"],
+			"extends": ["plugin:@nx/javascript"],
+			"rules": {}
+		},
+		{
+			"files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
+			"env": {
+				"jest": true
+			},
+			"rules": {}
 		}
-	],
-	"plugins": [
-		"@nrwl/nx",
-		"@typescript-eslint",
-		"import",
-		"jsx-a11y",
-		"prettier",
-		"react",
-		"simple-import-sort",
-		"sort",
-		"eslint-plugin-neverthrow"
-	],
-	"rules": {
-		"@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-		"camelcase": "error",
-		"default-case-last": "error",
-		"default-param-last": "error",
-		"dot-notation": "error",
-		"eqeqeq": "error",
-		"import/first": "error",
-		"import/newline-after-import": "error",
-		"import/no-duplicates": "error",
-		"no-shadow": "error",
-		"react/jsx-no-bind": "warn",
-		"react-hooks/exhaustive-deps": "error",
-		"react-hooks/rules-of-hooks": "error",
-		"simple-import-sort/imports": "error",
-		"simple-import-sort/exports": "error",
-		"sort/destructuring-properties": "error",
-		"sort/object-properties": "error",
-		"sort/type-properties": "error"
-	}
+	]
 }
