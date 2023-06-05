@@ -1,6 +1,8 @@
 import { UserDTO } from "@netspaces/contracts";
 import { UserFinder } from "../user/application/service/user-finder.service";
 import { UserId } from "../user/domain/model/value-objects";
+import { NotImplementedException } from "@nestjs/common";
+import { UserCompanyId } from "../user/domain/model/value-objects/user-company-id";
 
 export class InMemoryUserFinder implements UserFinder {
     private users: UserDTO[] = []
@@ -16,6 +18,10 @@ export class InMemoryUserFinder implements UserFinder {
 
     async findAll(): Promise<UserDTO[]> {
         return this.users;
+    }
+
+    async findByCompanyId(id: UserCompanyId): Promise<Array<UserDTO>> {
+        throw new NotImplementedException()
     }
 
 }
