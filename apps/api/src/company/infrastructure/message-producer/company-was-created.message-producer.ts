@@ -14,6 +14,5 @@ export class CompanyWasCreatedMessageProducer implements IEventHandler<CompanyWa
 
 	async handle(event: CompanyWasCreatedEvent) {
 		this.companyProducerClient.emit(COMPANY_WAS_CREATED_MESSAGE, JSON.stringify(event.payload));
-		Logger.log(`Company ${event.payload._id} was created message was sent`);
 	}
 }

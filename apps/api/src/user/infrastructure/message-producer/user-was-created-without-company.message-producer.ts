@@ -14,6 +14,5 @@ export class UserWasCreatedWithoutCompanyMessageProducer implements IEventHandle
 
 	async handle(event: UserWasCreatedWithoutCompanyEvent) {
 		this.userProducerClient.emit(USER_WAS_CREATED_WITHOUT_COMPANY_MESSAGE, JSON.stringify(event.payload));
-		Logger.log(`User ${event.payload._id} was created message was sent`);
 	}
 }

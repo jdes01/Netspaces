@@ -6,7 +6,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CreateUserWithoutCompanyDTO } from '@netspaces/contracts';
+import { CreateUserWithCompanyDTO, CreateUserWithoutCompanyDTO } from '@netspaces/contracts';
 
 import { RedisModule } from '../../redis.module';
 import { CommandHandlers } from '../application/command';
@@ -44,7 +44,7 @@ import { COMPANY_PROJECTION, CompanySchema } from '../../company/infrastructure/
 		]),
 		EventStoreModule.forFeature([User], {
 			UserWasCreatedWithoutCompanyEvent: (event: Event<CreateUserWithoutCompanyDTO>) => new UserWasCreatedWithoutCompanyEvent(event.payload._id, event.payload.name),
-			UserWasCreatedWithCompanyEvent: (event: Event<CreateUserWithoutCompanyDTO>) => new UserWasCreatedWithCompanyEvent(event.payload._id, event.payload.name, event.payload.companyId),
+			UserWasCreatedWithCompanyEvent: (event: Event<CreateUserWithCompanyDTO>) => new UserWasCreatedWithCompanyEvent(event.payload._id, event.payload.name, event.payload.companyId),
 		}),
 		MongooseModule.forFeature([
 			{

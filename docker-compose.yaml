@@ -64,16 +64,6 @@ services:
         networks:
             - netspaces-network
 
-    netspaces-gateway:
-        image: devopsfaith/krakend:watch
-        ports:
-            - '8080:8080'
-        volumes:
-            - './krakend:/etc/krakend'
-        networks:
-            - netspaces-network
-        command: ['run', '-dc', 'krakend.json']
-
     netspaces-eventstore:
         image: eventstore/eventstore:20.10.2-buster-slim
         environment:
