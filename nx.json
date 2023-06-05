@@ -1,6 +1,30 @@
 {
-	"$schema": "./node_modules/nx/schemas/nx-schema.json",
-
+	"plugins": ["@nxrs/cargo"],
+	"namedInputs": {
+		"default": ["{projectRoot}/**/*", "sharedGlobals"],
+		"production": [
+			"default",
+			"!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+			"!{projectRoot}/tsconfig.spec.json",
+			"!{projectRoot}/jest.config.[jt]s"
+		],
+		"sharedGlobals": ["{workspaceRoot}/babel.config.json"]
+	},
+	"targetDefaults": {
+		"build": {
+			"dependsOn": ["^build"],
+			"inputs": ["production", "^production"]
+		},
+		"lint": {
+			"inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+		},
+		"e2e": {
+			"inputs": ["default", "^production"]
+		},
+		"test": {
+			"inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
+		}
+	},
 	"tasksRunnerOptions": {
 		"default": {
 			"runner": "@nrwl/nx-cloud",
@@ -10,70 +34,25 @@
 			}
 		}
 	},
-
-	"targetDefaults": {
-		"build": {
-			"dependsOn": ["^build"],
-
-			"inputs": ["production", "^production"]
-		},
-
-		"lint": {
-			"inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
-		},
-
-		"e2e": {
-			"inputs": ["default", "^production"]
-		},
-
-		"test": {
-			"inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
-		}
-	},
-
-	"namedInputs": {
-		"default": ["{projectRoot}/**/*", "sharedGlobals"],
-
-		"production": [
-			"default",
-
-			"!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
-
-			"!{projectRoot}/tsconfig.spec.json",
-
-			"!{projectRoot}/jest.config.[jt]s"
-		],
-
-		"sharedGlobals": ["{workspaceRoot}/babel.config.json"]
-	},
-
 	"generators": {
 		"@nx/react": {
 			"application": {
 				"style": "css",
-
 				"linter": "eslint",
-
 				"bundler": "webpack",
-
 				"babel": true
 			},
-
 			"component": {
 				"style": "css"
 			},
-
 			"library": {
 				"style": "css",
-
 				"linter": "eslint"
 			}
 		},
-
 		"@nx/next": {
 			"application": {
 				"style": "css",
-
 				"linter": "eslint"
 			}
 		}
