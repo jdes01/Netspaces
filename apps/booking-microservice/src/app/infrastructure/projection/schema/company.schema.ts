@@ -8,7 +8,6 @@ export type CompanyDocument = CompanyDTO & Document;
 export const CompanySchema = new Schema(
     {
         _id: String,
-        name: String,
     },
     {
         versionKey: false,
