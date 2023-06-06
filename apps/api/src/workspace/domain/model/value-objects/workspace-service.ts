@@ -20,16 +20,17 @@ export class WorkspaceService extends ValueObject<{
 
 	public static fromStringList(services: Array<string>): Result<Array<WorkspaceService>, WorkspaceServiceNotValidError> {
 		try {
-			return new Ok(
-				services.map(
-					(service) =>
-						new WorkspaceService({
-							value: WorkspaceServicesTypes[service],
-						}),
-				),
-			);
+			const workspaceServices = services.map((service) => {
+				const serviceType = WorkspaceServicesTypes[service];
+				if (serviceType === undefined) {
+					throw new Error(service);
+				}
+				return new WorkspaceService({ value: serviceType });
+			});
+
+			return new Ok(workspaceServices);
 		} catch (e: any) {
-			return new Err(new WorkspaceServiceNotValidError(e.message));
+			return new Err(WorkspaceServiceNotValidError.withService(e.message));
 		}
 	}
 

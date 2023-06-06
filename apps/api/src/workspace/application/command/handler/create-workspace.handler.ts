@@ -1,9 +1,9 @@
-import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
+import { InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'neverthrow';
 
-import { REDIS_SERVICE, RedisService } from '../../../../redis.module';
+import { REDIS_SERVICE } from '../../../../redis.module';
 import { CreateWorkspaceCommand } from '../../../application/command/create-workspace.command';
 import { WORKSPACE_FINDER, WorkspaceFinder } from '../../../application/service/workspace-finder.service';
 import { WorkspaceAlreadyExistsError, WorkspaceCompanyNotFoundError } from '../../../domain/exception';
@@ -11,13 +11,15 @@ import { WorkspaceError } from '../../../domain/exception/workspace-error';
 import { Workspace } from '../../../domain/model';
 import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, WorkspaceService } from '../../../domain/model/value-objects';
 import { WorkspaceCompanyId } from '../../../domain/model/value-objects/workspace-company-id';
-import { COMPANY_FINDER, CompanyFinder } from 'apps/api/src/company/application/service/company-finder.service';
+import { COMPANY_FINDER, CompanyFinder } from '../../../../company/application/service/company-finder.service';
+import { WorkspaceRepository } from '../../../domain/service/repository.service';
+import { RedisService } from '../../../../user/domain/service/redis.service';
 
 @CommandHandler(CreateWorkspaceCommand)
 export class CreateWorkspaceHandler implements ICommandHandler<CreateWorkspaceCommand> {
 	constructor(
 		@InjectAggregateRepository(Workspace)
-		private readonly workspaceRepository: AggregateRepository<Workspace, WorkspaceId>,
+		private readonly workspaceRepository: WorkspaceRepository<Workspace, WorkspaceId>,
 		@Inject(WORKSPACE_FINDER)
 		private readonly workspaceFinder: WorkspaceFinder,
 		@Inject(COMPANY_FINDER)

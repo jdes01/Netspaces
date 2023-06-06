@@ -7,6 +7,9 @@ export class WorkspaceDTO {
 	readonly _id: string;
 
 	@ApiProperty()
+	readonly companyId: string;
+
+	@ApiProperty()
 	readonly name: string;
 
 	@ApiProperty()
