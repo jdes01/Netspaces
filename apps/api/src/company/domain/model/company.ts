@@ -35,6 +35,10 @@ export class Company extends AggregateRoot {
 		updatedFieldsEvents.map(event => this.apply(event))
 	}
 
+	private onCompanyNameWasUpdated(event: CompanyNameWasUpdated) {
+		this._name = CompanyName.fromString(event.name);
+	}
+
 	public aggregateId(): string {
 		return this._id.value;
 	}
