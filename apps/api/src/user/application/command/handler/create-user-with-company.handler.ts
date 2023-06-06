@@ -1,23 +1,25 @@
-import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
-import { Inject, Logger } from '@nestjs/common';
+import { InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
+import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'neverthrow';
 
-import { REDIS_SERVICE, RedisService } from '../../../../redis.module';
+import { REDIS_SERVICE } from '../../../../redis.module';
+import { RedisService } from '../../../domain/service/redis.service';
 import { CreateUserWithCompanyCommand } from '../../../application/command/create-user-with-company.command';
 import { USER_FINDER, UserFinder } from '../../../application/service/user-finder.service';
 import { UserAlreadyExistsError, UserError } from '../../../domain/exception';
 import { User } from '../../../domain/model';
 import { UserId, UserName } from '../../../domain/model/value-objects';
-import { COMPANY_FINDER, CompanyFinder } from 'apps/api/src/company/application/service/company-finder.service';
-import { CompanyId } from 'apps/api/src/company/domain/model/value-objects';
-import { CompanyNotFoundError } from 'apps/api/src/company/domain/exception';
+import { COMPANY_FINDER, CompanyFinder } from '../../../../company/application/service/company-finder.service';
+import { CompanyId } from '../../../../company/domain/model/value-objects';
+import { CompanyNotFoundError } from '../../../../company/domain/exception';
+import { UserRepository } from '../../../domain/service/repository.service';
 
 @CommandHandler(CreateUserWithCompanyCommand)
 export class CreateUserWithCompanyHandler implements ICommandHandler<CreateUserWithCompanyCommand> {
     constructor(
         @InjectAggregateRepository(User)
-        private readonly userRepository: AggregateRepository<User, UserId>,
+        private readonly userRepository: UserRepository<User, UserId>,
         @Inject(USER_FINDER)
         private readonly userFinder: UserFinder,
         @Inject(COMPANY_FINDER)
@@ -36,7 +38,7 @@ export class CreateUserWithCompanyHandler implements ICommandHandler<CreateUserW
         const companyId = CompanyId.fromString(command.companyId);
 
         if (await this.companyFinder.find(companyId) === null) {
-            return new Err(CompanyNotFoundError.withId(id));
+            return new Err(CompanyNotFoundError.withId(companyId));
         }
 
         const name = UserName.fromString(command.name);

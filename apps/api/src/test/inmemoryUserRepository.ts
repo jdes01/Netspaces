@@ -3,7 +3,7 @@ import { UserId } from "../user/domain/model/value-objects";
 import { UserRepository } from "../user/domain/service/repository.service";
 
 export class InMemoryUserRepository implements UserRepository<User, UserId> {
-    private users: Array<User> = [];
+    public users: Array<User> = [];
 
     constructor(users: Array<User>) {
         this.users = users;
