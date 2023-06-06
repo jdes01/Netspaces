@@ -3,18 +3,20 @@ import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'neverthrow';
 
-import { REDIS_SERVICE, RedisService } from '../../../../redis.module';
+import { REDIS_SERVICE } from '../../../../redis.module';
 import { CreateCompanyCommand } from '../../../application/command/create-company.command';
 import { COMPANY_FINDER, CompanyFinder } from '../../service/company-finder.service';
 import { CompanyAlreadyExistsError, CompanyError } from '../../../domain/exception';
 import { Company } from '../../../domain/model';
 import { CompanyId, CompanyName } from '../../../domain/model/value-objects';
+import { CompanyRepository } from '../../../domain/service/repository.service';
+import { RedisService } from '../../../domain/service/redis.service';
 
 @CommandHandler(CreateCompanyCommand)
 export class CreateCompanyHandler implements ICommandHandler<CreateCompanyCommand> {
 	constructor(
 		@InjectAggregateRepository(Company)
-		private readonly companyRepository: AggregateRepository<Company, CompanyId>,
+		private readonly companyRepository: CompanyRepository<Company, CompanyId>,
 		@Inject(COMPANY_FINDER)
 		private readonly companyFinder: CompanyFinder,
 		@Inject(REDIS_SERVICE)
