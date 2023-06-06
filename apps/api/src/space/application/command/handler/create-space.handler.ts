@@ -1,4 +1,4 @@
-import { AggregateRepository, InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
+import { InjectAggregateRepository } from '@aulasoftwarelibre/nestjs-eventstore';
 import { Inject } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { Err, Ok, Result } from 'neverthrow';
@@ -14,16 +14,18 @@ import { SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from '../../../domain/m
 import { SpaceAmenity } from '../../../domain/model/value-objects/space-amenities';
 import { CreateSpaceCommand } from '../../command/create-space.command';
 import { SPACE_FINDER, SpaceFinder } from '../../service/space-finder.service';
+import { SpaceRepository } from '../../../domain/service/repository.service';
 
 @CommandHandler(CreateSpaceCommand)
 export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
 	constructor(
 		@InjectAggregateRepository(Space)
-		private readonly spaceRepository: AggregateRepository<Space, SpaceId>,
-		@Inject(SPACE_FINDER) private readonly spaceFinder: SpaceFinder,
+		private readonly spaceRepository: SpaceRepository<Space, SpaceId>,
+		@Inject(SPACE_FINDER)
+		private readonly spaceFinder: SpaceFinder,
 		@Inject(WORKSPACE_FINDER)
 		private readonly workspaceFinder: WorkspaceFinder,
-	) {}
+	) { }
 
 	async execute(command: CreateSpaceCommand): Promise<Result<null, SpaceError | WorkspaceError>> {
 		const id = SpaceId.fromString(command.id);
