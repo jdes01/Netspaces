@@ -1,6 +1,6 @@
-import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
+import { AggregateRoot, Event } from '@aulasoftwarelibre/nestjs-eventstore';
 
-import { CompanyWasCreatedEvent } from '../event';
+import { CompanyNameWasUpdated, CompanyWasCreatedEvent } from '../event';
 import { CompanyId, CompanyName } from './value-objects';
 
 export class Company extends AggregateRoot {
@@ -23,6 +23,16 @@ export class Company extends AggregateRoot {
 		this._name = CompanyName.fromString(event.name);
 
 		this._deleted = false;
+	}
+
+	update(name: CompanyName): void {
+		const updatedFieldsEvents: Array<Event> = []
+
+		if (!this._name.equals(name)) {
+			updatedFieldsEvents.push(new CompanyNameWasUpdated(this._id.value, name.value))
+		}
+
+		updatedFieldsEvents.map(event => this.apply(event))
 	}
 
 	public aggregateId(): string {

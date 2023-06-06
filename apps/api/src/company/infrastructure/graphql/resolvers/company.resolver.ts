@@ -4,8 +4,8 @@ import { GraphQLError } from 'graphql';
 
 import { CompanyService } from '../../service/company.service';
 import { Company, CompanyInput } from '../schema/company.graphql-model';
-import { User } from 'apps/api/src/user/infrastructure/graphql/schema/user.graphql-model';
-import { UserService } from 'apps/api/src/user/infrastructure/service/user.service';
+import { User } from '../../../../user/infrastructure/graphql/schema/user.graphql-model';
+import { UserService } from '../../../../user/infrastructure/service/user.service';
 
 @Resolver((_of: undefined) => Company)
 export class CompanyResolver {
@@ -41,6 +41,20 @@ export class CompanyResolver {
 		return createdCompanyResult.match<string>(
 			(_) => {
 				return 'Company created successfully';
+			},
+			(err) => {
+				throw new GraphQLError(err.message);
+			},
+		);
+	}
+
+	@Mutation((_returns) => String)
+	async updateCompany(@Args('companyInput') companyInput: CompanyInput): Promise<string> {
+		const updatedCompanyResult = await this.companyService.updateCompany(companyInput._id, companyInput.name);
+
+		return updatedCompanyResult.match<string>(
+			(_) => {
+				return 'Company updated successfully';
 			},
 			(err) => {
 				throw new GraphQLError(err.message);

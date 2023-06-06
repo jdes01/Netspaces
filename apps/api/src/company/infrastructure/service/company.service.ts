@@ -7,6 +7,7 @@ import { CreateCompanyCommand } from '../../application/command/create-company.c
 import { GetCompanysQuery } from '../../application/query';
 import { GetCompanyByIdQuery } from '../../application/query/get-company-by-id.query';
 import { CompanyError } from '../../domain/exception';
+import { UpdateCompanyCommand } from '../../application/command/update-company.command';
 
 @Injectable()
 export class CompanyService {
@@ -14,6 +15,10 @@ export class CompanyService {
 
 	async createCompany(id: string, name: string): Promise<Result<null, CompanyError>> {
 		return this.commandBus.execute<ICommand, Result<null, CompanyError>>(new CreateCompanyCommand(id, name));
+	}
+
+	async updateCompany(id: string, name: string): Promise<Result<null, CompanyError>> {
+		return this.commandBus.execute<ICommand, Result<null, CompanyError>>(new UpdateCompanyCommand(id, name));
 	}
 
 	async getCompanys() {

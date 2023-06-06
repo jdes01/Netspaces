@@ -18,4 +18,5 @@ export * from './lib/workspace/response/workspace.dto';
 
 export * from './lib/company/message/company-was-created.message';
 export * from './lib/company/request/create-company.dto';
+export * from './lib/company/request/update-company-name.dto';
 export * from './lib/company/response/company.dto';
