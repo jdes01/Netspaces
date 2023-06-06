@@ -1,5 +1,4 @@
 {
-	"plugins": ["@nxrs/cargo"],
 	"namedInputs": {
 		"default": ["{projectRoot}/**/*", "sharedGlobals"],
 		"production": [
