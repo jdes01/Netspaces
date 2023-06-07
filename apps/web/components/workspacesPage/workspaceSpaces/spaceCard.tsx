@@ -79,7 +79,7 @@ export function SpaceCard({ space }: SpaceCardProps) {
 
 			<Box p="5">
 				<Stack direction="row" spacing={1} align="left">
-					{space.amenities.map((amenity) => (
+					{space.amenitys.map((amenity) => (
 						<Badge borderRadius="full" px="2" colorScheme="teal" position={'relative'} left={1} right={1}>
 							{amenity}
 						</Badge>

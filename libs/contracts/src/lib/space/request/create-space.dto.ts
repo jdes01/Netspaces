@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { ApiProperty } from '@nestjs/swagger';
-import { SpaceAmenitiesTypes } from '@netspaces/domain';
+import { SpaceAmenitysTypes } from '@netspaces/domain';
 import { IsNotEmpty, IsUUID } from 'class-validator';
 
 export class CreateSpaceDTO {
@@ -29,5 +29,5 @@ export class CreateSpaceDTO {
 
 	@ApiProperty()
 	@IsNotEmpty()
-	readonly amenities: Array<SpaceAmenitiesTypes>;
+	readonly amenitys: Array<SpaceAmenitysTypes>;
 }

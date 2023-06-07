@@ -4,7 +4,10 @@ import { WorkspaceId } from '../../../workspace/domain/model/value-objects';
 import { SpaceWasCreatedEvent } from '../event';
 import { SpaceAmenityNotValidError } from '../exception';
 import { SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from './value-objects';
-import { SpaceAmenity } from './value-objects/space-amenities';
+import { SpaceAmenity } from './value-objects/space-amenitys';
+import { SpaceNameWasUpdatedEvent } from '../event/space-name-was-updated';
+import { SpaceQuantityWasUpdatedEvent } from '../event/space-quantity-was-updated';
+import { SpaceSeatsWasUpdatedEvent } from '../event/space-seats-was-updated';
 
 export class Space extends AggregateRoot {
 	private _id!: SpaceId;
@@ -12,7 +15,7 @@ export class Space extends AggregateRoot {
 	private _name!: SpaceName;
 	private _quantity!: SpaceQuantity;
 	private _seats!: SpaceSeats;
-	private _amenities!: Array<SpaceAmenity>;
+	private _amenitys!: Array<SpaceAmenity>;
 	private _deleted!: boolean | null;
 
 	public static add(
@@ -21,7 +24,7 @@ export class Space extends AggregateRoot {
 		name: SpaceName,
 		quantity: SpaceQuantity,
 		seats: SpaceSeats,
-		amenities: Array<SpaceAmenity>,
+		amenitys: Array<SpaceAmenity>,
 	): Space {
 		const space = new Space();
 
@@ -31,7 +34,7 @@ export class Space extends AggregateRoot {
 			name.value,
 			quantity.value,
 			seats.value,
-			amenities.map((amenity) => amenity.value),
+			amenitys.map((amenity) => amenity.value),
 		);
 
 		space.apply(event);
@@ -46,9 +49,9 @@ export class Space extends AggregateRoot {
 		this._quantity = SpaceQuantity.fromNumber(event.quantity);
 		this._seats = SpaceSeats.fromNumber(event.seats);
 
-		SpaceAmenity.fromStringList(event.amenities).match(
-			(amenities) => {
-				this._amenities = amenities;
+		SpaceAmenity.fromStringList(event.amenitys).match(
+			(amenitys) => {
+				this._amenitys = amenitys;
 			},
 			(_) => {
 				throw new SpaceAmenityNotValidError();
@@ -56,6 +59,30 @@ export class Space extends AggregateRoot {
 		);
 
 		this._deleted = null;
+	}
+
+	updateName(name: SpaceName): void {
+		(this._name.equals(name) == false) && this.apply(new SpaceNameWasUpdatedEvent(this._id.value, name.value))
+	}
+
+	private onSpaceNameWasUpdatedEvent(event: SpaceNameWasUpdatedEvent) {
+		this._name = SpaceName.fromString(event.name);
+	}
+
+	updateQuantity(quantity: SpaceQuantity): void {
+		(this._quantity.equals(quantity) === false) && this.apply(new SpaceQuantityWasUpdatedEvent(this._id.value, quantity.value));
+	}
+
+	private onSpaceQuantityWasUpdatedEvent(event: SpaceQuantityWasUpdatedEvent) {
+		this._quantity = SpaceQuantity.fromNumber(event.quantity);
+	}
+
+	updateSeats(seats: SpaceSeats): void {
+		(this._seats.equals(seats) === false) && this.apply(new SpaceSeatsWasUpdatedEvent(this._id.value, seats.value));
+	}
+
+	private onSpaceSeatsWasUpdatedEvent(event: SpaceSeatsWasUpdatedEvent) {
+		this._seats = SpaceSeats.fromNumber(event.seats);
 	}
 
 	public aggregateId(): string {
@@ -82,8 +109,8 @@ export class Space extends AggregateRoot {
 		return this._seats;
 	}
 
-	public get amenities(): Array<SpaceAmenity> {
-		return this._amenities;
+	public get amenitys(): Array<SpaceAmenity> {
+		return this._amenitys;
 	}
 
 	public get deleted(): boolean {

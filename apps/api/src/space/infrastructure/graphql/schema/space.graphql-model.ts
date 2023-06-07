@@ -19,7 +19,7 @@ export class Space {
 	seats?: number;
 
 	@Field((_type) => [String])
-	amenities?: [string];
+	amenitys?: [string];
 }
 
 @InputType()
@@ -40,5 +40,5 @@ export class SpaceInput {
 	seats!: number;
 
 	@Field((_type) => [String])
-	amenities?: [string];
+	amenitys?: [string];
 }

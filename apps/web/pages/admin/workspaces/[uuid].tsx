@@ -29,8 +29,8 @@ import { WorkspaceCard } from '../../../components/workspacesPage/workspaceCard'
 import { SpaceCard } from '../../../components/workspacesPage/workspaceSpaces/spaceCard';
 
 const CREATE_SPACE_MUTATION = gql`
-	mutation CreateSpaceMutation($_id: String!, $workspaceId: String!, $name: String!, $quantity: Int!, $seats: Int!, $amenities: [String!]!) {
-		createSpace(spaceInput: { _id: $_id, workspaceId: $workspaceId, name: $name, quantity: $quantity, seats: $seats, amenities: $amenities })
+	mutation CreateSpaceMutation($_id: String!, $workspaceId: String!, $name: String!, $quantity: Int!, $seats: Int!, $amenitys: [String!]!) {
+		createSpace(spaceInput: { _id: $_id, workspaceId: $workspaceId, name: $name, quantity: $quantity, seats: $seats, amenitys: $amenitys })
 	}
 `;
 
@@ -50,7 +50,7 @@ const GET_WORKSPACE = gql`
 				seats
 				workspaceId
 				quantity
-				amenities
+				amenitys
 			}
 		}
 	}
@@ -81,7 +81,7 @@ const Workspace = () => {
 		createSpace({
 			variables: {
 				_id: uuidv4(),
-				amenities: ['AUDIO_RECORDING'],
+				amenitys: ['AUDIO_RECORDING'],
 				name: formName,
 				quantity: formQuantity,
 				seats: formSeats,

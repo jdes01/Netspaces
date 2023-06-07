@@ -8,10 +8,11 @@ import { GetSpacesQuery } from '../../application/query';
 import { GetSpaceByIdQuery } from '../../application/query/get-space-by-id.query';
 import { GetSpacesByWorkspaceIdQuery } from '../../application/query/get-spaces-by-workspace-id.query';
 import { SpaceError } from '../../domain/exception';
+import { UpdateSpaceCommand } from '../../application/command/update-space.command';
 
 @Injectable()
 export class SpaceService {
-	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) {}
+	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) { }
 
 	async createSpace(
 		id: string,
@@ -19,9 +20,18 @@ export class SpaceService {
 		name: string,
 		quantity: number,
 		seats: number,
-		amenities: Array<string>,
+		amenitys: Array<string>,
 	): Promise<Result<null, SpaceError>> {
-		return this.commandBus.execute<ICommand, Result<null, SpaceError>>(new CreateSpaceCommand(id, workspaceId, name, quantity, seats, amenities));
+		return this.commandBus.execute<ICommand, Result<null, SpaceError>>(new CreateSpaceCommand(id, workspaceId, name, quantity, seats, amenitys));
+	}
+
+	async updateSpace(
+		id: string,
+		name: string,
+		quantity: number,
+		seats: number,
+	): Promise<Result<null, SpaceError>> {
+		return this.commandBus.execute<ICommand, Result<null, SpaceError>>(new UpdateSpaceCommand(id, name, quantity, seats));
 	}
 
 	async getSpaces(): Promise<Array<SpaceDTO>> {

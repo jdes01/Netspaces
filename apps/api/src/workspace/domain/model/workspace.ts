@@ -42,8 +42,8 @@ export class Workspace extends AggregateRoot {
 		return workspace;
 	}
 
-	public addSpace(spaceId: SpaceId, name: SpaceName, quantity: SpaceQuantity, seats: SpaceSeats, amenities: Array<SpaceAmenity>): Space {
-		return Space.add(spaceId, this.id, name, quantity, seats, amenities);
+	public addSpace(spaceId: SpaceId, name: SpaceName, quantity: SpaceQuantity, seats: SpaceSeats, amenitys: Array<SpaceAmenity>): Space {
+		return Space.add(spaceId, this.id, name, quantity, seats, amenitys);
 	}
 
 	private onWorkspaceWasCreatedEvent(event: WorkspaceWasCreatedEvent): void {

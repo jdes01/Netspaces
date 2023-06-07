@@ -11,7 +11,7 @@ import { SpaceAlreadyExistsError } from '../../../domain/exception';
 import { SpaceError } from '../../../domain/exception/space-error';
 import { Space } from '../../../domain/model';
 import { SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from '../../../domain/model/value-objects';
-import { SpaceAmenity } from '../../../domain/model/value-objects/space-amenities';
+import { SpaceAmenity } from '../../../domain/model/value-objects/space-amenitys';
 import { CreateSpaceCommand } from '../../command/create-space.command';
 import { SPACE_FINDER, SpaceFinder } from '../../service/space-finder.service';
 import { SpaceRepository } from '../../../domain/service/repository.service';
@@ -42,7 +42,7 @@ export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
 		const quantity = SpaceQuantity.fromNumber(command.quantity);
 		const seats = SpaceSeats.fromNumber(command.seats);
 
-		const spaceAmenitiesResult = SpaceAmenity.fromStringList(command.amenities);
+		const spaceAmenitiesResult = SpaceAmenity.fromStringList(command.amenitys);
 
 		return spaceAmenitiesResult.match<Result<null, SpaceError>>(
 			(spaceAmenities) => {

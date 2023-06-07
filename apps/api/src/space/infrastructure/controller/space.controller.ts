@@ -6,7 +6,7 @@ import { SpaceService } from '../service/space.service';
 
 @Controller('spaces')
 export class SpaceController {
-	constructor(private readonly spaceService: SpaceService) {}
+	constructor(private readonly spaceService: SpaceService) { }
 
 	@Post()
 	@HttpCode(200)
@@ -17,7 +17,7 @@ export class SpaceController {
 			createSpaceDTO.name,
 			createSpaceDTO.quantity,
 			createSpaceDTO.seats,
-			createSpaceDTO.amenities.map((amenity) => amenity.toString()),
+			createSpaceDTO.amenitys.map((amenity) => amenity.toString()),
 		);
 
 		createdSpaceResult.mapErr<SpaceError>((err) => {

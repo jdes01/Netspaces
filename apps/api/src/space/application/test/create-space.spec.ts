@@ -6,7 +6,7 @@ import { InMemorySpaceFinder, InMemorySpaceRepository, InMemoryWorkspaceFinder }
 import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 import { SpaceAlreadyExistsError } from '../../domain/exception';
 import { SpaceId } from '../../domain/model/value-objects';
-import { SpaceAmenitiesTypes } from '@netspaces/domain';
+import { SpaceAmenitysTypes } from '@netspaces/domain';
 import { WorkspaceNotFoundError } from '../../../workspace/domain/exception/workspace-not-found-error';
 import { WorkspaceId } from '../../../workspace/domain/model/value-objects';
 
@@ -17,7 +17,7 @@ describe('CreateSpaceHandler', () => {
     let name: string
     let quantity: number
     let seats: number
-    let amenities: Array<SpaceAmenitiesTypes>
+    let amenitys: Array<SpaceAmenitysTypes>
 
     let existingSpace: SpaceDTO
     let existingWorkspace: WorkspaceDTO
@@ -29,10 +29,10 @@ describe('CreateSpaceHandler', () => {
         name = 'workspace name'
         quantity = 2
         seats = 2
-        amenities = []
-        existingSpace = { _id: id, workspaceId: workspaceId, name: name, quantity: quantity, seats: seats, amenities: amenities }
+        amenitys = []
+        existingSpace = { _id: id, workspaceId: workspaceId, name: name, quantity: quantity, seats: seats, amenitys: amenitys }
         existingWorkspace = { _id: workspaceId, companyId: "companyId", name: "name", description: "description", street: "street", city: "city", country: "country", services: ["services"] }
-        command = new CreateSpaceCommand(id, workspaceId, name, quantity, seats, amenities);
+        command = new CreateSpaceCommand(id, workspaceId, name, quantity, seats, amenitys);
     });
 
     it('should creates a new space successfully', async () => {

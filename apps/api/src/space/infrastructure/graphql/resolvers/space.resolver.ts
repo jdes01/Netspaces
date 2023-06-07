@@ -32,12 +32,31 @@ export class SpaceResolver {
 			spaceInput.name,
 			spaceInput.quantity,
 			spaceInput.seats,
-			spaceInput.amenities,
+			spaceInput.amenitys,
 		);
 
 		return createdSpaceResult.match<string>(
 			(_) => {
 				return 'Space created successfully';
+			},
+			(err) => {
+				throw new GraphQLError(err.message);
+			},
+		);
+	}
+
+	@Mutation((_returns) => String)
+	async updateSpace(@Args('spaceInput') spaceInput: SpaceInput): Promise<string> {
+		const updatedSpaceResult = await this.spaceService.updateSpace(
+			spaceInput._id,
+			spaceInput.name,
+			spaceInput.quantity,
+			spaceInput.seats,
+		);
+
+		return updatedSpaceResult.match<string>(
+			(_) => {
+				return 'Space was updated successfully';
 			},
 			(err) => {
 				throw new GraphQLError(err.message);

@@ -22,7 +22,7 @@ const GET_WORKSPACE = gql`
 				seats
 				workspaceId
 				quantity
-				amenities
+				amenitys
 			}
 		}
 	}
