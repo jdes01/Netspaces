@@ -1,4 +1,4 @@
-import { Err, Ok } from 'neverthrow';
+import { Ok } from 'neverthrow';
 
 import { UpdateCompanyCommand } from '../command/update-company.command'
 import { UpdateCompanyHandler } from '../command/handler/update-company.handler'
@@ -26,7 +26,7 @@ describe('CreateCompanyHandler', () => {
 
         const companyFinder = new InMemoryCompanyFinder([])
         const companyRepository = new InMemoryCompanyRepository([existingCompany]);
-        const handler = new UpdateCompanyHandler(companyRepository, companyFinder);
+        const handler = new UpdateCompanyHandler(companyRepository);
 
         const result = await handler.execute(command);
 
