@@ -2,6 +2,7 @@ export * from './lib/booking/request/create-booking.dto';
 export * from './lib/booking/response/booking.dto';
 
 export * from './lib/space/message/space-was-created.mesasge';
+export * from './lib/space/message/space-quantity-was-updated.message'
 export * from './lib/space/request/create-space.dto';
 export * from './lib/space/request/update-space-name.dto';
 export * from './lib/space/request/update-space-quantity.dto';
