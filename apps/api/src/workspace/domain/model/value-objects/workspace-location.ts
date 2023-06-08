@@ -20,4 +20,13 @@ export class WorkspaceLocation {
 	get country() {
 		return this._country;
 	}
+
+	public equals(other: WorkspaceLocation): boolean {
+		if (
+			this.street === other.street &&
+			this.city === other.city &&
+			this.country === other.country
+		) { return true }
+		return false
+	}
 }

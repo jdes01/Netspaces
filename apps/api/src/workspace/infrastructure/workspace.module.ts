@@ -1,12 +1,12 @@
 // @ts-nocheck
 
 import { Event, EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
-import { ApolloDriver, ApolloDriverConfig, ApolloFederationDriver } from '@nestjs/apollo';
+import { ApolloFederationDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CreateWorkspaceDTO } from '@netspaces/contracts';
+import { CreateWorkspaceDTO, UpdateWorkspaceNameDTO } from '@netspaces/contracts';
 
 import { RedisModule } from '../../redis.module';
 import { SpaceService } from '../../space/infrastructure/service/space.service';
@@ -23,6 +23,8 @@ import { WorkspaceService } from './service/workspace.service';
 import { WorkspaceProviders } from './workspace.providers';
 import { COMPANY_PROJECTION, CompanySchema } from '../../company/infrastructure/projection';
 
+import { WorkspaceNameWasUpdatedEvent, WorkspaceDescriptionWasUpdatedEvent, WorkspaceLocationWasUpdatedEvent } from '../domain/event';
+
 @Module({
 	controllers: [WorkspaceController],
 	imports: [
@@ -38,6 +40,23 @@ import { COMPANY_PROJECTION, CompanySchema } from '../../company/infrastructure/
 					event.payload.city,
 					event.payload.country,
 					event.payload.services.map((service) => service.toString()),
+				),
+			WorkspaceNameWasUpdatedEvent: (event: Event<UpdateWorkspaceNameDTO>) =>
+				new WorkspaceNameWasUpdatedEvent(
+					event.payload._id,
+					event.payload.name,
+				),
+			WorkspaceDescriptionWasUpdatedEvent: (event: Event<UpdateWorkspaceDescriptionDTO>) =>
+				new WorkspaceDescriptionWasUpdatedEvent(
+					event.payload._id,
+					event.payload.description,
+				),
+			WorkspaceLocationWasUpdatedEvent: (event: Event<UpdateWorkspaceLocationDTO>) =>
+				new WorkspaceLocationWasUpdatedEvent(
+					event.payload._id,
+					event.payload.street,
+					event.payload.city,
+					event.payload.country,
 				),
 		}),
 		MongooseModule.forFeature([

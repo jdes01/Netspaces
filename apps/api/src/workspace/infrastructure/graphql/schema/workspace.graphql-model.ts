@@ -59,3 +59,24 @@ export class WorkspaceInput {
 	@Field(() => [String])
 	services?: [string];
 }
+
+@InputType()
+export class UpdateWorkspaceInput {
+	@Field()
+	_id!: string;
+
+	@Field()
+	name?: string;
+
+	@Field()
+	description?: string;
+
+	@Field()
+	street?: string;
+
+	@Field()
+	city?: string;
+
+	@Field()
+	country?: string;
+}
