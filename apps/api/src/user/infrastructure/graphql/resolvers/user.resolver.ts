@@ -3,7 +3,7 @@ import { UserDTO } from '@netspaces/contracts';
 import { GraphQLError } from 'graphql';
 
 import { UserService } from '../../service/user.service';
-import { User, UserInput } from '../schema/user.graphql-model';
+import { UpdateUserInput, User, UserInput } from '../schema/user.graphql-model';
 
 @Resolver((_of: undefined) => User)
 export class UserResolver {
@@ -45,6 +45,20 @@ export class UserResolver {
 		return createdUserResult.match<string>(
 			(_) => {
 				return 'User created successfully';
+			},
+			(err) => {
+				throw new GraphQLError(err.message);
+			},
+		);
+	}
+
+	@Mutation((_returns) => String)
+	async updateUser(@Args('userInput') userInput: UpdateUserInput): Promise<string> {
+		const updatedUserResult = await this.userService.updateUser(userInput._id, userInput.name);
+
+		return updatedUserResult.match<string>(
+			(_) => {
+				return 'User updated successfully';
 			},
 			(err) => {
 				throw new GraphQLError(err.message);

@@ -25,14 +25,8 @@ export class Company extends AggregateRoot {
 		this._deleted = false;
 	}
 
-	update(name: CompanyName): void {
-		const updatedFieldsEvents: Array<Event> = []
-
-		if (!this._name.equals(name)) {
-			updatedFieldsEvents.push(new CompanyNameWasUpdated(this._id.value, name.value))
-		}
-
-		updatedFieldsEvents.map(event => this.apply(event))
+	updateName(name: CompanyName): void {
+		(this._name.equals(name) === false) && this.apply(new CompanyNameWasUpdated(this._id.value, name.value))
 	}
 
 	private onCompanyNameWasUpdated(event: CompanyNameWasUpdated) {

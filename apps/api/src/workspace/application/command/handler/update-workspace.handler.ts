@@ -8,7 +8,6 @@ import { WorkspaceError } from '../../../domain/exception/workspace-error';
 import { Workspace } from '../../../domain/model';
 import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName } from '../../../domain/model/value-objects';
 import { WorkspaceRepository } from '../../../domain/service/repository.service';
-import { Logger } from '@nestjs/common';
 
 @CommandHandler(UpdateWorkspaceCommand)
 export class UpdateWorkspaceHandler implements ICommandHandler<UpdateWorkspaceCommand> {
@@ -29,7 +28,6 @@ export class UpdateWorkspaceHandler implements ICommandHandler<UpdateWorkspaceCo
         workspace.updateLocation(new WorkspaceLocation(command.street, command.city, command.country))
 
         this.workspaceRepository.save(workspace);
-        Logger.log("SAVED")
         return new Ok(null);
     }
 }

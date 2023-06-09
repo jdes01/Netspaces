@@ -24,3 +24,13 @@ export class UserInput {
 	@Field({ nullable: true })
 	companyId!: string;
 }
+
+
+@InputType()
+export class UpdateUserInput {
+	@Field()
+	_id!: string;
+
+	@Field()
+	name!: string;
+}

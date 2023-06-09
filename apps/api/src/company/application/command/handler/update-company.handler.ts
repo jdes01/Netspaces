@@ -24,7 +24,7 @@ export class UpdateCompanyHandler implements ICommandHandler<UpdateCompanyComman
             return new Err(CompanyNotFoundError.withId(id));
         }
 
-        company.update(CompanyName.fromString(command.name))
+        company.updateName(CompanyName.fromString(command.name))
 
         this.companyRepository.save(company);
 

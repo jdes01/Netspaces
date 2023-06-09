@@ -9,6 +9,7 @@ import { GetUserByIdQuery } from '../../application/query/get-user-by-id.query';
 import { GetUsersByCompanyIdQuery } from '../../application/query/get-users-by-company-id.query';
 import { UserError } from '../../domain/exception';
 import { CreateUserWithCompanyCommand } from '../../application/command/create-user-with-company.command';
+import { UpdateUserCommand } from '../../application/command/update-user.command';
 
 @Injectable()
 export class UserService {
@@ -20,6 +21,10 @@ export class UserService {
 
 	async createUserWithCompany(id: string, name: string, companyId: string): Promise<Result<null, UserError>> {
 		return this.commandBus.execute<ICommand, Result<null, UserError>>(new CreateUserWithCompanyCommand(id, name, companyId));
+	}
+
+	async updateUser(id: string, name: string): Promise<Result<null, UserError>> {
+		return this.commandBus.execute<ICommand, Result<null, UserError>>(new UpdateUserCommand(id, name));
 	}
 
 	async getUsers() {

@@ -6,12 +6,12 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CreateUserWithCompanyDTO, CreateUserWithoutCompanyDTO } from '@netspaces/contracts';
+import { CreateUserWithCompanyDTO, CreateUserWithoutCompanyDTO, UpdateUserNameDTO } from '@netspaces/contracts';
 
 import { RedisModule } from '../../redis.module';
 import { CommandHandlers } from '../application/command';
 import { QueryHandlers } from '../application/query';
-import { UserWasCreatedWithoutCompanyEvent, UserWasCreatedWithCompanyEvent } from '../domain/event';
+import { UserWasCreatedWithoutCompanyEvent, UserWasCreatedWithCompanyEvent, UserNameWasUpdatedEvent } from '../domain/event';
 import { User } from '../domain/model';
 import { UserResolver } from './graphql/resolvers/user.resolver';
 import { MessageProducers } from './message-producer';
@@ -45,6 +45,7 @@ import { COMPANY_PROJECTION, CompanySchema } from '../../company/infrastructure/
 		EventStoreModule.forFeature([User], {
 			UserWasCreatedWithoutCompanyEvent: (event: Event<CreateUserWithoutCompanyDTO>) => new UserWasCreatedWithoutCompanyEvent(event.payload._id, event.payload.name),
 			UserWasCreatedWithCompanyEvent: (event: Event<CreateUserWithCompanyDTO>) => new UserWasCreatedWithCompanyEvent(event.payload._id, event.payload.name, event.payload.companyId),
+			UserNameWasUpdatedEvent: (event: Event<UpdateUserNameDTO>) => new UserNameWasUpdatedEvent(event.payload._id, event.payload.name),
 		}),
 		MongooseModule.forFeature([
 			{
