@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 
 import { WorkspaceNameWasUpdatedEvent } from '../../domain/event';
 import { WORKSPACE_PROJECTION, WorkspaceDocument } from './workspace.schema';
-import { Logger } from '@nestjs/common';
 
 @EventsHandler(WorkspaceNameWasUpdatedEvent)
 export class WorkspaceNameWasUpdatedProjection implements IEventHandler<WorkspaceNameWasUpdatedEvent> {
@@ -14,7 +13,6 @@ export class WorkspaceNameWasUpdatedProjection implements IEventHandler<Workspac
     ) { }
 
     async handle(event: WorkspaceNameWasUpdatedEvent) {
-        Logger.log("HOLA")
         this.workspaceProjection
             .findByIdAndUpdate(event.id, {
                 name: event.name,

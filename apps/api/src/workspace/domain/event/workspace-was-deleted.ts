@@ -1,8 +1,9 @@
 import { Event } from '@aulasoftwarelibre/nestjs-eventstore';
-import { DeleteWorkspaceDTO } from '@netspaces/contracts';
 
-export class WorkspaceWasDeletedEvent extends Event<DeleteWorkspaceDTO> {
+export class WorkspaceWasDeletedEvent extends Event {
 	constructor(public readonly id: string) {
-		super(id, { _id: id });
+		super(id, {
+			_id: id,
+		});
 	}
 }

@@ -22,6 +22,8 @@ import { WorkspaceProviders } from './workspace.providers';
 import { COMPANY_PROJECTION, CompanySchema } from '../../company/infrastructure/projection';
 
 import { WorkspaceNameWasUpdatedEvent, WorkspaceDescriptionWasUpdatedEvent, WorkspaceLocationWasUpdatedEvent, WorkspaceWasDeletedEvent } from '../domain/event';
+import { ProcessManagers } from './process-manager';
+import { SPACE_PROJECTION, SpaceSchema } from '../../space/infrastructure/projection';
 
 @Module({
 	controllers: [WorkspaceController],
@@ -74,6 +76,10 @@ import { WorkspaceNameWasUpdatedEvent, WorkspaceDescriptionWasUpdatedEvent, Work
 				name: COMPANY_PROJECTION,
 				schema: CompanySchema,
 			},
+			{
+				name: SPACE_PROJECTION,
+				schema: SpaceSchema,
+			},
 		]),
 		GraphQLModule.forRoot<ApolloFederationDriverConfig>({
 			autoSchemaFile: {
@@ -88,6 +94,7 @@ import { WorkspaceNameWasUpdatedEvent, WorkspaceDescriptionWasUpdatedEvent, Work
 		...QueryHandlers,
 		...ProjectionHandlers,
 		...WorkspaceProviders,
+		...ProcessManagers,
 		WorkspaceResolver,
 		SpaceService,
 		WorkspaceService,
