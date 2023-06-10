@@ -4,9 +4,10 @@ import { UserWasCreatedWithoutCompanyProjection } from './user-was-created-witho
 import { UserWasCreatedWithCompanyProjection } from './user-was-created-with-company.projection';
 import { CompanyWasCreatedProjection } from './company-was-created.projection';
 import { SpaceQuantityWasUpdatedProjection } from './space-quantity-was-updated.projection';
+import { CompanyWasDeletedProjection } from './company-was-deleted.projection';
 
 
 export const SpaceProjections = [SpaceWasCreatedProjection, SpaceQuantityWasUpdatedProjection];
 export const UserProjections = [UserWasCreatedWithoutCompanyProjection, UserWasCreatedWithCompanyProjection];
-export const CompanyProjections = [CompanyWasCreatedProjection];
+export const CompanyProjections = [CompanyWasCreatedProjection, CompanyWasDeletedProjection];
 export const BookingProjections = [BookingWasCreatedProjection];

@@ -25,6 +25,8 @@ export * from './lib/workspace/request/update-workspace-description.dto'
 export * from './lib/workspace/request/update-workspace-location.dto'
 
 export * from './lib/company/message/company-was-created.message';
+export * from './lib/company/message/company-was-deleted.message';
 export * from './lib/company/request/create-company.dto';
+export * from './lib/company/request/delete-company.dto';
 export * from './lib/company/request/update-company-name.dto';
 export * from './lib/company/response/company.dto';

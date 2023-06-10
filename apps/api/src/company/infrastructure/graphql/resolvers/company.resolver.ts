@@ -3,7 +3,7 @@ import { CompanyDTO, UserDTO } from '@netspaces/contracts';
 import { GraphQLError } from 'graphql';
 
 import { CompanyService } from '../../service/company.service';
-import { Company, CompanyInput } from '../schema/company.graphql-model';
+import { Company, CompanyInput, DeleteCompanyInput } from '../schema/company.graphql-model';
 import { User } from '../../../../user/infrastructure/graphql/schema/user.graphql-model';
 import { UserService } from '../../../../user/infrastructure/service/user.service';
 
@@ -55,6 +55,20 @@ export class CompanyResolver {
 		return updatedCompanyResult.match<string>(
 			(_) => {
 				return 'Company updated successfully';
+			},
+			(err) => {
+				throw new GraphQLError(err.message);
+			},
+		);
+	}
+
+	@Mutation((_returns) => String)
+	async deleteCompany(@Args('deleteCompanyInput') deleteCompanyInput: DeleteCompanyInput): Promise<string> {
+		const deletedCompanyResult = await this.companyService.deleteCompany(deleteCompanyInput._id);
+
+		return deletedCompanyResult.match<string>(
+			(_) => {
+				return 'Company removed successfully';
 			},
 			(err) => {
 				throw new GraphQLError(err.message);

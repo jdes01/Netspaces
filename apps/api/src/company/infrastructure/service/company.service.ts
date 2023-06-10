@@ -8,6 +8,7 @@ import { GetCompanysQuery } from '../../application/query';
 import { GetCompanyByIdQuery } from '../../application/query/get-company-by-id.query';
 import { CompanyError } from '../../domain/exception';
 import { UpdateCompanyCommand } from '../../application/command/update-company.command';
+import { DeleteCompanyCommand } from '../../application/command/delete-company.command';
 
 @Injectable()
 export class CompanyService {
@@ -27,5 +28,9 @@ export class CompanyService {
 
 	async getCompanyById(id: string) {
 		return this.queryBus.execute<IQuery, CompanyDTO>(new GetCompanyByIdQuery(id));
+	}
+
+	async deleteCompany(id: string): Promise<Result<null, CompanyError>> {
+		return this.commandBus.execute<ICommand, Result<null, CompanyError>>(new DeleteCompanyCommand(id));
 	}
 }

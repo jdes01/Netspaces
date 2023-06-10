@@ -1,5 +1,5 @@
 import { Directive, Field, ID, InputType, ObjectType } from '@nestjs/graphql';
-import { User } from 'apps/api/src/user/infrastructure/graphql/schema/user.graphql-model';
+import { User } from '../../../../user/infrastructure/graphql/schema/user.graphql-model';
 
 @ObjectType()
 @Directive('@key(fields: "_id")')
@@ -21,4 +21,10 @@ export class CompanyInput {
 
 	@Field()
 	name!: string;
+}
+
+@InputType()
+export class DeleteCompanyInput {
+	@Field()
+	_id!: string;
 }
