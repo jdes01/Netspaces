@@ -34,3 +34,10 @@ export class UpdateUserInput {
 	@Field()
 	name!: string;
 }
+
+
+@InputType()
+export class DeleteUserInput {
+	@Field()
+	_id!: string;
+}

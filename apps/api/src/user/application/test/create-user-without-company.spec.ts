@@ -1,10 +1,10 @@
 import { Err, Ok } from 'neverthrow';
-import { InmemoryRedisService, InMemoryUserFinder, InMemoryUserRepository } from '../../../../test';
-import { UserId } from '../../../domain/model/value-objects';
-import { CreateUserWithoutCompanyCommand } from '../../command/create-user-without-company.command';
-import { CreateUserWithoutCompanyHandler } from '../../command/handler/create-user-without-company.handler';
+import { InmemoryRedisService, InMemoryUserFinder, InMemoryUserRepository } from '../../../test';
+import { UserId } from '../../domain/model/value-objects';
+import { CreateUserWithoutCompanyCommand } from '../command/create-user-without-company.command';
+import { CreateUserWithoutCompanyHandler } from '../command/handler/create-user-without-company.handler';
 import { UserDTO } from '@netspaces/contracts';
-import { UserAlreadyExistsError } from '../../../domain/exception';
+import { UserAlreadyExistsError } from '../../domain/exception';
 
 describe('CreateUserHandler', () => {
 

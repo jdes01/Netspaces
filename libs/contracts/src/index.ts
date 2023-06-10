@@ -11,9 +11,11 @@ export * from './lib/space/response/space.dto';
 
 export * from './lib/user/message/user-was-created-without-company.message';
 export * from './lib/user/message/user-was-created-with-company.message';
+export * from './lib/user/message/user-was-deleted.message';
 export * from './lib/user/request/create-user-without-company.dto';
 export * from './lib/user/request/create-user-with-company.dto';
 export * from './lib/user/request/update-user-name.dto';
+export * from './lib/user/request/delete-user.dto';
 export * from './lib/user/response/user.dto';
 
 export * from './lib/workspace/message/workspace-was-created.message';

@@ -10,6 +10,7 @@ import { GetUsersByCompanyIdQuery } from '../../application/query/get-users-by-c
 import { UserError } from '../../domain/exception';
 import { CreateUserWithCompanyCommand } from '../../application/command/create-user-with-company.command';
 import { UpdateUserCommand } from '../../application/command/update-user.command';
+import { DeleteUserCommand } from '../../application/command/delete-user.command';
 
 @Injectable()
 export class UserService {
@@ -37,5 +38,9 @@ export class UserService {
 
 	async getUsersByCompanyId(id: string) {
 		return this.queryBus.execute<IQuery, Array<UserDTO>>(new GetUsersByCompanyIdQuery(id));
+	}
+
+	async deleteUser(id: string): Promise<Result<null, UserError>> {
+		return this.commandBus.execute<ICommand, Result<null, UserError>>(new DeleteUserCommand(id));
 	}
 }

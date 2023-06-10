@@ -4,7 +4,6 @@ import { Model } from 'mongoose';
 
 import { CompanyWasDeletedEvent } from '../../domain/event';
 import { COMPANY_PROJECTION, CompanyDocument } from './company.schema';
-import { Logger } from '@nestjs/common';
 
 @EventsHandler(CompanyWasDeletedEvent)
 export class CompanyWasDeletedProjection implements IEventHandler<CompanyWasDeletedEvent> {
@@ -14,7 +13,6 @@ export class CompanyWasDeletedProjection implements IEventHandler<CompanyWasDele
     ) { }
 
     async handle(event: CompanyWasDeletedEvent) {
-        Logger.log("AAAAAAAAAAAAAAAa")
         const companyView = await this.companyProjection
             .findById(event.id)
             .exec();

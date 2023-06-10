@@ -1,12 +1,12 @@
 import { Err, Ok } from 'neverthrow';
-import { InmemoryRedisService, InMemoryUserFinder, InMemoryUserRepository, InMemoryCompanyFinder } from '../../../../test';
-import { UserId } from '../../../domain/model/value-objects';
-import { CreateUserWithCompanyCommand } from '../../command/create-user-with-company.command';
-import { CreateUserWithCompanyHandler } from '../../command/handler/create-user-with-company.handler';
+import { InmemoryRedisService, InMemoryUserFinder, InMemoryUserRepository, InMemoryCompanyFinder } from '../../../test';
+import { UserId } from '../../domain/model/value-objects';
+import { CreateUserWithCompanyCommand } from '../command/create-user-with-company.command';
+import { CreateUserWithCompanyHandler } from '../command/handler/create-user-with-company.handler';
 import { CompanyDTO, UserDTO } from '@netspaces/contracts';
-import { UserAlreadyExistsError } from '../../../domain/exception';
-import { CompanyNotFoundError } from '../../../../company/domain/exception';
-import { CompanyId } from '../../../../company/domain/model/value-objects';
+import { UserAlreadyExistsError } from '../../domain/exception';
+import { CompanyNotFoundError } from '../../../company/domain/exception';
+import { CompanyId } from '../../../company/domain/model/value-objects';
 
 describe('CreateUserWithCompanyHandler', () => {
 

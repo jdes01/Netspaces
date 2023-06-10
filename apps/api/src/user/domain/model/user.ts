@@ -1,6 +1,6 @@
 import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
 
-import { UserWasCreatedWithCompanyEvent, UserWasCreatedWithoutCompanyEvent, UserNameWasUpdatedEvent } from '../event';
+import { UserWasCreatedWithCompanyEvent, UserWasCreatedWithoutCompanyEvent, UserNameWasUpdatedEvent, UserWasDeletedEvent } from '../event';
 import { UserId, UserName } from './value-objects/';
 import { UserCompanyId } from './value-objects/user-company-id';
 import { Nullable } from '@netspaces/domain';
@@ -48,6 +48,15 @@ export class User extends AggregateRoot {
 		this._name = UserName.fromString(event.name);
 	}
 
+	delete(): void {
+		if (this._deleted === true) return
+		this.apply(new UserWasDeletedEvent(this._id.value))
+	}
+
+	private onUserWasDeletedEvent(_: UserWasDeletedEvent) {
+		this._deleted = true;
+	}
+
 	public aggregateId(): string {
 		return this._id.value;
 	}
@@ -62,5 +71,9 @@ export class User extends AggregateRoot {
 
 	public get companyId(): Nullable<UserCompanyId> {
 		return this._companyId;
+	}
+
+	public get deleted(): boolean {
+		return this._deleted;
 	}
 }

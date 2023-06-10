@@ -3,7 +3,7 @@ import { UserDTO } from '@netspaces/contracts';
 import { GraphQLError } from 'graphql';
 
 import { UserService } from '../../service/user.service';
-import { UpdateUserInput, User, UserInput } from '../schema/user.graphql-model';
+import { DeleteUserInput, UpdateUserInput, User, UserInput } from '../schema/user.graphql-model';
 
 @Resolver((_of: undefined) => User)
 export class UserResolver {
@@ -59,6 +59,20 @@ export class UserResolver {
 		return updatedUserResult.match<string>(
 			(_) => {
 				return 'User updated successfully';
+			},
+			(err) => {
+				throw new GraphQLError(err.message);
+			},
+		);
+	}
+
+	@Mutation((_returns) => String)
+	async deleteUser(@Args('deleteUserInput') deleteUserInput: DeleteUserInput): Promise<string> {
+		const deletedUserResult = await this.userService.deleteUser(deleteUserInput._id);
+
+		return deletedUserResult.match<string>(
+			(_) => {
+				return 'User deleted successfully';
 			},
 			(err) => {
 				throw new GraphQLError(err.message);
