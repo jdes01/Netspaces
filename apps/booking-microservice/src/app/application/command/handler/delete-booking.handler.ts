@@ -16,7 +16,6 @@ export class DeleteBookingHandler implements ICommandHandler<DeleteBookingComman
     ) { }
 
     async execute(command: DeleteBookingCommand): Promise<Result<null, BookingError>> {
-        Logger.log("DELETING BOOKING")
         const id = BookingId.fromString(command.id);
         const booking = await this.BookingRepository.find(id)
 
