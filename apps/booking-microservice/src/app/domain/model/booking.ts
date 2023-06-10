@@ -1,6 +1,6 @@
 import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
 
-import { BookingWasCreatedEvent, BookingWasDeleted } from '../event';
+import { BookingWasCreatedEvent, BookingWasDeletedEvent } from '../event';
 import { BookingDate, BookingId, BookingSpaceId, BookingUserId } from './value-objects';
 
 export class Booking extends AggregateRoot {
@@ -29,7 +29,12 @@ export class Booking extends AggregateRoot {
 		this._deleted = false;
 	}
 
-	private onBookingWasDeletedEvent(_event: BookingWasDeleted): void {
+	delete(): void {
+		if (this._deleted === true) return
+		this.apply(new BookingWasDeletedEvent(this._id.value))
+	}
+
+	private onBookingWasDeletedEvent(_: BookingWasDeletedEvent) {
 		this._deleted = true;
 	}
 

@@ -1,7 +1,9 @@
 import { Event } from '@aulasoftwarelibre/nestjs-eventstore';
 
-export class BookingWasDeleted extends Event {
+export class BookingWasDeletedEvent extends Event {
 	constructor(public readonly id: string) {
-		super(id, { _id: id });
+		super(id, {
+			_id: id,
+		});
 	}
 }

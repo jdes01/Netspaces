@@ -1,4 +1,5 @@
 export * from './lib/booking/request/create-booking.dto';
+export * from './lib/booking/request/delete-booking.dto'
 export * from './lib/booking/response/booking.dto';
 
 export * from './lib/space/message/space-was-created.mesasge';

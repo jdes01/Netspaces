@@ -5,13 +5,13 @@ import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CreateBookingDTO } from '@netspaces/contracts';
+import { CreateBookingDTO, DeleteBookingDTO } from '@netspaces/contracts';
 
 import configuration from '../config/configuration';
 import { BookingProviders } from './app.providers';
 import { CommandHandlers } from './application/command';
 import { QueryHandlers } from './application/query';
-import { BookingWasCreatedEvent } from './domain/event';
+import { BookingWasCreatedEvent, BookingWasDeletedEvent } from './domain/event';
 import { Booking } from './domain/model/booking';
 import { BookingResolver } from './infrastructure/graphql/resolvers/booking.resolver';
 import { BookingProjections, SpaceProjections, UserProjections, CompanyProjections } from './infrastructure/projection';
@@ -42,6 +42,8 @@ import { BookingService } from './infrastructure/service/booking.service';
 		EventStoreModule.forFeature([Booking], {
 			BookingWasCreatedEvent: (event: Event<CreateBookingDTO>) =>
 				new BookingWasCreatedEvent(event.payload._id, event.payload.userId, event.payload.spaceId, event.payload.date),
+			BookingWasDeletedEvent: (event: Event<DeleteBookingDTO>) =>
+				new BookingWasDeletedEvent(event.payload._id),
 		}),
 		MongooseModule.forRoot(process.env.BOOKING_MICROSERVICE_MONGO_URI || '', {}),
 		MongooseModule.forRoot(process.env.BOOKING_MICROSERVICE_KEYSTORE_URI || '', {

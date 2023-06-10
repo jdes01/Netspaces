@@ -6,6 +6,10 @@ import { Model } from 'mongoose';
 
 import { SPACE_PROJECTION, SpaceDocument } from './schema/space.schema';
 import { BOOKING_PROJECTION, BookingDocument } from './schema/booking.schema';
+import { CommandBus, ICommand } from '@nestjs/cqrs';
+import { Result } from 'neverthrow';
+import { BookingError } from '../../domain/exception';
+import { DeleteBookingCommand } from '../../application/command/delete-booking.command';
 
 @Controller()
 export class SpaceWasDeletedProjection {
@@ -14,6 +18,7 @@ export class SpaceWasDeletedProjection {
         private readonly spaceProjection: Model<SpaceDocument>,
         @InjectModel(BOOKING_PROJECTION)
         private readonly bookingProjection: Model<BookingDocument>,
+        private readonly commandBus: CommandBus
     ) { }
 
     @EventPattern(SPACE_WAS_DELETED_MESSAGE)
@@ -30,7 +35,7 @@ export class SpaceWasDeletedProjection {
 
         if (bookingViews.length > 0) {
             bookingViews.map(
-                (bookingView) => bookingView.remove()
+                (bookingView) => { this.commandBus.execute<ICommand, Result<null, BookingError>>(new DeleteBookingCommand(bookingView.id)) }
             )
         }
 
