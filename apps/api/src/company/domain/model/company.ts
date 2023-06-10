@@ -53,4 +53,8 @@ export class Company extends AggregateRoot {
 	public get name(): CompanyName {
 		return this._name;
 	}
+
+	public get deleted(): boolean {
+		return this._deleted;
+	}
 }

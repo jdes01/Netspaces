@@ -24,9 +24,6 @@ export class InMemoryCompanyRepository implements CompanyRepository<Company, Com
     }
 
     async delete(entity: Company): Promise<void> {
-        const index = this.companys.findIndex(company => company.id.equals(entity.id));
-        if (index !== -1) {
-            this.companys.splice(index, 1);
-        }
+        return
     }
 }
