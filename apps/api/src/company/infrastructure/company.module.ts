@@ -20,6 +20,9 @@ import { COMPANY_PROJECTION, CompanySchema } from './projection/company.schema';
 import { CompanyService } from './service/company.service';
 import { CompanyProviders } from './company.providers';
 import { UserService } from '../../user/infrastructure/service/user.service';
+import { ProcessManagers } from './process-manager';
+import { USER_PROJECTION, UserSchema } from '../../user/infrastructure/projection';
+import { WORKSPACE_PROJECTION, WorkspaceSchema } from '../../workspace/infrastructure/projection';
 
 @Module({
 	controllers: [],
@@ -52,6 +55,14 @@ import { UserService } from '../../user/infrastructure/service/user.service';
 				name: COMPANY_PROJECTION,
 				schema: CompanySchema,
 			},
+			{
+				name: USER_PROJECTION,
+				schema: UserSchema
+			},
+			{
+				name: WORKSPACE_PROJECTION,
+				schema: WorkspaceSchema
+			}
 		]),
 		GraphQLModule.forRoot<ApolloFederationDriverConfig>({
 			autoSchemaFile: {
@@ -67,6 +78,7 @@ import { UserService } from '../../user/infrastructure/service/user.service';
 		...ProjectionHandlers,
 		...MessageProducers,
 		...CompanyProviders,
+		...ProcessManagers,
 		CompanyResolver,
 		UserService,
 		CompanyService,

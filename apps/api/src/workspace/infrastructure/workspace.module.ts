@@ -1,5 +1,5 @@
 import { Event, EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
-import { ApolloFederationDriver } from '@nestjs/apollo';
+import { ApolloFederationDriver, ApolloFederationDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { GraphQLModule } from '@nestjs/graphql';

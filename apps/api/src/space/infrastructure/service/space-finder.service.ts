@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { SpaceDTO } from '@netspaces/contracts';
-import { WorkspaceId } from 'apps/api/src/workspace/domain/model/value-objects';
+import { WorkspaceId } from '../../../workspace/domain/model/value-objects';
 import { Model } from 'mongoose';
 
 import { SpaceFinder } from '../../application/service/space-finder.service';
@@ -13,7 +13,7 @@ export class MongoDBSpaceFinder implements SpaceFinder {
 	constructor(
 		@InjectModel(SPACE_PROJECTION)
 		private readonly spaceProjection: Model<SpaceDocument>,
-	) {}
+	) { }
 
 	findAll(): Promise<Array<SpaceDTO>> {
 		return this.spaceProjection.find().exec();
