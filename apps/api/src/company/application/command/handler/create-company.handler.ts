@@ -11,6 +11,10 @@ import { Company } from '../../../domain/model';
 import { CompanyId, CompanyName } from '../../../domain/model/value-objects';
 import { CompanyRepository } from '../../../domain/service/repository.service';
 import { RedisService } from '../../../domain/service/redis.service';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+
+import { Logger } from 'winston';
+
 
 @CommandHandler(CreateCompanyCommand)
 export class CreateCompanyHandler implements ICommandHandler<CreateCompanyCommand> {
@@ -21,9 +25,12 @@ export class CreateCompanyHandler implements ICommandHandler<CreateCompanyComman
 		private readonly companyFinder: CompanyFinder,
 		@Inject(REDIS_SERVICE)
 		private readonly redisService: RedisService,
+		@Inject(WINSTON_MODULE_PROVIDER)
+		private readonly logger: Logger
 	) { }
 
 	async execute(command: CreateCompanyCommand): Promise<Result<null, CompanyError>> {
+		this.logger.log("warn", "Creating Company")
 		const id = CompanyId.fromString(command.id);
 
 		if (await this.companyFinder.find(id)) {

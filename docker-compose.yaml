@@ -155,6 +155,28 @@ services:
         networks:
             - netspaces-network
 
+    grafana:
+        image: grafana/grafana-oss
+        container_name: grafana
+        restart: unless-stopped
+        ports:
+            - '3001:3000'
+        environment:
+            GF_INSTALL_PLUGINS: 'grafana-clock-panel,grafana-simple-json-datasource,grafana-worldmap-panel,grafana-piechart-panel'
+        volumes:
+            - grafana_data:/var/lib/grafana
+        networks:
+            - netspaces-network
+
+    loki:
+        image: grafana/loki
+        ports:
+            - 3100:3100
+        volumes:
+            - loki-data:/var/lib/loki
+        networks:
+            - netspaces-network
+
 volumes:
     eventstore-volume-data:
     eventstore-volume-logs:
@@ -164,6 +186,8 @@ volumes:
     mongoclient-volume-data:
     mongo-booking-microservice-volume-data:
     kafka-volume-data:
+    grafana_data:
+    loki-data:
     cache:
         driver: local
 

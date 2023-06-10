@@ -12,6 +12,12 @@ import { UserModule } from './user/infrastructure/user.module';
 import { WorkspaceModule } from './workspace';
 import { CompanyModule } from './company';
 
+import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
+import * as winston from 'winston'
+
+
+
+
 @Module({
 	imports: [
 		ConfigModule.forRoot({
@@ -33,6 +39,22 @@ import { CompanyModule } from './company';
 		UserModule,
 		CompanyModule,
 		RedisModule,
+		WinstonModule.forRoot({
+			transports: [
+				new winston.transports.Console({
+					format: winston.format.combine(
+						winston.format.timestamp(),
+						winston.format.ms(),
+						nestWinstonModuleUtilities.format.nestLike('Netspaces', {
+							colors: true,
+							prettyPrint: true,
+						}),
+					),
+				}),
+				// other transports...
+			],
+			// other options
+		}),
 	],
 })
 export class BootstrapModule { }
