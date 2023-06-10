@@ -11,7 +11,7 @@ export class SpaceWasCreatedProjection {
 	constructor(
 		@InjectModel(SPACE_PROJECTION)
 		private readonly spaceProjection: Model<SpaceDocument>,
-	) {}
+	) { }
 
 	@EventPattern(SPACE_WAS_CREATED_MESSAGE)
 	async handle(message: SpaceWasCreatedMessage) {
