@@ -6,7 +6,6 @@ import { DeleteBookingCommand } from '../delete-booking.command';
 import { BookingError, BookingNotFoundError } from '../../../domain/exception';
 import { BookingId } from '../../../domain/model/value-objects';
 import { Booking } from '../../../domain/model/booking';
-import { Logger } from '@nestjs/common';
 
 @CommandHandler(DeleteBookingCommand)
 export class DeleteBookingHandler implements ICommandHandler<DeleteBookingCommand> {
