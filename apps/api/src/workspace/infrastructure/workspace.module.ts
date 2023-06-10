@@ -1,12 +1,10 @@
-// @ts-nocheck
-
 import { Event, EventStoreModule } from '@aulasoftwarelibre/nestjs-eventstore';
 import { ApolloFederationDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CreateWorkspaceDTO, UpdateWorkspaceNameDTO } from '@netspaces/contracts';
+import { CreateWorkspaceDTO, DeleteWorkspaceDTO, UpdateWorkspaceDescriptionDTO, UpdateWorkspaceLocationDTO, UpdateWorkspaceNameDTO } from '@netspaces/contracts';
 
 import { RedisModule } from '../../redis.module';
 import { SpaceService } from '../../space/infrastructure/service/space.service';
@@ -23,7 +21,7 @@ import { WorkspaceService } from './service/workspace.service';
 import { WorkspaceProviders } from './workspace.providers';
 import { COMPANY_PROJECTION, CompanySchema } from '../../company/infrastructure/projection';
 
-import { WorkspaceNameWasUpdatedEvent, WorkspaceDescriptionWasUpdatedEvent, WorkspaceLocationWasUpdatedEvent } from '../domain/event';
+import { WorkspaceNameWasUpdatedEvent, WorkspaceDescriptionWasUpdatedEvent, WorkspaceLocationWasUpdatedEvent, WorkspaceWasDeletedEvent } from '../domain/event';
 
 @Module({
 	controllers: [WorkspaceController],
@@ -57,6 +55,10 @@ import { WorkspaceNameWasUpdatedEvent, WorkspaceDescriptionWasUpdatedEvent, Work
 					event.payload.street,
 					event.payload.city,
 					event.payload.country,
+				),
+			WorkspaceWasDeletedEvent: (event: Event<DeleteWorkspaceDTO>) =>
+				new WorkspaceWasDeletedEvent(
+					event.payload._id,
 				),
 		}),
 		MongooseModule.forFeature([

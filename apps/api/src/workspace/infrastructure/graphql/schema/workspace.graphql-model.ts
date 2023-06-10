@@ -80,3 +80,9 @@ export class UpdateWorkspaceInput {
 	@Field()
 	country?: string;
 }
+
+@InputType()
+export class DeleteWorkspaceInput {
+	@Field()
+	_id!: string;
+}

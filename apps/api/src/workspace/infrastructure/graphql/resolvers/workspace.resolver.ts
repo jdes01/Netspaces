@@ -5,7 +5,7 @@ import { GraphQLError } from 'graphql';
 import { SpaceService } from '../../../../space/infrastructure//service/space.service';
 import { Space } from '../../../../space/infrastructure/graphql/schema/space.graphql-model';
 import { WorkspaceService } from '../../service/workspace.service';
-import { UpdateWorkspaceInput, Workspace, WorkspaceInput } from '../schema/workspace.graphql-model';
+import { DeleteWorkspaceInput, UpdateWorkspaceInput, Workspace, WorkspaceInput } from '../schema/workspace.graphql-model';
 
 @Resolver((_of: any) => Workspace)
 export class WorkspaceResolver {
@@ -76,6 +76,22 @@ export class WorkspaceResolver {
 		return updatedWorkspaceResult.match<string>(
 			(_) => {
 				return 'Workspace was updated successfully';
+			},
+			(err) => {
+				throw new GraphQLError(err.message);
+			},
+		);
+	}
+
+	@Mutation((_returns) => String)
+	async deleteWorkspace(@Args('deleteWorkspaceInput') deleteWorkspaceInput: DeleteWorkspaceInput): Promise<string> {
+		const deletedWorkspaceResult = await this.workspaceService.deleteWorkspace(
+			deleteWorkspaceInput._id,
+		);
+
+		return deletedWorkspaceResult.match<string>(
+			(_) => {
+				return 'Workspace was deleted successfully';
 			},
 			(err) => {
 				throw new GraphQLError(err.message);

@@ -9,6 +9,7 @@ import { GetWorkspaceByIdQuery } from '../../application/query/get-workspace-by-
 import { GetWorkspacesByCompanyIdQuery } from '../../application/query/get-workspaces-by-company-id.query';
 import { WorkspaceError } from '../../domain/exception';
 import { UpdateWorkspaceCommand } from '../../application/command/update-workspace.command';
+import { DeleteWorkspaceCommand } from '../../application/command/delete-workspace.command';
 
 @Injectable()
 export class WorkspaceService {
@@ -52,5 +53,9 @@ export class WorkspaceService {
 
 	async getWorkspaceById(id: string) {
 		return this.queryBus.execute<IQuery, WorkspaceDTO>(new GetWorkspaceByIdQuery(id));
+	}
+
+	async deleteWorkspace(id: string): Promise<Result<null, WorkspaceError>> {
+		return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(new DeleteWorkspaceCommand(id));
 	}
 }

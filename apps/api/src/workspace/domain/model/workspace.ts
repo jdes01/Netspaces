@@ -2,14 +2,13 @@ import { AggregateRoot } from '@aulasoftwarelibre/nestjs-eventstore';
 
 import { Space } from '../../../space/domain/model';
 import { SpaceAmenity, SpaceId, SpaceName, SpaceQuantity, SpaceSeats } from '../../../space/domain/model/value-objects';
-import { WorkspaceWasCreatedEvent, WorkspaceWasDeleted } from '../event';
+import { WorkspaceWasCreatedEvent, WorkspaceWasDeletedEvent } from '../event';
 import { WorkspaceServiceNotValidError } from '../exception/workspace-service-not-valid-error';
 import { WorkspaceDescription, WorkspaceId, WorkspaceLocation, WorkspaceName, WorkspaceService } from './value-objects/';
 import { WorkspaceCompanyId } from './value-objects/workspace-company-id';
 import { WorkspaceNameWasUpdatedEvent } from '../event/workspace-name-was-updated';
 import { WorkspaceDescriptionWasUpdatedEvent } from '../event/workspace-description-was-updated';
 import { WorkspaceLocationWasUpdatedEvent } from '../event/workspace-location-was-updated';
-import { Logger } from '@nestjs/common';
 
 export class Workspace extends AggregateRoot {
 	private _id!: WorkspaceId;
@@ -71,10 +70,6 @@ export class Workspace extends AggregateRoot {
 		this._deleted = false;
 	}
 
-	private onWorkspacerWasDeletedEvent(_event: WorkspaceWasDeleted): void {
-		this._deleted = true;
-	}
-
 	updateName(name: WorkspaceName) {
 		(this._name.equals(name) == false) && this.apply(new WorkspaceNameWasUpdatedEvent(this._id.value, name.value))
 	}
@@ -97,6 +92,15 @@ export class Workspace extends AggregateRoot {
 
 	private onWorkspaceLocationWasUpdatedEvent(event: WorkspaceLocationWasUpdatedEvent) {
 		this._location = new WorkspaceLocation(event.street, event.city, event.country);
+	}
+
+	delete(): void {
+		if (this._deleted === true) return
+		this.apply(new WorkspaceWasDeletedEvent(this._id.value))
+	}
+
+	private onWorkspaceWasDeletedEvent(_: WorkspaceWasDeletedEvent) {
+		this._deleted = true;
 	}
 
 	public aggregateId(): string {
