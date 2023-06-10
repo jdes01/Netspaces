@@ -3,7 +3,7 @@ import { SpaceDTO } from '@netspaces/contracts';
 import { GraphQLError } from 'graphql';
 
 import { SpaceService } from '../../service/space.service';
-import { Space, SpaceInput } from '../schema/space.graphql-model';
+import { DeleteSpaceInput, Space, SpaceInput, UpdateSpaceInput } from '../schema/space.graphql-model';
 
 @Resolver((_of: any) => Space)
 export class SpaceResolver {
@@ -46,17 +46,33 @@ export class SpaceResolver {
 	}
 
 	@Mutation((_returns) => String)
-	async updateSpace(@Args('spaceInput') spaceInput: SpaceInput): Promise<string> {
+	async updateSpace(@Args('spaceInput') updateSpaceInput: UpdateSpaceInput): Promise<string> {
 		const updatedSpaceResult = await this.spaceService.updateSpace(
-			spaceInput._id,
-			spaceInput.name,
-			spaceInput.quantity,
-			spaceInput.seats,
+			updateSpaceInput._id,
+			updateSpaceInput.name,
+			updateSpaceInput.quantity,
+			updateSpaceInput.seats,
 		);
 
 		return updatedSpaceResult.match<string>(
 			(_) => {
 				return 'Space was updated successfully';
+			},
+			(err) => {
+				throw new GraphQLError(err.message);
+			},
+		);
+	}
+
+	@Mutation((_returns) => String)
+	async deleteSpace(@Args('deleteSpaceInput') deleteSpaceInput: DeleteSpaceInput): Promise<string> {
+		const deletedSpaceResult = await this.spaceService.deleteSpace(
+			deleteSpaceInput._id,
+		);
+
+		return deletedSpaceResult.match<string>(
+			(_) => {
+				return 'Space was deleted successfully';
 			},
 			(err) => {
 				throw new GraphQLError(err.message);

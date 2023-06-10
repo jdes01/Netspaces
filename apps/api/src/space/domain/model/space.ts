@@ -8,6 +8,7 @@ import { SpaceAmenity } from './value-objects/space-amenitys';
 import { SpaceNameWasUpdatedEvent } from '../event/space-name-was-updated';
 import { SpaceQuantityWasUpdatedEvent } from '../event/space-quantity-was-updated';
 import { SpaceSeatsWasUpdatedEvent } from '../event/space-seats-was-updated';
+import { SpaceWasDeletedEvent } from '../event/space-was-deleted';
 
 export class Space extends AggregateRoot {
 	private _id!: SpaceId;
@@ -83,6 +84,15 @@ export class Space extends AggregateRoot {
 
 	private onSpaceSeatsWasUpdatedEvent(event: SpaceSeatsWasUpdatedEvent) {
 		this._seats = SpaceSeats.fromNumber(event.seats);
+	}
+
+	delete(): void {
+		if (this._deleted === true) return
+		this.apply(new SpaceWasDeletedEvent(this._id.value))
+	}
+
+	private onSpaceWasDeletedEvent(_: SpaceWasDeletedEvent) {
+		this._deleted = true;
 	}
 
 	public aggregateId(): string {

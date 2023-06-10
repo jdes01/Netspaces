@@ -6,12 +6,12 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { logLevel } from '@nestjs/microservices/external/kafka.interface';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CreateSpaceDTO, UpdateSpaceNameDTO, UpdateSpaceQuantityDTO, UpdateSpaceSeatsDTO } from '@netspaces/contracts';
+import { CreateSpaceDTO, DeleteSpaceDTO, UpdateSpaceNameDTO, UpdateSpaceQuantityDTO, UpdateSpaceSeatsDTO } from '@netspaces/contracts';
 
 import { WORKSPACE_PROJECTION, WorkspaceSchema } from '../../workspace/infrastructure/projection';
 import { CommandHandlers } from '../application/command';
 import { QueryHandlers } from '../application/query';
-import { SpaceNameWasUpdatedEvent, SpaceQuantityWasUpdatedEvent, SpaceSeatsWasUpdatedEvent, SpaceWasCreatedEvent } from '../domain/event';
+import { SpaceNameWasUpdatedEvent, SpaceQuantityWasUpdatedEvent, SpaceSeatsWasUpdatedEvent, SpaceWasCreatedEvent, SpaceWasDeletedEvent } from '../domain/event';
 import { Space } from '../domain/model';
 import { SpaceAmenity } from '../domain/model/value-objects';
 import { SpaceController } from './controller';
@@ -69,6 +69,10 @@ import { SpaceProviders } from './space.providers';
 				new SpaceSeatsWasUpdatedEvent(
 					event.payload._id,
 					event.payload.seats,
+				),
+			SpaceWasDeletedEvent: (event: Event<DeleteSpaceDTO>) =>
+				new SpaceWasDeletedEvent(
+					event.payload._id,
 				),
 		}),
 		MongooseModule.forFeature([

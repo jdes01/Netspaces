@@ -42,3 +42,24 @@ export class SpaceInput {
 	@Field((_type) => [String])
 	amenitys?: [string];
 }
+
+@InputType()
+export class UpdateSpaceInput {
+	@Field()
+	_id!: string;
+
+	@Field()
+	name!: string;
+
+	@Field(() => Int)
+	quantity!: number;
+
+	@Field(() => Int)
+	seats!: number;
+}
+
+@InputType()
+export class DeleteSpaceInput {
+	@Field()
+	_id!: string;
+}

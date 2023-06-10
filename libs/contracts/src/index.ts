@@ -3,10 +3,12 @@ export * from './lib/booking/response/booking.dto';
 
 export * from './lib/space/message/space-was-created.mesasge';
 export * from './lib/space/message/space-quantity-was-updated.message'
+export * from './lib/space/message/space-was-deleted.message';
 export * from './lib/space/request/create-space.dto';
 export * from './lib/space/request/update-space-name.dto';
 export * from './lib/space/request/update-space-quantity.dto';
 export * from './lib/space/request/update-space-seats.dto';
+export * from './lib/space/request/delete-space.dto';
 export * from './lib/space/response/space.dto';
 
 export * from './lib/user/message/user-was-created-without-company.message';

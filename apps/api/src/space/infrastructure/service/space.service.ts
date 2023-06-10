@@ -9,6 +9,7 @@ import { GetSpaceByIdQuery } from '../../application/query/get-space-by-id.query
 import { GetSpacesByWorkspaceIdQuery } from '../../application/query/get-spaces-by-workspace-id.query';
 import { SpaceError } from '../../domain/exception';
 import { UpdateSpaceCommand } from '../../application/command/update-space.command';
+import { DeleteSpaceCommand } from '../../application/command/delete-space.command';
 
 @Injectable()
 export class SpaceService {
@@ -44,5 +45,9 @@ export class SpaceService {
 
 	async getSpacesByWorkspaceId(id: string): Promise<Array<SpaceDTO>> {
 		return this.queryBus.execute<IQuery, Array<SpaceDTO>>(new GetSpacesByWorkspaceIdQuery(id));
+	}
+
+	async deleteSpace(id: string): Promise<Result<null, SpaceError>> {
+		return this.commandBus.execute<ICommand, Result<null, SpaceError>>(new DeleteSpaceCommand(id));
 	}
 }
