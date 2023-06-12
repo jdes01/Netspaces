@@ -6,12 +6,18 @@ import { SpaceService } from '../../../../space/infrastructure//service/space.se
 import { Space } from '../../../../space/infrastructure/graphql/schema/space.graphql-model';
 import { WorkspaceService } from '../../service/workspace.service';
 import { DeleteWorkspaceInput, UpdateWorkspaceInput, Workspace, WorkspaceInput } from '../schema/workspace.graphql-model';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+
+import { Logger } from 'winston';
+import { Inject } from '@nestjs/common';
 
 @Resolver((_of: any) => Workspace)
 export class WorkspaceResolver {
 	constructor(
 		private readonly workspaceService: WorkspaceService,
-		private readonly spaceService: SpaceService
+		private readonly spaceService: SpaceService,
+		@Inject(WINSTON_MODULE_PROVIDER)
+		private readonly logger: Logger,
 	) { }
 
 	@Query((_returns) => [Workspace])
@@ -41,6 +47,8 @@ export class WorkspaceResolver {
 
 	@Mutation((_returns) => String)
 	async createWorkspace(@Args('workspaceInput') workspaceInput: WorkspaceInput): Promise<string> {
+		this.logger.info("Creating workspace", { workspaceId: workspaceInput._id })
+
 		const createdWorkspaceResult = await this.workspaceService.createWorkspace(
 			workspaceInput._id,
 			workspaceInput.companyId,
@@ -64,6 +72,8 @@ export class WorkspaceResolver {
 
 	@Mutation((_returns) => String)
 	async updateWorkspace(@Args('updateWorkspaceInput') updateWorkspaceInput: UpdateWorkspaceInput): Promise<string> {
+		this.logger.info("Updating workspace", { workspaceId: updateWorkspaceInput._id })
+
 		const updatedWorkspaceResult = await this.workspaceService.updateWorkspace(
 			updateWorkspaceInput._id,
 			updateWorkspaceInput.name,
@@ -85,6 +95,8 @@ export class WorkspaceResolver {
 
 	@Mutation((_returns) => String)
 	async deleteWorkspace(@Args('deleteWorkspaceInput') deleteWorkspaceInput: DeleteWorkspaceInput): Promise<string> {
+		this.logger.info("Deleting workspace", { workspaceId: deleteWorkspaceInput._id })
+
 		const deletedWorkspaceResult = await this.workspaceService.deleteWorkspace(
 			deleteWorkspaceInput._id,
 		);

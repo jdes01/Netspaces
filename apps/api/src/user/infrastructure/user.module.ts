@@ -20,6 +20,10 @@ import { USER_PROJECTION, UserSchema } from './projection/user.schema';
 import { UserService } from './service/user.service';
 import { UserProviders } from './user.providers';
 import { COMPANY_PROJECTION, CompanySchema } from '../../company/infrastructure/projection';
+import { WinstonModule } from 'nest-winston';
+import { LoggerConfig } from '../../logger';
+
+const logger: LoggerConfig = new LoggerConfig();
 
 @Module({
 	controllers: [],
@@ -65,6 +69,7 @@ import { COMPANY_PROJECTION, CompanySchema } from '../../company/infrastructure/
 			driver: ApolloFederationDriver,
 		}),
 		RedisModule,
+		WinstonModule.forRoot(logger.console())
 	],
 	providers: [
 		...CommandHandlers,

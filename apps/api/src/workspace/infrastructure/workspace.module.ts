@@ -24,6 +24,10 @@ import { COMPANY_PROJECTION, CompanySchema } from '../../company/infrastructure/
 import { WorkspaceNameWasUpdatedEvent, WorkspaceDescriptionWasUpdatedEvent, WorkspaceLocationWasUpdatedEvent, WorkspaceWasDeletedEvent } from '../domain/event';
 import { ProcessManagers } from './process-manager';
 import { SPACE_PROJECTION, SpaceSchema } from '../../space/infrastructure/projection';
+import { WinstonModule } from 'nest-winston';
+import { LoggerConfig } from '../../logger';
+
+const logger: LoggerConfig = new LoggerConfig();
 
 @Module({
 	controllers: [WorkspaceController],
@@ -88,6 +92,7 @@ import { SPACE_PROJECTION, SpaceSchema } from '../../space/infrastructure/projec
 			driver: ApolloFederationDriver,
 		}),
 		RedisModule,
+		WinstonModule.forRoot(logger.console())
 	],
 	providers: [
 		...CommandHandlers,

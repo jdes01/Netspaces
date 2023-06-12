@@ -58,6 +58,7 @@ export class CompanyResolver {
 
 	@Mutation((_returns) => String)
 	async updateCompany(@Args('companyInput') companyInput: CompanyInput): Promise<string> {
+		this.logger.info("Updating company", { companyId: companyInput._id })
 		const updatedCompanyResult = await this.companyService.updateCompany(companyInput._id, companyInput.name);
 
 		return updatedCompanyResult.match<string>(
@@ -72,6 +73,7 @@ export class CompanyResolver {
 
 	@Mutation((_returns) => String)
 	async deleteCompany(@Args('deleteCompanyInput') deleteCompanyInput: DeleteCompanyInput): Promise<string> {
+		this.logger.info("Deleting company", { companyId: deleteCompanyInput._id })
 		const deletedCompanyResult = await this.companyService.deleteCompany(deleteCompanyInput._id);
 
 		return deletedCompanyResult.match<string>(

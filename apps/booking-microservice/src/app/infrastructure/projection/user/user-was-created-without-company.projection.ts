@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { USER_WAS_CREATED_WITHOUT_COMPANY_MESSAGE, UserWasCreatedWithoutCompanyMessage } from '@netspaces/contracts';
 import { Model } from 'mongoose';
 
-import { USER_PROJECTION, UserDocument } from './schema/user.schema';
+import { USER_PROJECTION, UserDocument } from '.././schema/user.schema';
 
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 

@@ -4,10 +4,18 @@ import { GraphQLError } from 'graphql';
 
 import { SpaceService } from '../../service/space.service';
 import { DeleteSpaceInput, Space, SpaceInput, UpdateSpaceInput } from '../schema/space.graphql-model';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+
+import { Logger } from 'winston';
+import { Inject } from '@nestjs/common';
 
 @Resolver((_of: any) => Space)
 export class SpaceResolver {
-	constructor(private readonly spaceService: SpaceService) { }
+	constructor(
+		private readonly spaceService: SpaceService,
+		@Inject(WINSTON_MODULE_PROVIDER)
+		private readonly logger: Logger
+	) { }
 
 	@Query((_returns) => [Space])
 	async spaces(): Promise<SpaceDTO[]> {
@@ -26,6 +34,8 @@ export class SpaceResolver {
 
 	@Mutation((_returns) => String)
 	async createSpace(@Args('spaceInput') spaceInput: SpaceInput): Promise<string> {
+		this.logger.info("Creating space", { spaceId: spaceInput._id })
+
 		const createdSpaceResult = await this.spaceService.createSpace(
 			spaceInput._id,
 			spaceInput.workspaceId,
@@ -47,6 +57,8 @@ export class SpaceResolver {
 
 	@Mutation((_returns) => String)
 	async updateSpace(@Args('spaceInput') updateSpaceInput: UpdateSpaceInput): Promise<string> {
+		this.logger.info("Updating space", { spaceId: updateSpaceInput._id })
+
 		const updatedSpaceResult = await this.spaceService.updateSpace(
 			updateSpaceInput._id,
 			updateSpaceInput.name,
@@ -66,6 +78,7 @@ export class SpaceResolver {
 
 	@Mutation((_returns) => String)
 	async deleteSpace(@Args('deleteSpaceInput') deleteSpaceInput: DeleteSpaceInput): Promise<string> {
+		this.logger.info("Deleting space", { spaceId: deleteSpaceInput._id })
 		const deletedSpaceResult = await this.spaceService.deleteSpace(
 			deleteSpaceInput._id,
 		);

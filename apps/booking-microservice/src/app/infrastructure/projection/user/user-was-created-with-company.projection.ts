@@ -1,15 +1,15 @@
+import { Inject } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { EventPattern } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import { USER_WAS_CREATED_WITH_COMPANY_MESSAGE, UserWasCreatedWithCompanyMessage } from '@netspaces/contracts';
 import { Model } from 'mongoose';
 
-import { USER_PROJECTION, UserDocument } from './schema/user.schema';
+import { USER_PROJECTION, UserDocument } from '../schema/user.schema';
 
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 
 import { Logger } from 'winston';
-import { Inject } from '@nestjs/common';
 
 @Controller()
 export class UserWasCreatedWithCompanyProjection {

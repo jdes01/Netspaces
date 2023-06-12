@@ -1,16 +1,21 @@
-import { Controller, Logger } from '@nestjs/common';
+import { Controller, Inject } from '@nestjs/common';
 import { EventPattern } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
 import { SPACE_WAS_CREATED_MESSAGE, SpaceWasCreatedMessage } from '@netspaces/contracts';
 import { Model } from 'mongoose';
 
-import { SPACE_PROJECTION, SpaceDocument } from './schema/space.schema';
+import { SPACE_PROJECTION, SpaceDocument } from '.././schema/space.schema';
+
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { Logger } from 'winston';
 
 @Controller()
 export class SpaceWasCreatedProjection {
 	constructor(
 		@InjectModel(SPACE_PROJECTION)
 		private readonly spaceProjection: Model<SpaceDocument>,
+		@Inject(WINSTON_MODULE_PROVIDER)
+		private readonly logger: Logger,
 	) { }
 
 	@EventPattern(SPACE_WAS_CREATED_MESSAGE)
@@ -20,6 +25,6 @@ export class SpaceWasCreatedProjection {
 		});
 		await space.save();
 
-		Logger.log(`Space ${message._id} stored`);
+		this.logger.info("Space stored", { userId: message._id });
 	}
 }

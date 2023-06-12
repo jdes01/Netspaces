@@ -22,6 +22,10 @@ import { SPACE_PROJECTION, SpaceSchema } from './projection/space.schema';
 import { SpaceService } from './service/space.service';
 import { SpaceProviders } from './space.providers';
 
+import { WinstonModule } from 'nest-winston';
+import { LoggerConfig } from '../../logger';
+
+const logger: LoggerConfig = new LoggerConfig();
 @Module({
 	controllers: [SpaceController],
 	imports: [
@@ -91,6 +95,7 @@ import { SpaceProviders } from './space.providers';
 			},
 			driver: ApolloFederationDriver,
 		}),
+		WinstonModule.forRoot(logger.console())
 	],
 	providers: [...CommandHandlers, ...QueryHandlers, ...ProjectionHandlers, ...MessageProducers, ...SpaceProviders, SpaceResolver, SpaceService],
 })

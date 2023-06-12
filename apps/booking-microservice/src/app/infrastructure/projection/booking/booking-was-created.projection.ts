@@ -1,16 +1,20 @@
-import { Logger } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { BookingWasCreatedEvent } from '../../domain/event';
-import { BOOKING_PROJECTION, BookingDocument } from './schema/booking.schema';
+import { BookingWasCreatedEvent } from '../../../domain/event';
+import { BOOKING_PROJECTION, BookingDocument } from '../schema/booking.schema';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+import { Logger } from 'winston';
 
 @EventsHandler(BookingWasCreatedEvent)
 export class BookingWasCreatedProjection implements IEventHandler<BookingWasCreatedEvent> {
 	constructor(
 		@InjectModel(BOOKING_PROJECTION)
 		private readonly bookingProjection: Model<BookingDocument>,
+		@Inject(WINSTON_MODULE_PROVIDER)
+		private readonly logger: Logger,
 	) { }
 
 	async handle(event: BookingWasCreatedEvent) {
@@ -20,6 +24,6 @@ export class BookingWasCreatedProjection implements IEventHandler<BookingWasCrea
 		});
 		await booking.save();
 
-		Logger.log(`Booking ${event.id} stored`);
+		this.logger.info("Booking created", { bookingId: event.id });
 	}
 }
