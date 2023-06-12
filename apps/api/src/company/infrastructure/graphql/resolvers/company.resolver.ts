@@ -7,11 +7,18 @@ import { Company, CompanyInput, DeleteCompanyInput } from '../schema/company.gra
 import { User } from '../../../../user/infrastructure/graphql/schema/user.graphql-model';
 import { UserService } from '../../../../user/infrastructure/service/user.service';
 
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
+
+import { Logger } from 'winston';
+import { Inject } from '@nestjs/common';
+
 @Resolver((_of: undefined) => Company)
 export class CompanyResolver {
 	constructor(
 		private readonly companyService: CompanyService,
 		private readonly userService: UserService,
+		@Inject(WINSTON_MODULE_PROVIDER)
+		private readonly logger: Logger
 	) { }
 
 	@Query((_returns) => [Company])
@@ -36,8 +43,9 @@ export class CompanyResolver {
 
 	@Mutation((_returns) => String)
 	async createCompany(@Args('companyInput') companyInput: CompanyInput): Promise<string> {
-		const createdCompanyResult = await this.companyService.createCompany(companyInput._id, companyInput.name);
+		this.logger.info("Creating company", { companyId: companyInput._id })
 
+		const createdCompanyResult = await this.companyService.createCompany(companyInput._id, companyInput.name);
 		return createdCompanyResult.match<string>(
 			(_) => {
 				return 'Company created successfully';

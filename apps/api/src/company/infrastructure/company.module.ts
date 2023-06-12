@@ -24,6 +24,12 @@ import { ProcessManagers } from './process-manager';
 import { USER_PROJECTION, UserSchema } from '../../user/infrastructure/projection';
 import { WORKSPACE_PROJECTION, WorkspaceSchema } from '../../workspace/infrastructure/projection';
 
+import { WinstonModule } from 'nest-winston';
+import { LoggerConfig } from '../../logger';
+
+const logger: LoggerConfig = new LoggerConfig();
+
+
 @Module({
 	controllers: [],
 	imports: [
@@ -71,6 +77,7 @@ import { WORKSPACE_PROJECTION, WorkspaceSchema } from '../../workspace/infrastru
 			driver: ApolloFederationDriver,
 		}),
 		RedisModule,
+		WinstonModule.forRoot(logger.console())
 	],
 	providers: [
 		...CommandHandlers,

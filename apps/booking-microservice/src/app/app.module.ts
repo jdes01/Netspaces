@@ -21,6 +21,12 @@ import { USER_PROJECTION, UserSchema } from './infrastructure/projection/schema/
 import { COMPANY_PROJECTION, CompanySchema } from './infrastructure/projection/schema/company.schema';
 import { BookingService } from './infrastructure/service/booking.service';
 
+import { WinstonModule } from 'nest-winston';
+import { LoggerConfig } from '../logger';
+
+const logger: LoggerConfig = new LoggerConfig();
+
+
 @Module({
 	controllers: [...SpaceProjections, ...UserProjections, ...CompanyProjections],
 	imports: [
@@ -68,6 +74,7 @@ import { BookingService } from './infrastructure/service/booking.service';
 				schema: CompanySchema,
 			},
 		]),
+		WinstonModule.forRoot(logger.console())
 	],
 	providers: [...CommandHandlers, ...QueryHandlers, ...BookingProjections, ...BookingProviders, BookingService, BookingResolver],
 })
