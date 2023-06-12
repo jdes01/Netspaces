@@ -1,7 +1,7 @@
 import { Err, Ok } from 'neverthrow';
 import { WorkspaceService } from '../value-objects';
 
-describe('CreateWorkspaceHandler', () => {
+describe('WorkspaceService', () => {
 
     it('should create successfully', async () => {
 
