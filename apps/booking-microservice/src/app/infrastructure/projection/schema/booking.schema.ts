@@ -8,7 +8,7 @@ export type BookingDocument = BookingDTO & Document;
 export const BookingSchema = new Schema(
 	{
 		_id: String,
-		date: String,
+		date: Date,
 		spaceId: String,
 		userId: String,
 	},

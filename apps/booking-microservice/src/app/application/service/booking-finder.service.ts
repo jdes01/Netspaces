@@ -9,4 +9,5 @@ export interface BookingFinder {
 	findByDateForSpace(spaceId: BookingSpaceId, bookingDate: BookingDate): Promise<Array<BookingDTO>>;
 	findBySpace(spaceId: BookingSpaceId): Promise<Array<BookingDTO>>;
 	findSpaceUnavailableDates(spaceId: BookingSpaceId, spaceQuantity: number): Promise<Array<string>>;
+	findSpacePendingBookings(spaceId: BookingSpaceId): Promise<Array<BookingDTO>>;
 }

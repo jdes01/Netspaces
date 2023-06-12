@@ -16,6 +16,7 @@ export class BookingWasCreatedProjection implements IEventHandler<BookingWasCrea
 	async handle(event: BookingWasCreatedEvent) {
 		const booking = new this.bookingProjection({
 			...event.payload,
+			date: new Date(event.payload.date)
 		});
 		await booking.save();
 

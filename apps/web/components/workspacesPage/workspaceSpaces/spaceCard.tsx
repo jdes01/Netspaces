@@ -56,7 +56,7 @@ export function SpaceCard({ space }: SpaceCardProps) {
 	}) : []
 
 	const handleSubmit = () => {
-		const date = format(selectedDate, 'dd-MM-yyyy')
+		const date = format(selectedDate, 'yyyy-MM-dd')
 		console.log(date)
 		console.log(spaceId)
 		

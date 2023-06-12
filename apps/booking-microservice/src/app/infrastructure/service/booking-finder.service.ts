@@ -6,7 +6,6 @@ import { Model } from 'mongoose';
 import { BookingFinder } from '../../application/service/booking-finder.service';
 import { BookingDate, BookingId, BookingSpaceId } from '../../domain/model/value-objects';
 import { BOOKING_PROJECTION, BookingDocument } from '../projection/schema/booking.schema';
-import { Ok } from 'neverthrow';
 
 @Injectable()
 export class MongoDBBookingFinder implements BookingFinder {
@@ -29,11 +28,18 @@ export class MongoDBBookingFinder implements BookingFinder {
 	}
 
 	async findBySpace(spaceId: BookingSpaceId): Promise<Array<BookingDTO>> {
-		return await this.bookingProjection
+		const bookingsViews = await this.bookingProjection
 			.find({
 				spaceId: { $eq: spaceId.value },
 			})
 			.exec();
+
+		return bookingsViews.map(
+			bookingsView => {
+				const date = new Date(bookingsView.date)
+				return { _id: bookingsView._id, userId: bookingsView.userId, spaceId: bookingsView.spaceId, date: date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-') }
+			}
+		)
 	}
 
 	async findSpaceUnavailableDates(spaceId: BookingSpaceId, spaceQuantity: number): Promise<Array<string>> {
@@ -53,6 +59,16 @@ export class MongoDBBookingFinder implements BookingFinder {
 
 		return Array.from(bookingDateFrequency.entries()).filter(([_, appearance]) => appearance >= spaceQuantity).map(([key, _]) => key);
 
+	}
+
+	async findSpacePendingBookings(spaceId: BookingSpaceId): Promise<Array<BookingDTO>> {
+		const currentDate = new Date()
+		return await this.bookingProjection
+			.find({
+				spaceId: { $eq: spaceId.value },
+				date: { $gt: currentDate }
+			})
+			.exec();
 	}
 }
 
