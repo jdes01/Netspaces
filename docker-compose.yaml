@@ -31,6 +31,7 @@ services:
             - mongodb
             - mongo-express
             - cache
+            - elasticsearch
         networks:
             - network
 
@@ -194,6 +195,28 @@ services:
         volumes:
             - /var/log:/var/log
         command: -config.file=/etc/promtail/config.yml
+        networks:
+            - network
+
+    elasticsearch:
+        container_name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+        healthcheck:
+            test: ['CMD-SHELL', 'curl --silent --fail localhost:9200/_cat/health?h=st || exit 1']
+            interval: 50s
+            timeout: 30s
+            retries: 5
+        environment:
+            - cluster.name=api-cluster
+            - bootstrap.memory_lock=true
+            - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+            - discovery.type=single-node
+            - xpack.security.enabled=false
+            - http.host=0.0.0.0
+            - transport.host=0.0.0.0
+        ports:
+            - 9300:9300
+            - 9200:9200
         networks:
             - network
 

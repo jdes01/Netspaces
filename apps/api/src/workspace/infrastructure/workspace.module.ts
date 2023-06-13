@@ -26,6 +26,8 @@ import { ProcessManagers } from './process-manager';
 import { SPACE_PROJECTION, SpaceSchema } from '../../space/infrastructure/projection';
 import { WinstonModule } from 'nest-winston';
 import { LoggerConfig } from '../../logger';
+import { ElasticsearchModule } from '@nestjs/elasticsearch'
+import { MessageProducers } from './message-producer';
 
 const logger: LoggerConfig = new LoggerConfig();
 
@@ -92,7 +94,10 @@ const logger: LoggerConfig = new LoggerConfig();
 			driver: ApolloFederationDriver,
 		}),
 		RedisModule,
-		WinstonModule.forRoot(logger.console())
+		WinstonModule.forRoot(logger.console()),
+		ElasticsearchModule.register({
+			node: 'http://elasticsearch:9200',
+		})
 	],
 	providers: [
 		...CommandHandlers,
@@ -100,6 +105,7 @@ const logger: LoggerConfig = new LoggerConfig();
 		...ProjectionHandlers,
 		...WorkspaceProviders,
 		...ProcessManagers,
+		...MessageProducers,
 		WorkspaceResolver,
 		SpaceService,
 		WorkspaceService,
