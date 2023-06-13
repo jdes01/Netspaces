@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { SPACE_WAS_DELETED_MESSAGE, SpaceWasDeletedMessage } from '@netspaces/contracts';
 import { Model } from 'mongoose';
 
-import { SPACE_PROJECTION, SpaceDocument } from '.././schema/space.schema';
+import { SPACE_PROJECTION, SpaceDocument } from '../schema/space.schema';
 import { CommandBus, ICommand } from '@nestjs/cqrs';
 import { Result } from 'neverthrow';
 import { BookingError } from '../../../domain/exception';

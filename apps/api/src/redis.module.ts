@@ -8,7 +8,7 @@ export class RedisService {
 	redis: Redis;
 	constructor() {
 		this.redis = new Redis({
-			host: 'netspaces-cache',
+			host: 'cache',
 			port: 6379,
 		});
 	}
@@ -22,4 +22,4 @@ export class RedisService {
 	exports: [RedisService],
 	providers: [RedisService],
 })
-export class RedisModule {}
+export class RedisModule { }

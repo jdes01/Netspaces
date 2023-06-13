@@ -4,8 +4,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { USER_WAS_DELETED_MESSAGE, UserWasDeletedMessage } from '@netspaces/contracts';
 import { Model } from 'mongoose';
 
-import { USER_PROJECTION, UserDocument } from '.././schema/user.schema';
-import { BOOKING_PROJECTION, BookingDocument } from '.././schema/booking.schema';
+import { USER_PROJECTION, UserDocument } from '../schema/user.schema';
+import { BOOKING_PROJECTION, BookingDocument } from '../schema/booking.schema';
 import { CommandBus, ICommand } from '@nestjs/cqrs';
 import { Result } from 'neverthrow';
 import { BookingError } from '../../../domain/exception';

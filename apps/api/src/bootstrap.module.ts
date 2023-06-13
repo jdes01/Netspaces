@@ -39,22 +39,6 @@ import * as winston from 'winston'
 		UserModule,
 		CompanyModule,
 		RedisModule,
-		// WinstonModule.forRoot({
-		// 	transports: [
-		// 		new winston.transports.Console({
-		// 			format: winston.format.combine(
-		// 				winston.format.timestamp(),
-		// 				winston.format.ms(),
-		// 				nestWinstonModuleUtilities.format.nestLike('Netspaces', {
-		// 					colors: true,
-		// 					prettyPrint: true,
-		// 				}),
-		// 			),
-		// 		}),
-		// 		// other transports...
-		// 	],
-		// 	// other options
-		// }),
 	],
 })
 export class BootstrapModule { }

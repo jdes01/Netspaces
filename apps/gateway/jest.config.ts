@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-	displayName: 'federation-gateway',
+	displayName: 'gateway',
 	preset: '../../jest.preset.js',
 	testEnvironment: 'node',
 	transform: {

@@ -20,7 +20,7 @@ export class BookingService {
 		return this.queryBus.execute<IQuery, Array<BookingDTO>>(new GetBookingsBySpaceQuery(spaceId));
 	}
 
-	async getSpaceUnavailableDates(spaceId: string): Promise<Result<Array<String>, BookingSpaceNotFoundError>> {
-		return this.queryBus.execute<IQuery, Result<Array<String>, BookingSpaceNotFoundError>>(new GetSpaceUnavailableDatesQuery(spaceId));
+	async getSpaceUnavailableDates(spaceId: string): Promise<Result<Array<string>, BookingSpaceNotFoundError>> {
+		return this.queryBus.execute<IQuery, Result<Array<string>, BookingSpaceNotFoundError>>(new GetSpaceUnavailableDatesQuery(spaceId));
 	}
 }

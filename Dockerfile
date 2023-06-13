@@ -1,4 +1,4 @@
-FROM node:18.15-alpine as netspaces-base
+FROM node:18.15-alpine as base
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN --mount=type=cache,target=/root/.npm --mount=type=cache,target=/root/.cache 
 
 # ===============================
 
-FROM netspaces-base as netspaces-web
+FROM base as web
 
 COPY ./apps/web .
 
@@ -18,7 +18,7 @@ CMD ["npx", "nx", "run", "web:serve", "--hostname=0.0.0.0", "--port=3000"]
 
 # ===============================
 
-FROM netspaces-base as netspaces-api
+FROM base as api
 
 COPY ./apps/api .
 
@@ -26,18 +26,18 @@ EXPOSE 3333
 
 CMD ["npx", "nx", "serve", "api"]
 
-FROM netspaces-base as netspaces-booking-microservice
+FROM base as booking
 
-COPY ./apps/booking-microservice .
+COPY ./apps/booking .
 
 EXPOSE 3333
 
-CMD ["npx", "nx", "serve", "booking-microservice"]
+CMD ["npx", "nx", "serve", "booking"]
 
-FROM netspaces-base as netspaces-federation-gateway
+FROM base as gateway
 
-COPY ./apps/federation-gateway .
+COPY ./apps/gateway .
 
 EXPOSE 3000
 
-CMD ["npx", "nx", "serve", "federation-gateway"]
+CMD ["npx", "nx", "serve", "gateway"]

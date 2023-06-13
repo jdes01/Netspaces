@@ -1,7 +1,7 @@
 {
-	"name": "federation-gateway",
+	"name": "booking",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "apps/federation-gateway/src",
+	"sourceRoot": "apps/booking/src",
 	"projectType": "application",
 	"targets": {
 		"build": {
@@ -11,12 +11,12 @@
 			"options": {
 				"target": "node",
 				"compiler": "tsc",
-				"outputPath": "dist/apps/federation-gateway",
-				"main": "apps/federation-gateway/src/main.ts",
-				"tsConfig": "apps/federation-gateway/tsconfig.app.json",
-				"assets": ["apps/federation-gateway/src/assets"],
+				"outputPath": "dist/apps/booking",
+				"main": "apps/booking/src/main.ts",
+				"tsConfig": "apps/booking/tsconfig.app.json",
+				"assets": ["apps/booking/src/assets"],
 				"isolatedConfig": true,
-				"webpackConfig": "apps/federation-gateway/webpack.config.js"
+				"webpackConfig": "apps/booking/webpack.config.js"
 			},
 			"configurations": {
 				"development": {},
@@ -27,14 +27,14 @@
 			"executor": "@nx/js:node",
 			"defaultConfiguration": "development",
 			"options": {
-				"buildTarget": "federation-gateway:build"
+				"buildTarget": "booking:build"
 			},
 			"configurations": {
 				"development": {
-					"buildTarget": "federation-gateway:build:development"
+					"buildTarget": "booking:build:development"
 				},
 				"production": {
-					"buildTarget": "federation-gateway:build:production"
+					"buildTarget": "booking:build:production"
 				}
 			}
 		},
@@ -42,14 +42,14 @@
 			"executor": "@nx/linter:eslint",
 			"outputs": ["{options.outputFile}"],
 			"options": {
-				"lintFilePatterns": ["apps/federation-gateway/**/*.ts"]
+				"lintFilePatterns": ["apps/booking/**/*.ts"]
 			}
 		},
 		"test": {
 			"executor": "@nx/jest:jest",
 			"outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
 			"options": {
-				"jestConfig": "apps/federation-gateway/jest.config.ts",
+				"jestConfig": "apps/booking/jest.config.ts",
 				"passWithNoTests": true
 			},
 			"configurations": {

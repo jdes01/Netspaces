@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { COMPANY_WAS_DELETED_MESSAGE, CompanyWasDeletedMessage } from '@netspaces/contracts';
 import { Model } from 'mongoose';
 
-import { COMPANY_PROJECTION, CompanyDocument } from '.././schema/company.schema';
+import { COMPANY_PROJECTION, CompanyDocument } from '../schema/company.schema';
 
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';

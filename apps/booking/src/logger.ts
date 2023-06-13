@@ -14,7 +14,7 @@ export class LoggerConfig {
         this.options = {
             exitOnError: false,
             format: combine(
-                label({ label: 'booking-microservice' }),
+                label({ label: 'booking' }),
                 timestamp(),
                 metadata({ fillExcept: ["level", "timestamp", "label", "message"] }),
                 myFormat
@@ -23,7 +23,7 @@ export class LoggerConfig {
                 new transports.Console({ level: "debug" }),
                 new LokiTransport({
                     host: "http://loki:3100",
-                    labels: { job: 'booking-microservice' }
+                    labels: { job: 'booking' }
                 })
             ], // alert > error > warning > notice > info > debug
         };

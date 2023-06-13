@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { SPACE_WAS_CREATED_MESSAGE, SpaceWasCreatedMessage } from '@netspaces/contracts';
 import { Model } from 'mongoose';
 
-import { SPACE_PROJECTION, SpaceDocument } from '.././schema/space.schema';
+import { SPACE_PROJECTION, SpaceDocument } from '../schema/space.schema';
 
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';

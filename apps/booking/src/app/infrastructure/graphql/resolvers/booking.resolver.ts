@@ -20,10 +20,10 @@ export class BookingResolver {
 	}
 
 	@Query((_returns) => [String])
-	async getSpaceUnavailableDates(@Args('spaceId', { type: () => String }) spaceId: string): Promise<Array<String>> {
+	async getSpaceUnavailableDates(@Args('spaceId', { type: () => String }) spaceId: string): Promise<Array<string>> {
 		const spaceUnavailableDatesResult = await this.bookingService.getSpaceUnavailableDates(spaceId);
 
-		return spaceUnavailableDatesResult.match<Array<String>>(
+		return spaceUnavailableDatesResult.match<Array<string>>(
 			(spaceUnavailableDate) => {
 				return spaceUnavailableDate;
 			},

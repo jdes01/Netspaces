@@ -38,7 +38,7 @@ async function bootstrap() {
 		options: {
 			client: {
 				brokers: ['kafka:9092'],
-				clientId: 'booking-microservice',
+				clientId: 'booking',
 				logLevel: logLevel.INFO,
 			},
 			consumer: {
