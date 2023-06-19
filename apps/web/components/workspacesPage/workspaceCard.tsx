@@ -8,34 +8,60 @@ type WorkspaceCardProps = {
 
 export function WorkspaceCard({ workspace }: WorkspaceCardProps) {
 	const router = useRouter();
+  
 	return (
 		<Box
-			m={1}
-			onClick={() => router.push(`/admin/workspaces/${workspace._id}`)}
-			borderRadius={20}
-			borderColor={'transparent'}
-			_hover={{ cursor: 'pointer', shadow: 'base' }}
+		borderRadius={20}
+		borderWidth={0}
+		padding={1}
+		width={"100%"}
+		maxWidth={500}
+		height={'fit-content'}
+		display={"grid"}
+		gap={5}
+		_hover={{ shadow: "lg" }}
+		onClick={() => router.push(`/admin/workspaces/${workspace._id}`)}
 		>
-			<Image borderRadius={20} src="https://pbs.twimg.com/media/EnQp7n1XcAI9ZF4.jpg" />
-			<Box p="5">
-				<Stack direction="row" spacing={1} align="left">
-					{workspace.services.map((service) => (
-						<Badge borderRadius="full" px="2" colorScheme="teal" position={'relative'} left={1} right={1}>
-							{service}
-						</Badge>
-					))}
+			<Image borderRadius={20} width={"100%"} height={"100%"} src="https://pbs.twimg.com/media/EnQp7n1XcAI9ZF4.jpg" />
+
+			<Box marginLeft={3} marginBottom={5} display={"grid"} gap={4}>
+				<Stack direction={"row"} align={"left"}>
+				  {workspace.services.slice(0, 3).map((service, index) => (
+					<Badge
+					  key={index}
+					  borderRadius="full"
+					  px="2"
+					  colorScheme="teal"
+					  position="relative"
+					  fontSize="xs"
+					>
+					  {service}
+					</Badge>
+				  ))}
+				  {workspace.services.length > 3 && (
+					<Badge
+					  key="more"
+					  borderRadius="full"
+					  px="2"
+					  colorScheme="teal"
+					  position="relative"
+					  left={1}
+					  right={1}
+					  fontSize="xs"
+					>
+					  +
+					</Badge>
+				  )}
 				</Stack>
-
-				<Box mt="4" fontWeight="bold" as="h4" lineHeight="tight" noOfLines={1}>
-					{workspace.name}
-				</Box>
-
-				<Box display="flex" alignItems="baseline" mt={2}>
-					<Box color="gray.500" fontWeight="semibold" letterSpacing="wide" fontSize="xs" textTransform="uppercase">
+				<Box fontWeight={"semibold"}>
+					<Box fontWeight="bold" as="h4" lineHeight="tight" noOfLines={1}> 
+						{workspace.name} 
+					</Box>
+					<Box fontWeight="semibold" letterSpacing="wide" fontSize="xs" textTransform="uppercase"> 
 						{workspace.city}, {workspace.country}
 					</Box>
 				</Box>
 			</Box>
 		</Box>
-	);
-}
+	  );
+  }

@@ -14,7 +14,7 @@ const workspaceDTO: WorkspaceDTO = {
     street: "calle",
     city: "ciudad",
     country: "pais",
-    services: []
+    services: ["WIFI", "WIFI", "WIFI", "WIFI", "WIFI"]
 }
 
 export const WorkspaceCardComponent = () => <WorkspaceCard workspace={workspaceDTO} />

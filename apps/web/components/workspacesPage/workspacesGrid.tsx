@@ -1,4 +1,4 @@
-import { SimpleGrid, TabPanels, Tabs } from '@chakra-ui/react';
+import { Box, SimpleGrid, TabPanels, Tabs } from '@chakra-ui/react';
 import { WorkspaceDTO } from '@netspaces/contracts';
 import { useState } from 'react';
 
@@ -12,28 +12,30 @@ type WorkspaceGridProps = {
 
 export function WorkspaceGrid({ workspaces }: WorkspaceGridProps) {
 	const [tabIndex, setTabIndex] = useState(0);
-
-	const uniqueServices: string[] = uniqueServicesFromWorkspaces(workspaces);
+  
+	const uniqueServices = uniqueServicesFromWorkspaces(workspaces);
 	const filteredService = uniqueServices[tabIndex];
-
+  
 	const filteredWorkspaces = workspaces.filter((workspace) => workspace.services.includes(filteredService));
-
+  
 	return (
-		<>
-			<LocationFinder></LocationFinder>
-			<Tabs onChange={(index) => setTabIndex(index)} mt={10}>
-				<ServicesTabs services={uniqueServices}></ServicesTabs>
-				<TabPanels p="2rem">
-					<SimpleGrid columns={[1, null, 6]}>
-						{filteredWorkspaces.map((workspace) => (
-							<WorkspaceCard workspace={workspace}></WorkspaceCard>
-						))}
-					</SimpleGrid>
-				</TabPanels>
-			</Tabs>
-		</>
+	  <>
+		<LocationFinder />
+		<Tabs onChange={(index) => setTabIndex(index)} mt={10}>
+		  <ServicesTabs services={uniqueServices} />
+		  <TabPanels marginTop={5}>
+			<SimpleGrid minChildWidth={300} justifyItems={"center"}>
+			  {filteredWorkspaces.map((workspace) => (
+				<Box marginBottom={10}>
+					<WorkspaceCard key={workspace._id} workspace={workspace}/>
+				</Box>
+			  ))}
+			</SimpleGrid>
+		  </TabPanels>
+		</Tabs>
+	  </>
 	);
-}
+  }
 
 function uniqueServicesFromWorkspaces(workspaces: Array<WorkspaceDTO>): Array<string> {
 	const uniqueServicesSet = new Set<string>();
