@@ -6,17 +6,17 @@ export const WORKSPACE_PROJECTION = 'workspaces';
 export type WorkspaceDocument = WorkspaceDTO & Document;
 
 export const WorkspaceSchema = new Schema(
-	{
-		_id: String,
-		companyId: String,
-		name: String,
-		description: String,
-		street: String,
-		city: String,
-		country: String,
-		services: Array<string>,
-	},
-	{
-		versionKey: false,
-	},
+  {
+    _id: String,
+    companyId: String,
+    name: String,
+    description: String,
+    street: String,
+    city: String,
+    country: String,
+    services: Array<string>,
+  },
+  {
+    versionKey: false,
+  },
 );

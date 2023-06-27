@@ -1,7 +1,10 @@
 import { Controller, Inject } from '@nestjs/common';
 import { EventPattern } from '@nestjs/microservices';
 import { InjectModel } from '@nestjs/mongoose';
-import { USER_WAS_DELETED_MESSAGE, UserWasDeletedMessage } from '@netspaces/contracts';
+import {
+  USER_WAS_DELETED_MESSAGE,
+  UserWasDeletedMessage,
+} from '@netspaces/contracts';
 import { Model } from 'mongoose';
 
 import { USER_PROJECTION, UserDocument } from '../schema/user.schema';
@@ -16,34 +19,34 @@ import { Logger } from 'winston';
 
 @Controller()
 export class UserWasDeletedProjection {
-    constructor(
-        @InjectModel(USER_PROJECTION)
-        private readonly userProjection: Model<UserDocument>,
-        @InjectModel(BOOKING_PROJECTION)
-        private readonly bookingProjection: Model<BookingDocument>,
-        @Inject(WINSTON_MODULE_PROVIDER)
-        private readonly logger: Logger,
-        private readonly commandBus: CommandBus
-    ) { }
+  constructor(
+    @InjectModel(USER_PROJECTION)
+    private readonly userProjection: Model<UserDocument>,
+    @InjectModel(BOOKING_PROJECTION)
+    private readonly bookingProjection: Model<BookingDocument>,
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
+    private readonly commandBus: CommandBus,
+  ) {}
 
-    @EventPattern(USER_WAS_DELETED_MESSAGE)
-    async handle(message: UserWasDeletedMessage) {
-        const userView = await this.userProjection
-            .findById(message._id)
-            .exec();
+  @EventPattern(USER_WAS_DELETED_MESSAGE)
+  async handle(message: UserWasDeletedMessage) {
+    const userView = await this.userProjection.findById(message._id).exec();
 
-        userView.remove();
+    userView.remove();
 
-        const userBookingsViews = await this.bookingProjection
-            .find({ userId: message._id })
-            .exec();
+    const userBookingsViews = await this.bookingProjection
+      .find({ userId: message._id })
+      .exec();
 
-        if (userBookingsViews.length > 0) {
-            userBookingsViews.map(
-                (userBookingsView) => { this.commandBus.execute<ICommand, Result<null, BookingError>>(new DeleteBookingCommand(userBookingsView.id)) }
-            )
-        }
-
-        this.logger.info("User removed", { userId: message._id });
+    if (userBookingsViews.length > 0) {
+      userBookingsViews.map((userBookingsView) => {
+        this.commandBus.execute<ICommand, Result<null, BookingError>>(
+          new DeleteBookingCommand(userBookingsView.id),
+        );
+      });
     }
+
+    this.logger.info('User removed', { userId: message._id });
+  }
 }

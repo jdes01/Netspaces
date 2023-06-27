@@ -6,7 +6,7 @@ import { WorkspaceCompanyId } from '../../domain/model/value-objects/workspace-c
 export const WORKSPACE_FINDER = 'WORKSPACE_FINDER';
 
 export interface WorkspaceFinder {
-	find(id: WorkspaceId): Promise<WorkspaceDTO | null>;
-	findAll(): Promise<Array<WorkspaceDTO>>;
-	findByCompanyId(id: WorkspaceCompanyId): Promise<Array<WorkspaceDTO>>;
+  find(id: WorkspaceId): Promise<WorkspaceDTO | null>;
+  findAll(): Promise<Array<WorkspaceDTO>>;
+  findByCompanyId(id: WorkspaceCompanyId): Promise<Array<WorkspaceDTO>>;
 }

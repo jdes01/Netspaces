@@ -6,7 +6,7 @@ import { SpaceId } from '../../domain/model/value-objects';
 export const SPACE_FINDER = 'SPACE_FINDER';
 
 export interface SpaceFinder {
-	find(id: SpaceId): Promise<SpaceDTO | null>;
-	findAll(): Promise<Array<SpaceDTO>>;
-	findByWorkspaceId(id: WorkspaceId): Promise<Array<SpaceDTO>>;
+  find(id: SpaceId): Promise<SpaceDTO | null>;
+  findAll(): Promise<Array<SpaceDTO>>;
+  findByWorkspaceId(id: WorkspaceId): Promise<Array<SpaceDTO>>;
 }

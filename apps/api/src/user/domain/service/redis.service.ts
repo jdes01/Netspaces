@@ -1,5 +1,5 @@
-import { Result } from "neverthrow";
+import { Result } from 'neverthrow';
 
 export interface RedisService {
-    set(key: string, value: string | number | Buffer);
+  set(key: string, value: string | number | Buffer);
 }

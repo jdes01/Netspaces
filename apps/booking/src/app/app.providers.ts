@@ -10,26 +10,25 @@ import { MongoDBSpaceFinder } from './infrastructure/service/space-finder.servic
 import { MongoDBUserFinder } from './infrastructure/service/user-finder.service';
 import { MongoDBCompanyFinder } from './infrastructure/service/company-finder.service';
 
-
 export const BookingProviders = [
-	{
-		provide: BOOKING_FINDER,
-		useClass: MongoDBBookingFinder,
-	},
-	{
-		provide: USER_FINDER,
-		useClass: MongoDBUserFinder,
-	},
-	{
-		provide: COMPANY_FINDER,
-		useClass: MongoDBCompanyFinder,
-	},
-	{
-		provide: SPACE_FINDER,
-		useClass: MongoDBSpaceFinder,
-	},
-	{
-		provide: BOOKING_VALIDATOR,
-		useClass: MongoDBBookingValidator,
-	},
+  {
+    provide: BOOKING_FINDER,
+    useClass: MongoDBBookingFinder,
+  },
+  {
+    provide: USER_FINDER,
+    useClass: MongoDBUserFinder,
+  },
+  {
+    provide: COMPANY_FINDER,
+    useClass: MongoDBCompanyFinder,
+  },
+  {
+    provide: SPACE_FINDER,
+    useClass: MongoDBSpaceFinder,
+  },
+  {
+    provide: BOOKING_VALIDATOR,
+    useClass: MongoDBBookingValidator,
+  },
 ];

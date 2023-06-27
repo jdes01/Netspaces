@@ -13,41 +13,52 @@ import { DeleteSpaceCommand } from '../../application/command/delete-space.comma
 
 @Injectable()
 export class SpaceService {
-	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) { }
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
-	async createSpace(
-		id: string,
-		workspaceId: string,
-		name: string,
-		quantity: number,
-		seats: number,
-		amenitys: Array<string>,
-	): Promise<Result<null, SpaceError>> {
-		return this.commandBus.execute<ICommand, Result<null, SpaceError>>(new CreateSpaceCommand(id, workspaceId, name, quantity, seats, amenitys));
-	}
+  async createSpace(
+    id: string,
+    workspaceId: string,
+    name: string,
+    quantity: number,
+    seats: number,
+    amenitys: Array<string>,
+  ): Promise<Result<null, SpaceError>> {
+    return this.commandBus.execute<ICommand, Result<null, SpaceError>>(
+      new CreateSpaceCommand(id, workspaceId, name, quantity, seats, amenitys),
+    );
+  }
 
-	async updateSpace(
-		id: string,
-		name: string,
-		quantity: number,
-		seats: number,
-	): Promise<Result<null, SpaceError>> {
-		return this.commandBus.execute<ICommand, Result<null, SpaceError>>(new UpdateSpaceCommand(id, name, quantity, seats));
-	}
+  async updateSpace(
+    id: string,
+    name: string,
+    quantity: number,
+    seats: number,
+  ): Promise<Result<null, SpaceError>> {
+    return this.commandBus.execute<ICommand, Result<null, SpaceError>>(
+      new UpdateSpaceCommand(id, name, quantity, seats),
+    );
+  }
 
-	async getSpaces(): Promise<Array<SpaceDTO>> {
-		return this.queryBus.execute<IQuery, Array<SpaceDTO>>(new GetSpacesQuery());
-	}
+  async getSpaces(): Promise<Array<SpaceDTO>> {
+    return this.queryBus.execute<IQuery, Array<SpaceDTO>>(new GetSpacesQuery());
+  }
 
-	async getSpaceById(id: string): Promise<SpaceDTO> {
-		return this.queryBus.execute<IQuery, SpaceDTO>(new GetSpaceByIdQuery(id));
-	}
+  async getSpaceById(id: string): Promise<SpaceDTO> {
+    return this.queryBus.execute<IQuery, SpaceDTO>(new GetSpaceByIdQuery(id));
+  }
 
-	async getSpacesByWorkspaceId(id: string): Promise<Array<SpaceDTO>> {
-		return this.queryBus.execute<IQuery, Array<SpaceDTO>>(new GetSpacesByWorkspaceIdQuery(id));
-	}
+  async getSpacesByWorkspaceId(id: string): Promise<Array<SpaceDTO>> {
+    return this.queryBus.execute<IQuery, Array<SpaceDTO>>(
+      new GetSpacesByWorkspaceIdQuery(id),
+    );
+  }
 
-	async deleteSpace(id: string): Promise<Result<null, SpaceError>> {
-		return this.commandBus.execute<ICommand, Result<null, SpaceError>>(new DeleteSpaceCommand(id));
-	}
+  async deleteSpace(id: string): Promise<Result<null, SpaceError>> {
+    return this.commandBus.execute<ICommand, Result<null, SpaceError>>(
+      new DeleteSpaceCommand(id),
+    );
+  }
 }

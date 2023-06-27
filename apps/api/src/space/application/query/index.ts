@@ -7,6 +7,14 @@ import { GetSpacesByWorkspaceIdHandler } from './handler/get-spaces-by-workspace
 
 export * from './get-spaces.query';
 
-export const QueryHandlers = [GetSpacesHandler, GetSpaceByIdHandler, GetSpacesByWorkspaceIdHandler];
+export const QueryHandlers = [
+  GetSpacesHandler,
+  GetSpaceByIdHandler,
+  GetSpacesByWorkspaceIdHandler,
+];
 
-export const Query = [GetSpacesQuery, GetSpaceByIdQuery, GetSpacesByWorkspaceIdQuery];
+export const Query = [
+  GetSpacesQuery,
+  GetSpaceByIdQuery,
+  GetSpacesByWorkspaceIdQuery,
+];

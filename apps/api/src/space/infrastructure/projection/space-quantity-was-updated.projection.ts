@@ -6,17 +6,19 @@ import { SpaceQuantityWasUpdatedEvent } from '../../domain/event';
 import { SPACE_PROJECTION, SpaceDocument } from './space.schema';
 
 @EventsHandler(SpaceQuantityWasUpdatedEvent)
-export class SpaceQuantityWasUpdatedProjection implements IEventHandler<SpaceQuantityWasUpdatedEvent> {
-    constructor(
-        @InjectModel(SPACE_PROJECTION)
-        private readonly spaceProjection: Model<SpaceDocument>,
-    ) { }
+export class SpaceQuantityWasUpdatedProjection
+  implements IEventHandler<SpaceQuantityWasUpdatedEvent>
+{
+  constructor(
+    @InjectModel(SPACE_PROJECTION)
+    private readonly spaceProjection: Model<SpaceDocument>,
+  ) {}
 
-    async handle(event: SpaceQuantityWasUpdatedEvent) {
-        this.spaceProjection
-            .findByIdAndUpdate(event.id, {
-                quantity: event.quantity,
-            })
-            .exec();
-    }
+  async handle(event: SpaceQuantityWasUpdatedEvent) {
+    this.spaceProjection
+      .findByIdAndUpdate(event.id, {
+        quantity: event.quantity,
+      })
+      .exec();
+  }
 }

@@ -1,2 +1,2 @@
-export * from './infrastructure/company.providers'
-export * from './infrastructure/company.module'
+export * from './infrastructure/company.providers';
+export * from './infrastructure/company.module';

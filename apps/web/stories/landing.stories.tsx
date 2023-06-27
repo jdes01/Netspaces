@@ -1,8 +1,8 @@
-import { Landing } from "../components/landing";
+import { Landing } from '../components/Landing';
 
 export default {
-  title: "Pages/Landing",
+  title: 'Pages/Landing',
   component: Landing,
 };
 
-export const LandingPage = () => <Landing />
+export const LandingPage = () => <Landing />;

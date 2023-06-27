@@ -9,8 +9,21 @@ import { UserWasDeletedProjection } from './user/user-was-deleted.projection';
 import { SpaceWasDeletedProjection } from './space/space-was-deleted.projection';
 import { BookingWasDeletedProjection } from './booking/booking-was-deleted.projection';
 
-
-export const SpaceProjections = [SpaceWasCreatedProjection, SpaceQuantityWasUpdatedProjection, SpaceWasDeletedProjection];
-export const UserProjections = [UserWasCreatedWithoutCompanyProjection, UserWasCreatedWithCompanyProjection, UserWasDeletedProjection];
-export const CompanyProjections = [CompanyWasCreatedProjection, CompanyWasDeletedProjection];
-export const BookingProjections = [BookingWasCreatedProjection, BookingWasDeletedProjection];
+export const SpaceProjections = [
+  SpaceWasCreatedProjection,
+  SpaceQuantityWasUpdatedProjection,
+  SpaceWasDeletedProjection,
+];
+export const UserProjections = [
+  UserWasCreatedWithoutCompanyProjection,
+  UserWasCreatedWithCompanyProjection,
+  UserWasDeletedProjection,
+];
+export const CompanyProjections = [
+  CompanyWasCreatedProjection,
+  CompanyWasDeletedProjection,
+];
+export const BookingProjections = [
+  BookingWasCreatedProjection,
+  BookingWasDeletedProjection,
+];

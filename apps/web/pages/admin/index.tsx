@@ -1,7 +1,7 @@
-import { Landing } from '../../components/adminLanding';
+import { Landing } from '../../components/AdminLanding';
 
 export function Index() {
-	return <Landing></Landing>;
+  return <Landing></Landing>;
 }
 
 export default Index;

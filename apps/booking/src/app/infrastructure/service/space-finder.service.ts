@@ -5,16 +5,19 @@ import { Model } from 'mongoose';
 
 import { SpaceFinder } from '../../application/service/space-finder.service';
 import { BookingSpaceId } from '../../domain/model/value-objects';
-import { SPACE_PROJECTION, SpaceDocument } from '../projection/schema/space.schema';
+import {
+  SPACE_PROJECTION,
+  SpaceDocument,
+} from '../projection/schema/space.schema';
 
 @Injectable()
 export class MongoDBSpaceFinder implements SpaceFinder {
-	constructor(
-		@InjectModel(SPACE_PROJECTION)
-		private readonly spaceProjection: Model<SpaceDocument>,
-	) {}
+  constructor(
+    @InjectModel(SPACE_PROJECTION)
+    private readonly spaceProjection: Model<SpaceDocument>,
+  ) {}
 
-	find(id: BookingSpaceId): Promise<SpaceDTO | null> {
-		return this.spaceProjection.findById(id.value).exec();
-	}
+  find(id: BookingSpaceId): Promise<SpaceDTO | null> {
+    return this.spaceProjection.findById(id.value).exec();
+  }
 }

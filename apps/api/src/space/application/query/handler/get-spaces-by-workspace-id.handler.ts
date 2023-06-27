@@ -8,9 +8,11 @@ import { GetSpacesByWorkspaceIdQuery } from '../get-spaces-by-workspace-id.query
 
 @QueryHandler(GetSpacesByWorkspaceIdQuery)
 export class GetSpacesByWorkspaceIdHandler implements IQueryHandler {
-	constructor(@Inject(SPACE_FINDER) private readonly spaceFinder: SpaceFinder) {}
+  constructor(
+    @Inject(SPACE_FINDER) private readonly spaceFinder: SpaceFinder,
+  ) {}
 
-	async execute(query: GetSpacesByWorkspaceIdQuery): Promise<Array<SpaceDTO>> {
-		return this.spaceFinder.findByWorkspaceId(WorkspaceId.fromString(query.id));
-	}
+  async execute(query: GetSpacesByWorkspaceIdQuery): Promise<Array<SpaceDTO>> {
+    return this.spaceFinder.findByWorkspaceId(WorkspaceId.fromString(query.id));
+  }
 }

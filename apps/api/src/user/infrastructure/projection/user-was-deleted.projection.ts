@@ -6,17 +6,17 @@ import { UserWasDeletedEvent } from '../../domain/event';
 import { USER_PROJECTION, UserDocument } from './user.schema';
 
 @EventsHandler(UserWasDeletedEvent)
-export class UserWasDeletedProjection implements IEventHandler<UserWasDeletedEvent> {
-    constructor(
-        @InjectModel(USER_PROJECTION)
-        private readonly userProjection: Model<UserDocument>,
-    ) { }
+export class UserWasDeletedProjection
+  implements IEventHandler<UserWasDeletedEvent>
+{
+  constructor(
+    @InjectModel(USER_PROJECTION)
+    private readonly userProjection: Model<UserDocument>,
+  ) {}
 
-    async handle(event: UserWasDeletedEvent) {
-        const userView = await this.userProjection
-            .findById(event.id)
-            .exec();
+  async handle(event: UserWasDeletedEvent) {
+    const userView = await this.userProjection.findById(event.id).exec();
 
-        userView.remove()
-    }
+    userView.remove();
+  }
 }

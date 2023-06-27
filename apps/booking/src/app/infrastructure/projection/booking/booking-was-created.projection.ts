@@ -9,21 +9,23 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 
 @EventsHandler(BookingWasCreatedEvent)
-export class BookingWasCreatedProjection implements IEventHandler<BookingWasCreatedEvent> {
-	constructor(
-		@InjectModel(BOOKING_PROJECTION)
-		private readonly bookingProjection: Model<BookingDocument>,
-		@Inject(WINSTON_MODULE_PROVIDER)
-		private readonly logger: Logger,
-	) { }
+export class BookingWasCreatedProjection
+  implements IEventHandler<BookingWasCreatedEvent>
+{
+  constructor(
+    @InjectModel(BOOKING_PROJECTION)
+    private readonly bookingProjection: Model<BookingDocument>,
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
+  ) {}
 
-	async handle(event: BookingWasCreatedEvent) {
-		const booking = new this.bookingProjection({
-			...event.payload,
-			date: new Date(event.payload.date)
-		});
-		await booking.save();
+  async handle(event: BookingWasCreatedEvent) {
+    const booking = new this.bookingProjection({
+      ...event.payload,
+      date: new Date(event.payload.date),
+    });
+    await booking.save();
 
-		this.logger.info("Booking created", { bookingId: event.id });
-	}
+    this.logger.info('Booking created', { bookingId: event.id });
+  }
 }

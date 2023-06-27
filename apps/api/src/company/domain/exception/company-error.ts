@@ -1,1 +1,1 @@
-export class CompanyError extends Error { }
+export class CompanyError extends Error {}

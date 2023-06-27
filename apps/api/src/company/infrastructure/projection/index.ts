@@ -4,4 +4,8 @@ import { CompanyWasDeletedProjection } from './company-was-deleted.projection';
 
 export * from './company.schema';
 
-export const ProjectionHandlers = [CompanyWasCreatedProjection, CompanyNameWasUpdatedProjection, CompanyWasDeletedProjection];
+export const ProjectionHandlers = [
+  CompanyWasCreatedProjection,
+  CompanyNameWasUpdatedProjection,
+  CompanyWasDeletedProjection,
+];

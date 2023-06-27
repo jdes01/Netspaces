@@ -2,4 +2,8 @@ import { SpaceQuantityWasUpdatedMessageProducer } from './space-quantity-was-upd
 import { SpaceWasCreatedMessageProducer } from './space-was-created.message-producer';
 import { SpaceWasDeletedMessageProducer } from './space-was-deleted.message-producer';
 
-export const MessageProducers = [SpaceWasCreatedMessageProducer, SpaceQuantityWasUpdatedMessageProducer, SpaceWasDeletedMessageProducer];
+export const MessageProducers = [
+  SpaceWasCreatedMessageProducer,
+  SpaceQuantityWasUpdatedMessageProducer,
+  SpaceWasDeletedMessageProducer,
+];

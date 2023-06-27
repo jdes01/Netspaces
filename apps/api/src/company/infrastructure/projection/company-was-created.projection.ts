@@ -6,16 +6,18 @@ import { CompanyWasCreatedEvent } from '../../domain/event';
 import { COMPANY_PROJECTION, CompanyDocument } from './company.schema';
 
 @EventsHandler(CompanyWasCreatedEvent)
-export class CompanyWasCreatedProjection implements IEventHandler<CompanyWasCreatedEvent> {
-	constructor(
-		@InjectModel(COMPANY_PROJECTION)
-		private readonly companyProjection: Model<CompanyDocument>,
-	) { }
+export class CompanyWasCreatedProjection
+  implements IEventHandler<CompanyWasCreatedEvent>
+{
+  constructor(
+    @InjectModel(COMPANY_PROJECTION)
+    private readonly companyProjection: Model<CompanyDocument>,
+  ) {}
 
-	async handle(event: CompanyWasCreatedEvent) {
-		const company = new this.companyProjection({
-			...event.payload,
-		});
-		await company.save();
-	}
+  async handle(event: CompanyWasCreatedEvent) {
+    const company = new this.companyProjection({
+      ...event.payload,
+    });
+    await company.save();
+  }
 }

@@ -5,21 +5,21 @@ export const REDIS_SERVICE = 'REDIS_SERVICE';
 
 @Injectable()
 export class RedisService {
-	redis: Redis;
-	constructor() {
-		this.redis = new Redis({
-			host: 'cache',
-			port: 6379,
-		});
-	}
+  redis: Redis;
+  constructor() {
+    this.redis = new Redis({
+      host: 'cache',
+      port: 6379,
+    });
+  }
 
-	async set(key: string, value: string | number | Buffer) {
-		return await this.redis.set(key, value);
-	}
+  async set(key: string, value: string | number | Buffer) {
+    return await this.redis.set(key, value);
+  }
 }
 
 @Module({
-	exports: [RedisService],
-	providers: [RedisService],
+  exports: [RedisService],
+  providers: [RedisService],
 })
-export class RedisModule { }
+export class RedisModule {}

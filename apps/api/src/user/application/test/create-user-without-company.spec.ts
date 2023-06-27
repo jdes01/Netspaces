@@ -1,5 +1,9 @@
 import { Err, Ok } from 'neverthrow';
-import { InmemoryRedisService, InMemoryUserFinder, InMemoryUserRepository } from '../../../test';
+import {
+  InmemoryRedisService,
+  InMemoryUserFinder,
+  InMemoryUserRepository,
+} from '../../../test';
 import { UserId } from '../../domain/model/value-objects';
 import { CreateUserWithoutCompanyCommand } from '../command/create-user-without-company.command';
 import { CreateUserWithoutCompanyHandler } from '../command/handler/create-user-without-company.handler';
@@ -7,41 +11,48 @@ import { UserDTO } from '@netspaces/contracts';
 import { UserAlreadyExistsError } from '../../domain/exception';
 
 describe('CreateUserHandler', () => {
+  let id;
+  let name;
+  let existingUser: UserDTO;
+  let command;
+  let redisService;
 
-	let id
-	let name
-	let existingUser: UserDTO
-	let command
-	let redisService
+  beforeEach(() => {
+    id = 'e847261d-5539-49da-876d-bfc245e50974';
+    name = 'userName';
+    existingUser = { _id: id, name: name, companyId: '' };
+    command = new CreateUserWithoutCompanyCommand(id, name);
+    redisService = new InmemoryRedisService();
+  });
 
-	beforeEach(() => {
-		id = 'e847261d-5539-49da-876d-bfc245e50974';
-		name = 'userName';
-		existingUser = { _id: id, name: name, companyId: '' }
-		command = new CreateUserWithoutCompanyCommand(id, name);
-		redisService = new InmemoryRedisService();
-	});
+  it('should creates a new user successfully', async () => {
+    const userRepository = new InMemoryUserRepository([]);
+    const userFinder = new InMemoryUserFinder([]);
+    const handler = new CreateUserWithoutCompanyHandler(
+      userRepository,
+      userFinder,
+      redisService,
+    );
 
-	it('should creates a new user successfully', async () => {
+    const result = await handler.execute(command);
 
-		const userRepository = new InMemoryUserRepository([]);
-		const userFinder = new InMemoryUserFinder([]);
-		const handler = new CreateUserWithoutCompanyHandler(userRepository, userFinder, redisService);
+    expect(result).toBeInstanceOf(Ok);
+    expect(userRepository.users.length).toBe(1);
+  });
 
-		const result = await handler.execute(command);
+  it('should return error with existing user', async () => {
+    const userRepository = new InMemoryUserRepository([]);
+    const userFinder = new InMemoryUserFinder([existingUser]);
+    const handler = new CreateUserWithoutCompanyHandler(
+      userRepository,
+      userFinder,
+      redisService,
+    );
 
-		expect(result).toBeInstanceOf(Ok)
-		expect(userRepository.users.length).toBe(1)
-	});
+    const result = await handler.execute(command);
 
-	it('should return error with existing user', async () => {
-
-		const userRepository = new InMemoryUserRepository([]);
-		const userFinder = new InMemoryUserFinder([existingUser]);
-		const handler = new CreateUserWithoutCompanyHandler(userRepository, userFinder, redisService);
-
-		const result = await handler.execute(command);
-
-		expect(result).toEqual(new Err(UserAlreadyExistsError.withId(UserId.fromString(id))))
-	});
+    expect(result).toEqual(
+      new Err(UserAlreadyExistsError.withId(UserId.fromString(id))),
+    );
+  });
 });

@@ -8,12 +8,12 @@ import { UserCompanyId } from '../../../domain/model/value-objects/user-company-
 
 @QueryHandler(GetUsersByCompanyIdQuery)
 export class GetUsersByCompanyIdHandler implements IQueryHandler {
-    constructor(
-        @Inject(USER_FINDER)
-        private readonly userFinder: UserFinder,
-    ) { }
+  constructor(
+    @Inject(USER_FINDER)
+    private readonly userFinder: UserFinder,
+  ) {}
 
-    async execute(query: GetUsersByCompanyIdQuery): Promise<Array<UserDTO>> {
-        return this.userFinder.findByCompanyId(UserCompanyId.fromString(query.id));
-    }
+  async execute(query: GetUsersByCompanyIdQuery): Promise<Array<UserDTO>> {
+    return this.userFinder.findByCompanyId(UserCompanyId.fromString(query.id));
+  }
 }

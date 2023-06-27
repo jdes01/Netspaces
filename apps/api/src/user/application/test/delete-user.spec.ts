@@ -1,35 +1,34 @@
 import { Ok } from 'neverthrow';
 
-import { DeleteUserHandler } from '../command/handler/delete-user.handler'
+import { DeleteUserHandler } from '../command/handler/delete-user.handler';
 import { UserId, UserName } from '../../domain/model/value-objects';
 import { DeleteUserCommand } from '../command/delete-user.command';
 import { InMemoryUserRepository, InmemoryRedisService } from '../../../test';
 import { User } from '../../domain/model';
 
-
 describe('DeleteUserHandler', () => {
+  let id: string;
+  let existingUser: User;
+  let command: DeleteUserCommand;
+  let redisService: InmemoryRedisService;
 
-    let id: string
-    let existingUser: User
-    let command: DeleteUserCommand
-    let redisService: InmemoryRedisService
+  beforeEach(() => {
+    id = 'e847261d-5539-49da-876d-bfc245e50974';
+    existingUser = User.addWithoutCompany(
+      UserId.fromString(id),
+      UserName.fromString('name'),
+    );
+    command = new DeleteUserCommand(id);
+    redisService = new InmemoryRedisService();
+  });
 
-    beforeEach(() => {
-        id = 'e847261d-5539-49da-876d-bfc245e50974';
-        existingUser = User.addWithoutCompany(UserId.fromString(id), UserName.fromString("name"))
-        command = new DeleteUserCommand(id);
-        redisService = new InmemoryRedisService();
-    });
+  it('should delete an existing user successfully', async () => {
+    const userRepository = new InMemoryUserRepository([existingUser]);
+    const handler = new DeleteUserHandler(userRepository);
 
-    it('should delete an existing user successfully', async () => {
+    const result = await handler.execute(command);
 
-        const userRepository = new InMemoryUserRepository([existingUser]);
-        const handler = new DeleteUserHandler(userRepository);
-
-        const result = await handler.execute(command);
-
-        expect(result).toBeInstanceOf(Ok)
-        expect(userRepository.users[0].deleted).toBe(true)
-    });
-
+    expect(result).toBeInstanceOf(Ok);
+    expect(userRepository.users[0].deleted).toBe(true);
+  });
 });

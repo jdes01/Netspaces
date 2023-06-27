@@ -9,16 +9,16 @@ import { COMPANY_PROJECTION, CompanyDocument } from '../projection';
 
 @Injectable()
 export class MongoDBCompanyFinder implements CompanyFinder {
-	constructor(
-		@InjectModel(COMPANY_PROJECTION)
-		private readonly companyProjection: Model<CompanyDocument>,
-	) { }
+  constructor(
+    @InjectModel(COMPANY_PROJECTION)
+    private readonly companyProjection: Model<CompanyDocument>,
+  ) {}
 
-	findAll(): Promise<CompanyDTO[]> {
-		return this.companyProjection.find().exec();
-	}
+  findAll(): Promise<CompanyDTO[]> {
+    return this.companyProjection.find().exec();
+  }
 
-	find(id: CompanyId): Promise<CompanyDTO | null> {
-		return this.companyProjection.findById(id.value).exec();
-	}
+  find(id: CompanyId): Promise<CompanyDTO | null> {
+    return this.companyProjection.findById(id.value).exec();
+  }
 }

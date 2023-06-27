@@ -11,20 +11,18 @@ import { Logger } from 'winston';
 @EventsHandler(BookingWasDeletedEvent)
 @Controller()
 export class BookingWasDeletedProjection {
-    constructor(
-        @InjectModel(BOOKING_PROJECTION)
-        private readonly bookingProjection: Model<BookingDocument>,
-        @Inject(WINSTON_MODULE_PROVIDER)
-        private readonly logger: Logger,
-    ) { }
+  constructor(
+    @InjectModel(BOOKING_PROJECTION)
+    private readonly bookingProjection: Model<BookingDocument>,
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
+  ) {}
 
-    async handle(event: BookingWasDeletedEvent) {
-        const bookingView = await this.bookingProjection
-            .findById(event.id)
-            .exec();
+  async handle(event: BookingWasDeletedEvent) {
+    const bookingView = await this.bookingProjection.findById(event.id).exec();
 
-        bookingView.remove();
+    bookingView.remove();
 
-        this.logger.info("Booking removed", { bookingId: event.id });
-    }
+    this.logger.info('Booking removed', { bookingId: event.id });
+  }
 }

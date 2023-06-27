@@ -1,10 +1,14 @@
 const config = {
-	stories: ['../**/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
-	addons: ['@storybook/addon-essentials', '@chakra-ui/storybook-addon', "storybook-addon-apollo-client"],
-	framework: {
-		name: '@storybook/nextjs',
-		options: {},
-	},
+  stories: ['../**/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
+  addons: [
+    '@storybook/addon-essentials',
+    '@chakra-ui/storybook-addon',
+    'storybook-addon-apollo-client',
+  ],
+  framework: {
+    name: '@storybook/nextjs',
+    options: {},
+  },
 };
 
 export default config;

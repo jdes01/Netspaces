@@ -6,4 +6,10 @@ import { SpaceWasDeletedProjection } from './space-was-deleted.projection';
 
 export * from './space.schema';
 
-export const ProjectionHandlers = [SpaceWasCreatedProjection, SpaceNameWasUpdatedProjection, SpaceQuantityWasUpdatedProjection, SpaceSeatsWasUpdatedProjection, SpaceWasDeletedProjection];
+export const ProjectionHandlers = [
+  SpaceWasCreatedProjection,
+  SpaceNameWasUpdatedProjection,
+  SpaceQuantityWasUpdatedProjection,
+  SpaceSeatsWasUpdatedProjection,
+  SpaceWasDeletedProjection,
+];

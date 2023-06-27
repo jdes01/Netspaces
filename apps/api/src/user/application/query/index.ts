@@ -8,6 +8,14 @@ import { GetUsersHandler } from './handler/get-users.handler';
 export * from './get-users.query';
 export * from './handler/get-users.handler';
 
-export const QueryHandlers = [GetUsersHandler, GetUserByIdHandler, GetUsersByCompanyIdHandler];
+export const QueryHandlers = [
+  GetUsersHandler,
+  GetUserByIdHandler,
+  GetUsersByCompanyIdHandler,
+];
 
-export const Queries = [GetUsersQuery, GetUserByIdQuery, GetUsersByCompanyIdQuery];
+export const Queries = [
+  GetUsersQuery,
+  GetUserByIdQuery,
+  GetUsersByCompanyIdQuery,
+];

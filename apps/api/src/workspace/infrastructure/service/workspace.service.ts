@@ -13,49 +13,69 @@ import { DeleteWorkspaceCommand } from '../../application/command/delete-workspa
 
 @Injectable()
 export class WorkspaceService {
-	constructor(private readonly commandBus: CommandBus, private readonly queryBus: QueryBus) { }
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
+  ) {}
 
-	async createWorkspace(
-		id: string,
-		companyId: string,
-		name: string,
-		description: string,
-		street: string,
-		city: string,
-		country: string,
-		services: Array<string>,
-	): Promise<Result<null, WorkspaceError>> {
-		return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(
-			new CreateWorkspaceCommand(id, companyId, name, description, street, city, country, services),
-		);
-	}
+  async createWorkspace(
+    id: string,
+    companyId: string,
+    name: string,
+    description: string,
+    street: string,
+    city: string,
+    country: string,
+    services: Array<string>,
+  ): Promise<Result<null, WorkspaceError>> {
+    return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(
+      new CreateWorkspaceCommand(
+        id,
+        companyId,
+        name,
+        description,
+        street,
+        city,
+        country,
+        services,
+      ),
+    );
+  }
 
-	async updateWorkspace(
-		id: string,
-		name: string,
-		description: string,
-		street: string,
-		city: string,
-		country: string,
-	): Promise<Result<null, WorkspaceError>> {
-		return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(
-			new UpdateWorkspaceCommand(id, name, description, street, city, country),
-		);
-	}
+  async updateWorkspace(
+    id: string,
+    name: string,
+    description: string,
+    street: string,
+    city: string,
+    country: string,
+  ): Promise<Result<null, WorkspaceError>> {
+    return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(
+      new UpdateWorkspaceCommand(id, name, description, street, city, country),
+    );
+  }
 
-	async getWorkspaces() {
-		return this.queryBus.execute<IQuery, Array<WorkspaceDTO>>(new GetWorkspacesQuery());
-	}
+  async getWorkspaces() {
+    return this.queryBus.execute<IQuery, Array<WorkspaceDTO>>(
+      new GetWorkspacesQuery(),
+    );
+  }
 
-	async getWorkspacesByCompanyId(id: string) {
-		return this.queryBus.execute<IQuery, Array<WorkspaceDTO>>(new GetWorkspacesByCompanyIdQuery(id));
-	}
+  async getWorkspacesByCompanyId(id: string) {
+    return this.queryBus.execute<IQuery, Array<WorkspaceDTO>>(
+      new GetWorkspacesByCompanyIdQuery(id),
+    );
+  }
 
-	async getWorkspaceById(id: string) {
-		return this.queryBus.execute<IQuery, WorkspaceDTO>(new GetWorkspaceByIdQuery(id));
-	}
+  async getWorkspaceById(id: string) {
+    return this.queryBus.execute<IQuery, WorkspaceDTO>(
+      new GetWorkspaceByIdQuery(id),
+    );
+  }
 
-	async deleteWorkspace(id: string): Promise<Result<null, WorkspaceError>> {
-		return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(new DeleteWorkspaceCommand(id));
-	}
+  async deleteWorkspace(id: string): Promise<Result<null, WorkspaceError>> {
+    return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(
+      new DeleteWorkspaceCommand(id),
+    );
+  }
 }

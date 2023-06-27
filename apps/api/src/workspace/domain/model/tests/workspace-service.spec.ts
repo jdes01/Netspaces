@@ -2,42 +2,35 @@ import { Err, Ok } from 'neverthrow';
 import { WorkspaceService } from '../value-objects';
 
 describe('WorkspaceService', () => {
+  it('should create successfully', async () => {
+    const service = 'WIFI';
 
-    it('should create successfully', async () => {
+    const workspaceService = WorkspaceService.fromString(service);
 
-        const service = "WIFI"
+    expect(workspaceService).toBeInstanceOf(Ok);
+  });
 
-        const workspaceService = WorkspaceService.fromString(service)
+  it('should fail with invalid string', async () => {
+    const service = 'invalid';
 
-        expect(workspaceService).toBeInstanceOf(Ok)
-    });
+    const workspaceService = WorkspaceService.fromString(service);
 
+    expect(workspaceService).toBeInstanceOf(Err);
+  });
 
-    it('should fail with invalid string', async () => {
+  it('should create list successfully', async () => {
+    const services = ['WIFI', 'COFFEE'];
 
-        const service = "invalid"
+    const workspaceService = WorkspaceService.fromStringList(services);
 
-        const workspaceService = WorkspaceService.fromString(service)
+    expect(workspaceService).toBeInstanceOf(Ok);
+  });
 
-        expect(workspaceService).toBeInstanceOf(Err)
-    });
+  it('should fail with invalid list', async () => {
+    const services = ['WIFI', 'invalid'];
 
-    it('should create list successfully', async () => {
+    const workspaceService = WorkspaceService.fromStringList(services);
 
-        const services = ["WIFI", "COFFEE"]
-
-        const workspaceService = WorkspaceService.fromStringList(services)
-
-        expect(workspaceService).toBeInstanceOf(Ok)
-    });
-
-    it('should fail with invalid list', async () => {
-
-        const services = ["WIFI", "invalid"]
-
-        const workspaceService = WorkspaceService.fromStringList(services)
-
-        expect(workspaceService).toBeInstanceOf(Err)
-    });
-
+    expect(workspaceService).toBeInstanceOf(Err);
+  });
 });

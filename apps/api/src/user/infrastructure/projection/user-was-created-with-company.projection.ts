@@ -6,16 +6,18 @@ import { UserWasCreatedWithCompanyEvent } from '../../domain/event';
 import { USER_PROJECTION, UserDocument } from './user.schema';
 
 @EventsHandler(UserWasCreatedWithCompanyEvent)
-export class UserWasCreatedWithCompanyProjection implements IEventHandler<UserWasCreatedWithCompanyEvent> {
-    constructor(
-        @InjectModel(USER_PROJECTION)
-        private readonly userProjection: Model<UserDocument>,
-    ) { }
+export class UserWasCreatedWithCompanyProjection
+  implements IEventHandler<UserWasCreatedWithCompanyEvent>
+{
+  constructor(
+    @InjectModel(USER_PROJECTION)
+    private readonly userProjection: Model<UserDocument>,
+  ) {}
 
-    async handle(event: UserWasCreatedWithCompanyEvent) {
-        const user = new this.userProjection({
-            ...event.payload,
-        });
-        await user.save();
-    }
+  async handle(event: UserWasCreatedWithCompanyEvent) {
+    const user = new this.userProjection({
+      ...event.payload,
+    });
+    await user.save();
+  }
 }

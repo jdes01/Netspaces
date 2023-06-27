@@ -1,239 +1,243 @@
 version: '3'
 
 services:
-    web:
-        build:
-            context: ./
-            target: web
-        ports:
-            - 3000:3000
-        volumes:
-            - .:/app
-        depends_on:
-            - api
-        networks:
-            - network
+  web:
+    build:
+      context: ./
+      target: web
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    depends_on:
+      - api
+    networks:
+      - network
 
-    api:
-        build:
-            context: ./
-            target: api
-        environment:
-            - PORT=3333
-            - REDIS_HOST="cache"
-            - REDIS_PORT=6379
-        ports:
-            - 3333:3333
-        volumes:
-            - .:/app
-        depends_on:
-            - eventstore
-            - mongodb
-            - mongo-express
-            - cache
-            - elasticsearch
-        networks:
-            - network
+  api:
+    build:
+      context: ./
+      target: api
+    environment:
+      - PORT=3333
+      - REDIS_HOST="cache"
+      - REDIS_PORT=6379
+    ports:
+      - 3333:3333
+    volumes:
+      - .:/app
+    depends_on:
+      - eventstore
+      - mongodb
+      - mongo-express
+      - cache
+      - elasticsearch
+    networks:
+      - network
 
-    booking:
-        build:
-            context: ./
-            target: booking
-        environment:
-            - PORT=3333
-        ports:
-            - 3334:3333
-        volumes:
-            - .:/app
-        networks:
-            - network
-        depends_on:
-            - kafka
-            - booking-eventstore
-            - booking-mongodb
+  booking:
+    build:
+      context: ./
+      target: booking
+    environment:
+      - PORT=3333
+    ports:
+      - 3334:3333
+    volumes:
+      - .:/app
+    networks:
+      - network
+    depends_on:
+      - kafka
+      - booking-eventstore
+      - booking-mongodb
 
-    gateway:
-        build:
-            context: ./
-            target: gateway
-        environment:
-            - PORT=3000
-        ports:
-            - 3335:3000
-        volumes:
-            - .:/app
-        networks:
-            - network
+  gateway:
+    build:
+      context: ./
+      target: gateway
+    environment:
+      - PORT=3000
+    ports:
+      - 3335:3000
+    volumes:
+      - .:/app
+    networks:
+      - network
 
-    eventstore:
-        image: eventstore/eventstore:20.10.2-buster-slim
-        environment:
-            - EVENTSTORE_CLUSTER_SIZE=1
-            - EVENTSTORE_RUN_PROJECTIONS=All
-            - EVENTSTORE_START_STANDARD_PROJECTIONS=true
-            - EVENTSTORE_EXT_TCP_PORT=1113
-            - EVENTSTORE_EXT_HTTP_PORT=2113
-            - EVENTSTORE_INSECURE=true
-            - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
-            - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
-        volumes:
-            - type: volume
-              source: eventstore-volume-data
-              target: /var/lib/eventstore
-            - type: volume
-              source: eventstore-volume-logs
-              target: /var/log/eventstore
-        networks:
-            - network
+  eventstore:
+    image: eventstore/eventstore:20.10.2-buster-slim
+    environment:
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+      - EVENTSTORE_EXT_TCP_PORT=1113
+      - EVENTSTORE_EXT_HTTP_PORT=2113
+      - EVENTSTORE_INSECURE=true
+      - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+    volumes:
+      - type: volume
+        source: eventstore-volume-data
+        target: /var/lib/eventstore
+      - type: volume
+        source: eventstore-volume-logs
+        target: /var/log/eventstore
+    networks:
+      - network
 
-    booking-eventstore:
-        image: eventstore/eventstore:20.10.2-buster-slim
-        environment:
-            - EVENTSTORE_CLUSTER_SIZE=1
-            - EVENTSTORE_RUN_PROJECTIONS=All
-            - EVENTSTORE_START_STANDARD_PROJECTIONS=true
-            - EVENTSTORE_EXT_TCP_PORT=1113
-            - EVENTSTORE_EXT_HTTP_PORT=2113
-            - EVENTSTORE_INSECURE=true
-            - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
-            - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
-        volumes:
-            - type: volume
-              source: booking-eventstore-volume-data
-              target: /var/lib/eventstore
-            - type: volume
-              source: booking-eventstore-volume-logs
-              target: /var/log/eventstore
-        networks:
-            - network
+  booking-eventstore:
+    image: eventstore/eventstore:20.10.2-buster-slim
+    environment:
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+      - EVENTSTORE_EXT_TCP_PORT=1113
+      - EVENTSTORE_EXT_HTTP_PORT=2113
+      - EVENTSTORE_INSECURE=true
+      - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+    volumes:
+      - type: volume
+        source: booking-eventstore-volume-data
+        target: /var/lib/eventstore
+      - type: volume
+        source: booking-eventstore-volume-logs
+        target: /var/log/eventstore
+    networks:
+      - network
 
-    mongodb:
-        image: mongo:latest
-        volumes:
-            - type: volume
-              source: mongo-volume-data
-              target: /data/db
-        networks:
-            - network
+  mongodb:
+    image: mongo:latest
+    volumes:
+      - type: volume
+        source: mongo-volume-data
+        target: /data/db
+    networks:
+      - network
 
-    booking-mongodb:
-        image: mongo:latest
-        volumes:
-            - type: volume
-              source: mongo-booking-volume-data
-              target: /data/db
-        networks:
-            - network
+  booking-mongodb:
+    image: mongo:latest
+    volumes:
+      - type: volume
+        source: mongo-booking-volume-data
+        target: /data/db
+    networks:
+      - network
 
-    mongo-express:
-        image: mongo-express:latest
-        restart: always
-        ports:
-            - 8081:8081
-        depends_on:
-            - mongodb
-        environment:
-            - ME_CONFIG_MONGODB_SERVER=mongodb
-        networks:
-            - network
+  mongo-express:
+    image: mongo-express:latest
+    restart: always
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongodb
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+    networks:
+      - network
 
-    booking-mongo-express:
-        image: mongo-express:latest
-        restart: always
-        ports:
-            - 8082:8081
-        depends_on:
-            - booking-mongodb
-        environment:
-            - ME_CONFIG_MONGODB_SERVER=booking-mongodb
-        networks:
-            - network
+  booking-mongo-express:
+    image: mongo-express:latest
+    restart: always
+    ports:
+      - 8082:8081
+    depends_on:
+      - booking-mongodb
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=booking-mongodb
+    networks:
+      - network
 
-    cache:
-        image: redis:6.2-alpine
-        restart: always
-        ports:
-            - '6379:6379'
-        volumes:
-            - cache:/data
-        networks:
-            - network
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - cache:/data
+    networks:
+      - network
 
-    kafka:
-        image: docker.io/bitnami/kafka:3.4
-        ports:
-            - '9092:9092'
-        volumes:
-            - 'kafka-volume-data:/bitnami'
-        environment:
-            - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
-            - ALLOW_PLAINTEXT_LISTENER=yes
-        networks:
-            - network
+  kafka:
+    image: docker.io/bitnami/kafka:3.4
+    ports:
+      - '9092:9092'
+    volumes:
+      - 'kafka-volume-data:/bitnami'
+    environment:
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    networks:
+      - network
 
-    grafana:
-        image: grafana/grafana-oss
-        restart: unless-stopped
-        ports:
-            - '3001:3000'
-        environment:
-            GF_INSTALL_PLUGINS: 'grafana-clock-panel,grafana-simple-json-datasource,grafana-worldmap-panel,grafana-piechart-panel'
-        volumes:
-            - grafana_data:/var/lib/grafana
-        networks:
-            - network
+  grafana:
+    image: grafana/grafana-oss
+    restart: unless-stopped
+    ports:
+      - '3001:3000'
+    environment:
+      GF_INSTALL_PLUGINS: 'grafana-clock-panel,grafana-simple-json-datasource,grafana-worldmap-panel,grafana-piechart-panel'
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - network
 
-    loki:
-        image: grafana/loki
-        volumes:
-            - loki-data:/var/lib/loki
-        networks:
-            - network
+  loki:
+    image: grafana/loki
+    volumes:
+      - loki-data:/var/lib/loki
+    networks:
+      - network
 
-    promtail:
-        image: grafana/promtail:latest
-        volumes:
-            - /var/log:/var/log
-        command: -config.file=/etc/promtail/config.yml
-        networks:
-            - network
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - /var/log:/var/log
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - network
 
-    elasticsearch:
-        container_name: elasticsearch
-        image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
-        healthcheck:
-            test: ['CMD-SHELL', 'curl --silent --fail localhost:9200/_cat/health?h=st || exit 1']
-            interval: 50s
-            timeout: 30s
-            retries: 5
-        environment:
-            - cluster.name=api-cluster
-            - bootstrap.memory_lock=true
-            - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
-            - discovery.type=single-node
-            - xpack.security.enabled=false
-            - http.host=0.0.0.0
-            - transport.host=0.0.0.0
-        ports:
-            - 9300:9300
-            - 9200:9200
-        networks:
-            - network
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'curl --silent --fail localhost:9200/_cat/health?h=st || exit 1',
+        ]
+      interval: 50s
+      timeout: 30s
+      retries: 5
+    environment:
+      - cluster.name=api-cluster
+      - bootstrap.memory_lock=true
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - http.host=0.0.0.0
+      - transport.host=0.0.0.0
+    ports:
+      - 9300:9300
+      - 9200:9200
+    networks:
+      - network
 
 volumes:
-    eventstore-volume-data:
-    eventstore-volume-logs:
-    booking-eventstore-volume-data:
-    booking-eventstore-volume-logs:
-    mongo-volume-data:
-    mongoclient-volume-data:
-    mongo-booking-volume-data:
-    kafka-volume-data:
-    grafana_data:
-    loki-data:
-    cache:
-        driver: local
+  eventstore-volume-data:
+  eventstore-volume-logs:
+  booking-eventstore-volume-data:
+  booking-eventstore-volume-logs:
+  mongo-volume-data:
+  mongoclient-volume-data:
+  mongo-booking-volume-data:
+  kafka-volume-data:
+  grafana_data:
+  loki-data:
+  cache:
+    driver: local
 
 networks:
-    network:
-        driver: bridge
+  network:
+    driver: bridge

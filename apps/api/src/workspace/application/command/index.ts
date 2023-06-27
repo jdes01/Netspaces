@@ -5,6 +5,14 @@ import { DeleteWorkspaceHandler } from './handler/delete-workspace.handler';
 import { UpdateWorkspaceHandler } from './handler/update-workspace.handler';
 import { UpdateWorkspaceCommand } from './update-workspace.command';
 
-export const CommandHandlers = [CreateWorkspaceHandler, UpdateWorkspaceHandler, DeleteWorkspaceHandler];
+export const CommandHandlers = [
+  CreateWorkspaceHandler,
+  UpdateWorkspaceHandler,
+  DeleteWorkspaceHandler,
+];
 
-export const Command = [CreateWorkspaceCommand, UpdateWorkspaceCommand, DeleteWorkspaceCommand];
+export const Command = [
+  CreateWorkspaceCommand,
+  UpdateWorkspaceCommand,
+  DeleteWorkspaceCommand,
+];

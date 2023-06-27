@@ -6,7 +6,7 @@ import { UserCompanyId } from '../../domain/model/value-objects/user-company-id'
 export const USER_FINDER = 'USER_FINDER';
 
 export interface UserFinder {
-	find(id: UserId): Promise<UserDTO | null>;
-	findAll(): Promise<Array<UserDTO>>;
-	findByCompanyId(id: UserCompanyId): Promise<Array<UserDTO>>;
+  find(id: UserId): Promise<UserDTO | null>;
+  findAll(): Promise<Array<UserDTO>>;
+  findByCompanyId(id: UserCompanyId): Promise<Array<UserDTO>>;
 }

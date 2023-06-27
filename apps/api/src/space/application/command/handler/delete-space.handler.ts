@@ -10,22 +10,24 @@ import { SpaceRepository } from '../../../domain/service/repository.service';
 
 @CommandHandler(DeleteSpaceCommand)
 export class DeleteSpaceHandler implements ICommandHandler<DeleteSpaceCommand> {
-    constructor(
-        @InjectAggregateRepository(Space)
-        private readonly spaceRepository: SpaceRepository<Space, SpaceId>,
-    ) { }
+  constructor(
+    @InjectAggregateRepository(Space)
+    private readonly spaceRepository: SpaceRepository<Space, SpaceId>,
+  ) {}
 
-    async execute(command: DeleteSpaceCommand): Promise<Result<null, SpaceError>> {
-        const id = SpaceId.fromString(command.id);
-        const space = await this.spaceRepository.find(id)
+  async execute(
+    command: DeleteSpaceCommand,
+  ): Promise<Result<null, SpaceError>> {
+    const id = SpaceId.fromString(command.id);
+    const space = await this.spaceRepository.find(id);
 
-        if (space === null) {
-            return new Err(SpaceNotFoundError.withId(id));
-        }
-
-        space.delete()
-        this.spaceRepository.save(space);
-
-        return new Ok(null);
+    if (space === null) {
+      return new Err(SpaceNotFoundError.withId(id));
     }
+
+    space.delete();
+    this.spaceRepository.save(space);
+
+    return new Ok(null);
+  }
 }

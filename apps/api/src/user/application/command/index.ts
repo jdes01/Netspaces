@@ -7,6 +7,16 @@ import { DeleteUserHandler } from './handler/delete-user.handler';
 import { UpdateUserHandler } from './handler/update-user.handler';
 import { UpdateUserCommand } from './update-user.command';
 
-export const CommandHandlers = [CreateUserWithoutCompanyHandler, CreateUserWithCompanyHandler, UpdateUserHandler, DeleteUserHandler];
+export const CommandHandlers = [
+  CreateUserWithoutCompanyHandler,
+  CreateUserWithCompanyHandler,
+  UpdateUserHandler,
+  DeleteUserHandler,
+];
 
-export const Command = [CreateUserWithoutCompanyCommand, CreateUserWithCompanyCommand, UpdateUserCommand, DeleteUserCommand];
+export const Command = [
+  CreateUserWithoutCompanyCommand,
+  CreateUserWithCompanyCommand,
+  UpdateUserCommand,
+  DeleteUserCommand,
+];

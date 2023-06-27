@@ -8,6 +8,14 @@ import { GetWorkspacesByCompanyIdHandler } from './handler/get-workspaces-by-com
 export * from './get-workspaces.query';
 export * from './handler/get-workspaces.handler';
 
-export const QueryHandlers = [GetWorkspacesHandler, GetWorkspaceByIdHandler, GetWorkspacesByCompanyIdHandler];
+export const QueryHandlers = [
+  GetWorkspacesHandler,
+  GetWorkspaceByIdHandler,
+  GetWorkspacesByCompanyIdHandler,
+];
 
-export const Queries = [GetWorkspacesQuery, GetWorkspaceByIdQuery, GetWorkspacesByCompanyIdQuery];
+export const Queries = [
+  GetWorkspacesQuery,
+  GetWorkspaceByIdQuery,
+  GetWorkspacesByCompanyIdQuery,
+];

@@ -10,20 +10,20 @@ import { UpdateUserCommand } from '../update-user.command';
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
-    constructor(
-        @InjectAggregateRepository(User)
-        private readonly userRepository: UserRepository<User, UserId>,
-    ) { }
+  constructor(
+    @InjectAggregateRepository(User)
+    private readonly userRepository: UserRepository<User, UserId>,
+  ) {}
 
-    async execute(command: UpdateUserCommand): Promise<Result<null, UserError>> {
-        const id = UserId.fromString(command.id);
-        const user = await this.userRepository.find(id)
+  async execute(command: UpdateUserCommand): Promise<Result<null, UserError>> {
+    const id = UserId.fromString(command.id);
+    const user = await this.userRepository.find(id);
 
-        if (user === null) return new Err(UserAlreadyExistsError.withId(id));
+    if (user === null) return new Err(UserAlreadyExistsError.withId(id));
 
-        user.updateName(UserName.fromString(command.name));
-        this.userRepository.save(user);
+    user.updateName(UserName.fromString(command.name));
+    this.userRepository.save(user);
 
-        return new Ok(null);
-    }
+    return new Ok(null);
+  }
 }

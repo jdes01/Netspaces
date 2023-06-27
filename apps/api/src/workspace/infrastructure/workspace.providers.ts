@@ -9,24 +9,24 @@ import { WORKSPACE_FINDER } from '../application/service/workspace-finder.servic
 import { MongoDBWorkspaceFinder } from '../infrastructure/service/workspace-finder.service';
 
 export const WorkspaceProviders = [
-	{
-		provide: WORKSPACE_FINDER,
-		useClass: MongoDBWorkspaceFinder,
-	},
-	{
-		provide: USER_FINDER,
-		useClass: MongoDBUserFinder,
-	},
-	{
-		provide: COMPANY_FINDER,
-		useClass: MongoDBCompanyFinder,
-	},
-	{
-		provide: REDIS_SERVICE,
-		useClass: RedisService,
-	},
-	{
-		provide: SPACE_FINDER,
-		useClass: MongoDBSpaceFinder,
-	},
+  {
+    provide: WORKSPACE_FINDER,
+    useClass: MongoDBWorkspaceFinder,
+  },
+  {
+    provide: USER_FINDER,
+    useClass: MongoDBUserFinder,
+  },
+  {
+    provide: COMPANY_FINDER,
+    useClass: MongoDBCompanyFinder,
+  },
+  {
+    provide: REDIS_SERVICE,
+    useClass: RedisService,
+  },
+  {
+    provide: SPACE_FINDER,
+    useClass: MongoDBSpaceFinder,
+  },
 ];

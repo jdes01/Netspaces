@@ -6,13 +6,18 @@ import { SPACE_WAS_CREATED_MESSAGE } from '@netspaces/contracts';
 import { SpaceWasCreatedEvent } from '../../domain/event';
 
 @EventsHandler(SpaceWasCreatedEvent)
-export class SpaceWasCreatedMessageProducer implements IEventHandler<SpaceWasCreatedEvent> {
-	constructor(
-		@Inject('DATASERVICE')
-		private readonly spaceProducerClient: ClientKafka,
-	) { }
+export class SpaceWasCreatedMessageProducer
+  implements IEventHandler<SpaceWasCreatedEvent>
+{
+  constructor(
+    @Inject('DATASERVICE')
+    private readonly spaceProducerClient: ClientKafka,
+  ) {}
 
-	async handle(event: SpaceWasCreatedEvent) {
-		this.spaceProducerClient.emit(SPACE_WAS_CREATED_MESSAGE, JSON.stringify(event.payload));
-	}
+  async handle(event: SpaceWasCreatedEvent) {
+    this.spaceProducerClient.emit(
+      SPACE_WAS_CREATED_MESSAGE,
+      JSON.stringify(event.payload),
+    );
+  }
 }

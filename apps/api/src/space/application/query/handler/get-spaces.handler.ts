@@ -7,9 +7,11 @@ import { GetSpacesQuery } from '../get-spaces.query';
 
 @QueryHandler(GetSpacesQuery)
 export class GetSpacesHandler implements IQueryHandler {
-	constructor(@Inject(SPACE_FINDER) private readonly spaceFinder: SpaceFinder) {}
+  constructor(
+    @Inject(SPACE_FINDER) private readonly spaceFinder: SpaceFinder,
+  ) {}
 
-	async execute(query: GetSpacesQuery): Promise<Array<SpaceDTO>> {
-		return this.spaceFinder.findAll();
-	}
+  async execute(query: GetSpacesQuery): Promise<Array<SpaceDTO>> {
+    return this.spaceFinder.findAll();
+  }
 }
