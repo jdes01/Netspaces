@@ -10,13 +10,14 @@ import {
   BookingSpaceNotFoundError,
 } from '../../domain/exception';
 import { GetSpaceUnavailableDatesQuery } from '../../application/query/get-space-unavailable-dates.query';
+import { GetSpaceAvailabilityByMonthQuery } from '../../application/query/get-space-availability-by-month.query';
 
 @Injectable()
 export class BookingService {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
-  ) {}
+  ) { }
 
   async createBooking(
     userId: string,
@@ -41,5 +42,12 @@ export class BookingService {
       IQuery,
       Result<Array<string>, BookingSpaceNotFoundError>
     >(new GetSpaceUnavailableDatesQuery(spaceId));
+  }
+
+  async getSpaceAvailabilityByMonthInput(spaceId: string, month: number): Promise<Result<Array<[number, number]>, BookingSpaceNotFoundError>> {
+    return this.queryBus.execute<
+      IQuery,
+      Result<Array<[number, number]>, BookingSpaceNotFoundError>
+    >(new GetSpaceAvailabilityByMonthQuery(spaceId, month));
   }
 }

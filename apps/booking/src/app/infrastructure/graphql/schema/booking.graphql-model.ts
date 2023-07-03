@@ -27,3 +27,21 @@ export class BookingInput {
   @Field()
   date!: string;
 }
+
+@InputType()
+export class SpaceAvailabilityByMonthInput {
+  @Field()
+  spaceId!: string;
+
+  @Field()
+  month!: number;
+}
+
+@ObjectType()
+export class SpaceAvailability {
+  @Field()
+  day: number;
+
+  @Field()
+  quantity: number;
+}

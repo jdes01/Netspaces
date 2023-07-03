@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { BookingDTO } from '@netspaces/contracts';
 import { Model } from 'mongoose';
@@ -19,7 +19,7 @@ export class MongoDBBookingFinder implements BookingFinder {
   constructor(
     @InjectModel(BOOKING_PROJECTION)
     private readonly bookingProjection: Model<BookingDocument>,
-  ) {}
+  ) { }
 
   find(id: BookingId): Promise<BookingDTO | null> {
     return this.bookingProjection.findById(id.value).exec();
@@ -95,4 +95,44 @@ export class MongoDBBookingFinder implements BookingFinder {
       })
       .exec();
   }
+
+  async findSpaceAvailabilityByMonth(
+    spaceId: BookingSpaceId,
+    quantity: number,
+    month: number,
+  ): Promise<Array<[number, number]>> {
+    const filteredBookings = await this.bookingProjection
+      .find(
+        {
+          spaceId: { $eq: spaceId.value },
+          "$expr": { "$eq": [{ "$month": "$date" }, month] }
+        }
+      )
+      .exec();
+
+    const bookingsByDay: Map<number, number> = new Map();
+
+    filteredBookings.forEach((booking) => {
+      const date = new Date(booking.date)
+      const day = date.getDate();
+      const count = bookingsByDay.get(day) || 0;
+      bookingsByDay.set(day, count + 1);
+    });
+
+    const date = new Date(new Date().getFullYear(), month - 1, 1);
+    date.setMonth(date.getMonth() + 1);
+    date.setDate(date.getDate() - 1);
+
+    const monthDays = date.getDate();
+
+    const result: [number, number][] = []
+
+    for (let i = 1; i <= monthDays; i += 1) {
+      result.push([i, quantity - (bookingsByDay.get(i) | 0)]);
+    }
+
+    return result
+
+  }
+
 }

@@ -9,11 +9,11 @@ import { BookingDTO } from '@netspaces/contracts';
 import { GraphQLError } from 'graphql';
 
 import { BookingService } from '../../service/booking.service';
-import { Booking, BookingInput } from '../schema/booking.graphql-model';
+import { Booking, BookingInput, SpaceAvailability, SpaceAvailabilityByMonthInput } from '../schema/booking.graphql-model';
 
 @Resolver((_of: any) => Booking)
 export class BookingResolver {
-  constructor(private readonly bookingService: BookingService) {}
+  constructor(private readonly bookingService: BookingService) { }
 
   @Query((_returns) => [Booking])
   async getBookingsBySpace(
@@ -40,6 +40,26 @@ export class BookingResolver {
     return spaceUnavailableDatesResult.match<Array<string>>(
       (spaceUnavailableDate) => {
         return spaceUnavailableDate;
+      },
+      (err) => {
+        throw new GraphQLError(err.message);
+      },
+    );
+  }
+
+  @Query((_returns) => [SpaceAvailability])
+  async getSpaceAvailabilityByMonth(
+    @Args('spaceId', { type: () => String }) spaceId: string,
+    @Args('month', { type: () => Number }) month: number,
+  ): Promise<Array<SpaceAvailability>> {
+    const spaceAvailabilityResult =
+      await this.bookingService.getSpaceAvailabilityByMonthInput(spaceId, month);
+
+    return spaceAvailabilityResult.match<Array<SpaceAvailability>>(
+      (spaceAvailability) => {
+        return spaceAvailability.map(
+          (availability) => { return { day: availability[0], quantity: availability[1] } as SpaceAvailability }
+        );
       },
       (err) => {
         throw new GraphQLError(err.message);
