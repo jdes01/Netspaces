@@ -22,16 +22,16 @@ import {
 import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 import { useRouter } from 'next/router';
 
-import { SpaceCard } from '../../components/SpaceCard.tsx';
+import { SpaceCard } from '../../components/SpaceCard/SpaceCard';
 import { FaWifi } from 'react-icons/fa';
 import { useState } from 'react';
 import {
-  SingleDatepicker,
   RangeCalendarPanel,
   Month_Names_Short,
   Weekday_Names_Short,
   OnDateSelected,
 } from 'chakra-dayzed-datepicker';
+import { BookingCart } from '../../components/BookingCart';
 
 const GET_WORKSPACE = gql`
   query GetWorkspace($id: String!) {
@@ -148,7 +148,7 @@ const Workspace = () => {
           templateColumns="repeat(6, 1fr)"
           gap={4}
         >
-          <GridItem rowSpan={1} colSpan={4}>
+          <GridItem rowSpan={1} colSpan={6}>
             <Box
               marginTop={5}
               padding={5}
@@ -167,38 +167,6 @@ const Workspace = () => {
               >
                 {workspace.description}
               </Text>
-            </Box>
-          </GridItem>
-
-          <GridItem rowSpan={4} colSpan={2}>
-            <Box
-              position={'sticky'}
-              shadow={'base'}
-              top={10}
-              marginTop={10}
-              padding={5}
-              borderRadius={15}
-              width={'100%'}
-              height={300}
-            >
-              <Text
-                fontWeight="semibold"
-                fontSize="xs"
-                textTransform="uppercase"
-                left={0}
-                top={0}
-                marginBottom={3}
-              >
-                Book dates!
-              </Text>
-              <SingleDatepicker
-                date={selectedDate}
-                onDateChange={setSelectedDate}
-                closeOnSelect={true}
-              />
-              <Button width={'100%'} marginTop={5}>
-                Book!
-              </Button>
             </Box>
           </GridItem>
 
@@ -233,12 +201,20 @@ const Workspace = () => {
             </Box>
           </GridItem>
 
+          <GridItem rowSpan={4} colSpan={2} paddingTop={5}>
+            <BookingCart selectedSpace={[]}></BookingCart>
+          </GridItem>
+
           <GridItem rowSpan={1} colSpan={4}>
             <Box display={'flex'} justifyContent={'center'}>
               <Box width={'100%'}>
                 <HStack overflowX="auto" mt={1} pb={2}>
                   {spaces.map((space) => (
-                    <SpaceCard space={space}></SpaceCard>
+                    <SpaceCard
+                      key={space._id}
+                      space={space}
+                      onClick={onSpaceWasSelected}
+                    ></SpaceCard>
                   ))}
                 </HStack>
               </Box>

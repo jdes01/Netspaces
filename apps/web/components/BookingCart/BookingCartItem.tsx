@@ -33,8 +33,8 @@ export const BookingCartItem: React.FunctionComponent<Props> = ({
       width={'100%'}
       templateColumns="50px repeat(3, 1fr)"
       gap={1}
-      shadow={'base'}
-      borderRadius={20}
+      // shadow={'base'}
+      // borderRadius={20}
       paddingLeft={3}
     >
       <GridItem

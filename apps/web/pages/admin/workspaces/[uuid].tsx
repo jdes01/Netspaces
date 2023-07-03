@@ -26,7 +26,7 @@ import { BsBuildingFillAdd } from 'react-icons/bs';
 import { v4 as uuidv4 } from 'uuid';
 
 import { WorkspaceCard } from '../../../components/WorkspaceCard';
-import { SpaceCard } from '../../../components/SpaceCard.tsx';
+import { SpaceCard } from '../../../components/SpaceCard';
 
 const CREATE_SPACE_MUTATION = gql`
   mutation CreateSpaceMutation(

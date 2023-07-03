@@ -1,18 +1,29 @@
-import { Grid, VStack, GridItem, Text, Button } from '@chakra-ui/react';
+import { Grid, VStack, GridItem, Text, Button, Box } from '@chakra-ui/react';
 import React from 'react';
 import { BookingCartItem } from './BookingCartItem';
+import { SpaceDTO } from '@netspaces/contracts';
+import { SelectedSpace, SpaceBook } from '../SpaceBookingPanel';
 
-type Props = {};
+type Props = {
+  spaceBooks: Array<SpaceBook>;
+  onRemoveHandler: (position: number) => void;
+  onClearHandler: () => void;
+  onBookHandler: (spaceBooks: Array<SpaceBook>) => void;
+};
 
-export const BookingCart: React.FunctionComponent<Props> = ({}) => {
-  const today = new Date();
+export const BookingCart: React.FunctionComponent<Props> = ({
+  spaceBooks,
+  onRemoveHandler,
+  onClearHandler,
+  onBookHandler,
+}) => {
   return (
     <Grid
       height={500}
       width={400}
       shadow={'base'}
       borderRadius={20}
-      templateRows="repeat(8, 1fr)"
+      templateRows="1fr 320px 1fr"
       templateColumns="repeat(2, 1fr)"
       gap={4}
       padding={4}
@@ -26,58 +37,34 @@ export const BookingCart: React.FunctionComponent<Props> = ({}) => {
       >
         <Text>Book your spaces!</Text>
       </GridItem>
-      <GridItem rowSpan={6} colSpan={2} padding={1}>
-        <VStack overflowY="auto" display={'flex'} pb={2}>
-          {
-            <>
-              <BookingCartItem
-                spaceName={'espacio!'}
-                initialDate={today}
-                finalDate={today}
-                onRemoveHandler={() => {}}
-              />
-              <BookingCartItem
-                spaceName={'espacio!'}
-                initialDate={today}
-                finalDate={today}
-                onRemoveHandler={() => {}}
-              />
-              <BookingCartItem
-                spaceName={'espacio!'}
-                initialDate={today}
-                finalDate={today}
-                onRemoveHandler={() => {}}
-              />
-              <BookingCartItem
-                spaceName={'espacio!'}
-                initialDate={today}
-                finalDate={today}
-                onRemoveHandler={() => {}}
-              />
-              <BookingCartItem
-                spaceName={'espacio!'}
-                initialDate={today}
-                finalDate={today}
-                onRemoveHandler={() => {}}
-              />
-
-              <BookingCartItem
-                spaceName={'espacio!'}
-                initialDate={today}
-                finalDate={today}
-                onRemoveHandler={() => {}}
-              />
-            </>
-          }
+      <GridItem rowSpan={1} colSpan={2} padding={1}>
+        <VStack overflowY="auto" maxHeight="320" pb={2}>
+          {spaceBooks?.map((spaceBook, index) => (
+            <BookingCartItem
+              key={index}
+              spaceName={spaceBook.space.name}
+              initialDate={spaceBook.initialDate}
+              finalDate={spaceBook.finalDate}
+              onRemoveHandler={() => {
+                onRemoveHandler(index);
+              }}
+            />
+          ))}
         </VStack>
       </GridItem>
       <GridItem rowSpan={1} colSpan={1}>
-        <Button size={'md'} width={'100%'} onClick={() => {}}>
+        <Button size={'md'} width={'100%'} onClick={onClearHandler}>
           Clear
         </Button>
       </GridItem>
       <GridItem rowSpan={1} colSpan={1}>
-        <Button size={'md'} width={'100%'} onClick={() => {}}>
+        <Button
+          size={'md'}
+          width={'100%'}
+          onClick={() => {
+            onBookHandler(spaceBooks);
+          }}
+        >
           Book!
         </Button>
       </GridItem>

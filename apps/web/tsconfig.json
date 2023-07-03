@@ -26,7 +26,7 @@
     "../../apps/web/.next/types/**/*.ts",
     "../../dist/apps/web/.next/types/**/*.ts",
     "next-env.d.ts"
-  ],
+, "components/SpaceCard"  ],
   "exclude": [
     "node_modules",
     "jest.config.ts",
