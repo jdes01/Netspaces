@@ -15,6 +15,8 @@ import { OnDateSelected } from 'chakra-dayzed-datepicker';
 import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 import { SpaceAvailabilityCalendar } from '../SpaceAvailabilityCalendar';
 
+import { gql, useQuery } from '@apollo/client';
+
 export type SelectedSpace = {
   id: string;
   name: string;
@@ -32,6 +34,15 @@ type Props = {
   onBookSpaces: (spaceBooks: Array<SpaceBook>) => void;
 };
 
+const GET_SPACE_AVAILABILITY = gql`
+  query GetSpaceAvailabilityByMonth($spaceId: String!, $month: Float!) {
+    getSpaceAvailabilityByMonth(spaceId: $spaceId, month: $month) {
+      day
+      quantity
+    }
+  }
+`;
+
 export const SpaceBookingPanel: React.FunctionComponent<Props> = ({
   spaces,
   workspace,
@@ -40,6 +51,24 @@ export const SpaceBookingPanel: React.FunctionComponent<Props> = ({
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [selectedSpace, setSelectedSpace] = useState<SelectedSpace>();
   const [spaceBooks, setSpaceBooks] = useState<Array<SpaceBook>>([]);
+
+  const { data, loading } = useQuery(GET_SPACE_AVAILABILITY, {
+    variables: { spaceId: selectedSpace?.id, month: new Date().getMonth() },
+  });
+
+  const dates = data?.getSpaceAvailabilityByMonth as Array<[number, number]>;
+
+  console.log(dates);
+
+  const unavailableDates = dates?.filter((date) => {
+    date[1] == 0;
+  });
+
+  const x = unavailableDates?.map((date) => {
+    new Date(new Date().getFullYear(), new Date().getMonth(), date[0]);
+  });
+
+  console.log(x);
 
   const handleOnSpaceCardClicked = (space: SpaceDTO) => {
     setSelectedSpace({

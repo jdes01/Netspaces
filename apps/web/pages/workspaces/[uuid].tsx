@@ -32,6 +32,10 @@ import {
   OnDateSelected,
 } from 'chakra-dayzed-datepicker';
 import { BookingCart } from '../../components/BookingCart';
+import {
+  SpaceBook,
+  SpaceBookingPanel,
+} from 'apps/web/components/SpaceBookingPanel';
 
 const GET_WORKSPACE = gql`
   query GetWorkspace($id: String!) {
@@ -142,132 +146,11 @@ const Workspace = () => {
           </HStack>
         </Box>
 
-        <Grid
-          h="200px"
-          templateRows="repeat(4, 1fr)"
-          templateColumns="repeat(6, 1fr)"
-          gap={4}
-        >
-          <GridItem rowSpan={1} colSpan={6}>
-            <Box
-              marginTop={5}
-              padding={5}
-              shadow={'base'}
-              borderRadius={20}
-              width={'100%'}
-              height={'fit-content'}
-            >
-              <Text
-                fontWeight="semibold"
-                fontSize="xs"
-                textTransform="uppercase"
-                left={0}
-                top={0}
-                marginBottom={3}
-              >
-                {workspace.description}
-              </Text>
-            </Box>
-          </GridItem>
-
-          <GridItem rowSpan={1} colSpan={4}>
-            <Box
-              marginTop={5}
-              padding={5}
-              borderRadius={20}
-              shadow={'base'}
-              height={'fit-content'}
-            >
-              <Text
-                fontWeight="semibold"
-                fontSize="xs"
-                textTransform="uppercase"
-                left={0}
-                top={0}
-                marginBottom={3}
-              >
-                Services:
-              </Text>
-              <SimpleGrid columns={2}>
-                {workspace.services.map((service) => (
-                  <Flex alignItems="center">
-                    <FaWifi></FaWifi>
-                    <Box marginLeft={3} width={'100%'} borderRadius={20}>
-                      {service}
-                    </Box>
-                  </Flex>
-                ))}
-              </SimpleGrid>
-            </Box>
-          </GridItem>
-
-          <GridItem rowSpan={4} colSpan={2} paddingTop={5}>
-            <BookingCart selectedSpace={[]}></BookingCart>
-          </GridItem>
-
-          <GridItem rowSpan={1} colSpan={4}>
-            <Box display={'flex'} justifyContent={'center'}>
-              <Box width={'100%'}>
-                <HStack overflowX="auto" mt={1} pb={2}>
-                  {spaces.map((space) => (
-                    <SpaceCard
-                      key={space._id}
-                      space={space}
-                      onClick={onSpaceWasSelected}
-                    ></SpaceCard>
-                  ))}
-                </HStack>
-              </Box>
-            </Box>
-          </GridItem>
-
-          <GridItem rowSpan={1} colSpan={4}>
-            <Box
-              display={'block'}
-              justifyContent={'center'}
-              width={'100%'}
-              shadow={'base'}
-              borderRadius={20}
-              padding={10}
-              height={'fit-content'}
-            >
-              <Text
-                fontWeight="semibold"
-                fontSize="xs"
-                textTransform="uppercase"
-                left={0}
-                top={0}
-              >
-                Check availability!
-                {selectedDates.map((date) => date.toLocaleDateString())}
-              </Text>
-              <Box marginTop={5}>
-                <RangeCalendarPanel
-                  selected={selectedDates}
-                  dayzedHookProps={{
-                    showOutsideDays: false,
-                    onDateSelected: handleOnDateSelected,
-                    selected: selectedDates,
-                    monthsToDisplay: 2,
-                  }}
-                  configs={{
-                    dateFormat: 'MM/dd/yyyy',
-                    monthNames: Month_Names_Short,
-                    dayNames: Weekday_Names_Short,
-                    firstDayOfWeek: 0,
-                  }}
-                />
-                <Button
-                  onClick={() => {
-                    setSelectedDates([]);
-                  }}
-                >
-                  Clear!
-                </Button>
-              </Box>
-            </Box>
-          </GridItem>
-        </Grid>
+        <SpaceBookingPanel
+          spaces={spaces}
+          workspace={workspace}
+          onBookSpaces={() => {}}
+        ></SpaceBookingPanel>
       </Box>
     </>
   );

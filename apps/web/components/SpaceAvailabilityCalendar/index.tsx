@@ -1,26 +1,40 @@
-import { Text, Button, Box } from '@chakra-ui/react';
+import { Text, Button, Box, ChakraProvider } from '@chakra-ui/react';
 import {
   Month_Names_Short,
   OnDateSelected,
   RangeCalendarPanel,
   Weekday_Names_Short,
 } from 'chakra-dayzed-datepicker';
+
+import {
+  Calendar,
+  CalendarControls,
+  CalendarPrevButton,
+  CalendarNextButton,
+  CalendarMonths,
+  CalendarMonth,
+  CalendarMonthName,
+  CalendarWeek,
+  CalendarDays,
+  CalendarDefaultTheme,
+  CalendarValues,
+} from '@uselessdev/datepicker';
+
 import React, { useState } from 'react';
 import { SelectedSpace, SpaceBook } from '../SpaceBookingPanel';
 
 type Props = {
-  selectedSpace: SelectedSpace | undefined;
-  selectedDates: Array<Date>;
-  onDateSelected: OnDateSelected;
-  onAddSpaceBookHandler: (spaceBook: SpaceBook) => void;
+  onAddSpaceBookHandler: (dates: any) => void;
 };
 
 export const SpaceAvailabilityCalendar: React.FunctionComponent<Props> = ({
-  selectedSpace,
-  selectedDates,
-  onDateSelected,
   onAddSpaceBookHandler,
 }) => {
+  const MONTHS = 2;
+
+  const [dates, setDates] = React.useState<CalendarValues>({});
+  const handleSelectDate = (dates: CalendarValues) => setDates(dates);
+
   return (
     <Box
       marginTop={5}
@@ -38,44 +52,38 @@ export const SpaceAvailabilityCalendar: React.FunctionComponent<Props> = ({
         textTransform="uppercase"
         left={0}
         top={0}
-      >
-        {selectedSpace
-          ? `Check availability for ${selectedSpace?.name}`
-          : 'Select an space to check its availability '}
-        {selectedDates.map((date) => date.toLocaleDateString())}
-      </Text>
-      <RangeCalendarPanel
-        selected={selectedDates}
-        dayzedHookProps={{
-          showOutsideDays: false,
-          onDateSelected: onDateSelected,
-          selected: selectedDates,
-          monthsToDisplay: 2,
-        }}
-        configs={{
-          dateFormat: 'MM/dd/yyyy',
-          monthNames: Month_Names_Short,
-          dayNames: Weekday_Names_Short,
-          firstDayOfWeek: 0,
-        }}
-      />
+      ></Text>
 
-      {selectedSpace ? (
-        <Button
-          color={'teal'}
-          onClick={() => {
-            onAddSpaceBookHandler({
-              space: selectedSpace,
-              initialDate: selectedDates[0],
-              finalDate: selectedDates[1],
-            });
-          }}
+      <ChakraProvider theme={CalendarDefaultTheme}>
+        <Calendar
+          value={dates}
+          onSelectDate={handleSelectDate}
+          months={MONTHS}
+          allowSelectSameDay
         >
-          Add space book!
-        </Button>
-      ) : (
-        <Button>Select an space!</Button>
-      )}
+          <CalendarControls>
+            <CalendarPrevButton />
+            <CalendarNextButton
+              onClick={(e) => {
+                console.log(e);
+              }}
+            />
+          </CalendarControls>
+
+          <CalendarMonths>
+            {[...Array(MONTHS).keys()].map((month) => (
+              <CalendarMonth month={month} key={month}>
+                <CalendarMonthName />
+                <CalendarWeek />
+                <CalendarDays />
+              </CalendarMonth>
+            ))}
+          </CalendarMonths>
+        </Calendar>
+      </ChakraProvider>
+      <Button color={'teal'} onClick={() => onAddSpaceBookHandler(dates)}>
+        Add space book!
+      </Button>
     </Box>
   );
 };
