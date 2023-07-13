@@ -16,6 +16,7 @@ import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 import { SpaceAvailabilityCalendar } from '../SpaceAvailabilityCalendar';
 
 import { gql, useQuery } from '@apollo/client';
+import { CalendarValues } from '@uselessdev/datepicker';
 
 export type SelectedSpace = {
   id: string;
@@ -48,7 +49,6 @@ export const SpaceBookingPanel: React.FunctionComponent<Props> = ({
   workspace,
   onBookSpaces,
 }) => {
-  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [selectedSpace, setSelectedSpace] = useState<SelectedSpace>();
   const [spaceBooks, setSpaceBooks] = useState<Array<SpaceBook>>([]);
 
@@ -75,7 +75,6 @@ export const SpaceBookingPanel: React.FunctionComponent<Props> = ({
       id: space._id,
       name: space.name,
     });
-    setSelectedDates([]);
   };
 
   const handleOnRemoveSpaceBook = (position: number) => {
@@ -86,37 +85,24 @@ export const SpaceBookingPanel: React.FunctionComponent<Props> = ({
 
   const handleOnClearSpaceBooks = () => {
     setSpaceBooks([]);
-    setSelectedDates([]);
     setSelectedSpace(undefined);
   };
 
-  const handleOnDateSelected: OnDateSelected = ({ date }) => {
-    let newDates = [...selectedDates];
-    if (selectedDates.length) {
-      if (selectedDates.length === 1) {
-        let firstTime = selectedDates[0];
-        if (firstTime < date) {
-          newDates.push(date);
-        } else {
-          newDates.unshift(date);
-        }
-        setSelectedDates(newDates);
-        return;
-      }
+  const handleOnAddSpaceBookHandler = (dates: CalendarValues) => {
+    if (
+      selectedSpace === undefined ||
+      dates.start === undefined ||
+      dates.end === undefined
+    )
+      return;
 
-      if (newDates.length === 2) {
-        setSelectedDates([date]);
-        return;
-      }
-    } else {
-      newDates.push(date);
-      setSelectedDates(newDates);
-    }
-  };
+    const spaceBook: SpaceBook = {
+      space: selectedSpace,
+      initialDate: dates.start as Date,
+      finalDate: dates.end as Date,
+    };
 
-  const handleOnAddSpaceBookHandler = (spaceBook: SpaceBook) => {
     setSpaceBooks([...spaceBooks, spaceBook]);
-    setSelectedDates([]);
   };
 
   return (
@@ -196,9 +182,6 @@ export const SpaceBookingPanel: React.FunctionComponent<Props> = ({
         <Box>
           <Box marginTop={5}>
             <SpaceAvailabilityCalendar
-              selectedSpace={selectedSpace}
-              selectedDates={selectedDates}
-              onDateSelected={handleOnDateSelected}
               onAddSpaceBookHandler={handleOnAddSpaceBookHandler}
             ></SpaceAvailabilityCalendar>
           </Box>

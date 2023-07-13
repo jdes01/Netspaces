@@ -20,8 +20,7 @@ import {
   CalendarValues,
 } from '@uselessdev/datepicker';
 
-import React, { useState } from 'react';
-import { SelectedSpace, SpaceBook } from '../SpaceBookingPanel';
+import React from 'react';
 
 type Props = {
   onAddSpaceBookHandler: (dates: any) => void;
@@ -81,7 +80,13 @@ export const SpaceAvailabilityCalendar: React.FunctionComponent<Props> = ({
           </CalendarMonths>
         </Calendar>
       </ChakraProvider>
-      <Button color={'teal'} onClick={() => onAddSpaceBookHandler(dates)}>
+      <Button
+        color={'teal'}
+        onClick={() => {
+          onAddSpaceBookHandler(dates);
+          setDates({});
+        }}
+      >
         Add space book!
       </Button>
     </Box>
