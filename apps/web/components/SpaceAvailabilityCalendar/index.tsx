@@ -1,10 +1,4 @@
 import { Text, Button, Box, ChakraProvider } from '@chakra-ui/react';
-import {
-  Month_Names_Short,
-  OnDateSelected,
-  RangeCalendarPanel,
-  Weekday_Names_Short,
-} from 'chakra-dayzed-datepicker';
 
 import {
   Calendar,

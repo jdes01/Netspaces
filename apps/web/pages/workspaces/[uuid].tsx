@@ -1,41 +1,13 @@
-import { gql, useQuery } from '@apollo/client';
-import {
-  Box,
-  Heading,
-  SimpleGrid,
-  Image,
-  Text,
-  Divider,
-  HStack,
-  VStack,
-  List,
-  ListItem,
-  ListIcon,
-  Icon,
-  IconButton,
-  Flex,
-  Grid,
-  GridItem,
-  Button,
-  Stack,
-} from '@chakra-ui/react';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { Box, Heading, Image, Text, Divider, HStack } from '@chakra-ui/react';
 import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 import { useRouter } from 'next/router';
 
-import { SpaceCard } from '../../components/SpaceCard/SpaceCard';
-import { FaWifi } from 'react-icons/fa';
-import { useState } from 'react';
-import {
-  RangeCalendarPanel,
-  Month_Names_Short,
-  Weekday_Names_Short,
-  OnDateSelected,
-} from 'chakra-dayzed-datepicker';
-import { BookingCart } from '../../components/BookingCart';
 import {
   SpaceBook,
   SpaceBookingPanel,
 } from 'apps/web/components/SpaceBookingPanel';
+import { addDays, differenceInDays } from 'date-fns';
 
 const GET_WORKSPACE = gql`
   query GetWorkspace($id: String!) {
@@ -59,11 +31,14 @@ const GET_WORKSPACE = gql`
   }
 `;
 
-const Workspace = () => {
-  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+const CREATE_BOOKING = gql`
+  query CreateBooking($userId: String!, $spaceId: String!, $date: String!) {
+    createBooking(userId: $userId, spaceId: $spaceId, date: $date)
+  }
+`;
 
+const Workspace = () => {
   const currentDate = new Date();
-  const [selectedDate, setSelectedDate] = useState(currentDate);
 
   const router = useRouter();
   const { uuid } = router.query;
@@ -77,29 +52,29 @@ const Workspace = () => {
   const workspace: WorkspaceDTO = data?.workspace;
   const spaces: Array<SpaceDTO> = data?.workspace?.spaces;
 
-  const handleOnDateSelected: OnDateSelected = ({ selectable, date }) => {
-    let newDates = [...selectedDates];
-    if (selectedDates.length) {
-      if (selectedDates.length === 1) {
-        let firstTime = selectedDates[0];
-        if (firstTime < date) {
-          newDates.push(date);
-        } else {
-          newDates.unshift(date);
-        }
-        setSelectedDates(newDates);
-        return;
-      }
-
-      if (newDates.length === 2) {
-        setSelectedDates([date]);
-        return;
-      }
-    } else {
-      newDates.push(date);
-      setSelectedDates(newDates);
-    }
+  const onBookSpaces = (spaceBooks: Array<SpaceBook>) => {
+    spaceBooks.map((spaceBook) => {
+      getDatesInRange(spaceBook.initialDate, spaceBook.finalDate).map(
+        (date) => {
+          useMutation(CREATE_BOOKING, {
+            variables: { userId: '', spaceId: spaceBook.space.id, date: date },
+          });
+        },
+      );
+    });
   };
+
+  function getDatesInRange(initialDate: Date, finalDate: Date): Date[] {
+    const dates: Date[] = [];
+    const totalDays = differenceInDays(finalDate, initialDate);
+
+    for (let i = 0; i <= totalDays; i++) {
+      const date = addDays(initialDate, i);
+      dates.push(date);
+    }
+
+    return dates;
+  }
 
   return (
     <>
@@ -149,7 +124,7 @@ const Workspace = () => {
         <SpaceBookingPanel
           spaces={spaces}
           workspace={workspace}
-          onBookSpaces={() => {}}
+          onBookSpaces={onBookSpaces}
         ></SpaceBookingPanel>
       </Box>
     </>
