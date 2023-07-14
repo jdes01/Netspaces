@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@netspaces/contracts": ["libs/contracts/src/index.ts"],
-      "@netspaces/domain": ["libs/domain/src/index.ts"]
+      "@netspaces/domain": ["libs/domain/src/index.ts"],
+      "@netspaces/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

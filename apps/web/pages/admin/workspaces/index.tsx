@@ -25,7 +25,7 @@ import React, { useState } from 'react';
 import { BsBuildingFillAdd } from 'react-icons/bs';
 import { v4 as uuidv4 } from 'uuid';
 
-import { WorkspaceGrid } from '../../../components/WorkspacesGrid';
+import { WorkspaceGrid } from '@netspaces/ui';
 
 const GET_WORKSPACES_BY_OWNER_ID = gql`
   query GetWorkspacesByOwnerId($id: String!) {

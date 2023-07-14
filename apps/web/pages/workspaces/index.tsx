@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import { Box, Heading } from '@chakra-ui/react';
 import { WorkspaceDTO } from '@netspaces/contracts';
 
-import { WorkspaceGrid } from '../../components/WorkspacesGrid';
+import { WorkspaceGrid } from '@netspaces/ui';
 
 const GET_WORKSPACES = gql`
   query GetWorkspaces {

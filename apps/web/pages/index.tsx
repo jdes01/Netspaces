@@ -1,4 +1,4 @@
-import { Landing } from '../components/Landing';
+import { Landing } from '@netspaces/ui';
 
 export function Index() {
   return <Landing></Landing>;

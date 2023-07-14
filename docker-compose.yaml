@@ -14,6 +14,19 @@ services:
     networks:
       - network
 
+  admin-web:
+    build:
+      context: ./
+      target: admin-web
+    ports:
+      - 3002:3000
+    volumes:
+      - .:/app
+    depends_on:
+      - api
+    networks:
+      - network
+
   api:
     build:
       context: ./

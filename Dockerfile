@@ -18,6 +18,16 @@ CMD ["npx", "nx", "run", "web:serve", "--hostname=0.0.0.0", "--port=3000"]
 
 # ===============================
 
+FROM base as admin-web
+
+COPY ./apps/admin-web .
+
+EXPOSE 3000
+
+CMD ["npx", "nx", "run", "admin-web:serve", "--hostname=0.0.0.0", "--port=3000"]
+
+# ===============================
+
 FROM base as api
 
 COPY ./apps/api .

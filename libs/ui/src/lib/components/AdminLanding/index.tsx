@@ -10,7 +10,7 @@ import {
 import { useRouter } from 'next/router';
 import { FaMoon, FaSun } from 'react-icons/fa';
 
-export function Landing() {
+export function AdminLanding() {
   const router = useRouter();
 
   const { colorMode, toggleColorMode } = useColorMode();

@@ -3,10 +3,7 @@ import { Box, Heading, Image, Text, Divider, HStack } from '@chakra-ui/react';
 import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 import { useRouter } from 'next/router';
 
-import {
-  SpaceBook,
-  SpaceBookingPanel,
-} from 'apps/web/components/SpaceBookingPanel';
+import { SpaceBook, SpaceBookingPanel } from '@netspaces/ui';
 import { addDays, differenceInDays } from 'date-fns';
 
 const GET_WORKSPACE = gql`
