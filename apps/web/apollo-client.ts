@@ -2,14 +2,11 @@
 
 import {
   ApolloClient,
-  ApolloLink,
   HttpLink,
   InMemoryCache,
   NormalizedCacheObject,
   split,
 } from '@apollo/client';
-import { getMainDefinition } from '@apollo/client/utilities';
-import { RetryLink } from '@apollo/client/link/retry';
 
 import { useMemo } from 'react';
 
