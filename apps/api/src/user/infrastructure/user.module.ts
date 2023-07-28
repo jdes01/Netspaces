@@ -71,6 +71,7 @@ const logger: LoggerConfig = new LoggerConfig();
         new UserWasCreatedWithoutCompanyEvent(
           event.payload._id,
           event.payload.name,
+          event.payload.mail
         ),
       UserWasCreatedWithCompanyEvent: (
         event: Event<CreateUserWithCompanyDTO>,
@@ -115,4 +116,4 @@ const logger: LoggerConfig = new LoggerConfig();
     RedisModule,
   ],
 })
-export class UserModule {}
+export class UserModule { }

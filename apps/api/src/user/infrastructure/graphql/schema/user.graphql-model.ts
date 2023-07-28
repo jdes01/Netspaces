@@ -9,6 +9,9 @@ export class User {
   @Field()
   name!: string;
 
+  @Field()
+  mail!: string;
+
   @Field({ nullable: true })
   companyId!: string;
 }
@@ -20,6 +23,9 @@ export class UserInput {
 
   @Field()
   name!: string;
+
+  @Field()
+  mail!: string;
 
   @Field({ nullable: true })
   companyId!: string;

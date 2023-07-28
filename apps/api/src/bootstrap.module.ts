@@ -15,11 +15,7 @@ import { UserModule } from './user/infrastructure/user.module';
 import { WorkspaceModule } from './workspace';
 import { CompanyModule } from './company';
 
-import {
-  utilities as nestWinstonModuleUtilities,
-  WinstonModule,
-} from 'nest-winston';
-import * as winston from 'winston';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -47,6 +43,7 @@ import * as winston from 'winston';
     UserModule,
     CompanyModule,
     RedisModule,
+    AuthModule
   ],
 })
-export class BootstrapModule {}
+export class BootstrapModule { }

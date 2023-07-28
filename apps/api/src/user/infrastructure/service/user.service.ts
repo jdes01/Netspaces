@@ -11,20 +11,22 @@ import { UserError } from '../../domain/exception';
 import { CreateUserWithCompanyCommand } from '../../application/command/create-user-with-company.command';
 import { UpdateUserCommand } from '../../application/command/update-user.command';
 import { DeleteUserCommand } from '../../application/command/delete-user.command';
+import { GetUserByMailQuery } from '../../application/query/get-user-by-mail.query';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
-  ) {}
+  ) { }
 
   async createUserWithoutCompany(
     id: string,
     name: string,
+    mail: string,
   ): Promise<Result<null, UserError>> {
     return this.commandBus.execute<ICommand, Result<null, UserError>>(
-      new CreateUserWithoutCompanyCommand(id, name),
+      new CreateUserWithoutCompanyCommand(id, name, mail),
     );
   }
 
@@ -50,6 +52,10 @@ export class UserService {
 
   async getUserById(id: string) {
     return this.queryBus.execute<IQuery, UserDTO>(new GetUserByIdQuery(id));
+  }
+
+  async getUserByMail(mail: string) {
+    return this.queryBus.execute<IQuery, UserDTO>(new GetUserByMailQuery(mail));
   }
 
   async getUsersByCompanyId(id: string) {

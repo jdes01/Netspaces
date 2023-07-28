@@ -2,6 +2,8 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+import cookieParser from 'cookie-parser'
+
 import { AppModule } from './app.module';
 
 const GLOBAL_PREFIX = 'api';
@@ -13,6 +15,8 @@ async function bootstrap() {
         ? ['debug', 'error', 'log', 'verbose', 'warn']
         : ['error', 'warn'],
   });
+
+  app.use(cookieParser());
 
   app.setGlobalPrefix(GLOBAL_PREFIX);
 

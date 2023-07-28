@@ -13,4 +13,9 @@ export class CreateUserWithoutCompanyDTO {
   @IsNotEmpty()
   @IsString()
   readonly name: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  readonly mail: string;
 }

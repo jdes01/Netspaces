@@ -26,7 +26,7 @@ export class UserResolver {
     private readonly userService: UserService,
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
-  ) {}
+  ) { }
 
   @Query((_returns) => [User])
   async users(): Promise<UserDTO[]> {
@@ -36,6 +36,11 @@ export class UserResolver {
   @Query((_returns) => User)
   async user(@Args('id', { type: () => String }) id: string): Promise<UserDTO> {
     return await this.userService.getUserById(id);
+  }
+
+  @Query((_returns) => User)
+  async userByMail(@Args('mail', { type: () => String }) mail: string): Promise<UserDTO> {
+    return await this.userService.getUserByMail(mail);
   }
 
   @ResolveReference()
@@ -55,6 +60,7 @@ export class UserResolver {
     const createdUserResult = await this.userService.createUserWithoutCompany(
       userInput._id,
       userInput.name,
+      userInput.mail
     );
     return createdUserResult.match<string>(
       (_) => {

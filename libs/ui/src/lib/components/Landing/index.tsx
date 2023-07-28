@@ -10,7 +10,11 @@ import {
 import { useRouter } from 'next/router';
 import { FaMoon, FaSun } from 'react-icons/fa';
 
-export function Landing() {
+type Props = {
+  signIn: () => void;
+};
+
+export function Landing({ signIn }: Props) {
   const router = useRouter();
 
   const { colorMode, toggleColorMode } = useColorMode();
@@ -34,13 +38,14 @@ export function Landing() {
             <Button
               colorScheme="teal"
               variant="ghost"
-              onClick={() => {
-                localStorage.setItem(
-                  'userId',
-                  'ce32ecbe-d777-4ab5-a4e8-56ce9b5219d7',
-                );
-                router.push('http://localhost:3000/workspaces');
-              }}
+              // onClick={() => {
+              //   localStorage.setItem(
+              //     'userId',
+              //     'ce32ecbe-d777-4ab5-a4e8-56ce9b5219d7',
+              //   );
+              //   router.push('http://localhost:3000/workspaces');
+              // }}
+              onClick={signIn}
             >
               Log in
             </Button>

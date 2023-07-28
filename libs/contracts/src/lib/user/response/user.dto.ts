@@ -11,5 +11,8 @@ export class UserDTO {
   readonly name: string;
 
   @ApiProperty()
+  readonly mail: string;
+
+  @ApiProperty()
   readonly companyId: Nullable<string>;
 }

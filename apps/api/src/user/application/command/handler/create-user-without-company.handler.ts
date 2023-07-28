@@ -11,7 +11,7 @@ import { CreateUserWithoutCompanyCommand } from '../create-user-without-company.
 import { USER_FINDER, UserFinder } from '../../service/user-finder.service';
 import { UserAlreadyExistsError, UserError } from '../../../domain/exception';
 import { User } from '../../../domain/model';
-import { UserId, UserName } from '../../../domain/model/value-objects';
+import { UserId, UserMail, UserName } from '../../../domain/model/value-objects';
 import { UserRepository } from '../../../domain/service/repository.service';
 import { RedisService } from 'apps/api/src/company/domain/service/redis.service';
 
@@ -26,7 +26,7 @@ export class CreateUserWithoutCompanyHandler
     private readonly userFinder: UserFinder,
     @Inject(REDIS_SERVICE)
     private readonly redisService: RedisService,
-  ) {}
+  ) { }
 
   async execute(
     command: CreateUserWithoutCompanyCommand,
@@ -37,9 +37,15 @@ export class CreateUserWithoutCompanyHandler
       return new Err(UserAlreadyExistsError.withId(id));
     }
 
+    const mail = UserMail.fromString(command.mail);
+
+    if (await this.userFinder.findByMail(mail)) {
+      return new Err(UserAlreadyExistsError.withId(mail));
+    }
+
     const name = UserName.fromString(command.name);
 
-    const user = User.addWithoutCompany(id, name);
+    const user = User.addWithoutCompany(id, name, mail);
 
     this.userRepository.save(user);
 

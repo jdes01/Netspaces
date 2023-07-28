@@ -6,19 +6,20 @@ import {
   UserNameWasUpdatedEvent,
   UserWasDeletedEvent,
 } from '../event';
-import { UserId, UserName } from './value-objects/';
+import { UserId, UserMail, UserName } from './value-objects/';
 import { UserCompanyId } from './value-objects/user-company-id';
 import { Nullable } from '@netspaces/domain';
 
 export class User extends AggregateRoot {
   private _id!: UserId;
   private _name!: UserName;
+  private _mail!: UserMail;
   private _companyId?: Nullable<UserCompanyId>;
   private _deleted!: boolean;
 
-  public static addWithoutCompany(id: UserId, name: UserName): User {
+  public static addWithoutCompany(id: UserId, name: UserName, mail: UserMail): User {
     const user = new User();
-    const event = new UserWasCreatedWithoutCompanyEvent(id.value, name.value);
+    const event = new UserWasCreatedWithoutCompanyEvent(id.value, name.value, mail.value);
     user.apply(event);
     return user;
   }
@@ -43,6 +44,7 @@ export class User extends AggregateRoot {
   ): void {
     this._id = UserId.fromString(event.id);
     this._name = UserName.fromString(event.name);
+    this._mail = UserMail.fromString(event.mail);
     this._companyId = null;
     this._deleted = false;
   }
@@ -84,6 +86,10 @@ export class User extends AggregateRoot {
 
   public get name(): UserName {
     return this._name;
+  }
+
+  public get mail(): UserMail {
+    return this._mail;
   }
 
   public get companyId(): Nullable<UserCompanyId> {
