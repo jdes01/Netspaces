@@ -6,4 +6,5 @@ export const USER_FINDER = 'USER_FINDER';
 
 export interface UserFinder {
   find(id: BookingUserId): Promise<UserDTO | null>;
+  findByMail(mail: string): Promise<UserDTO | null>;
 }

@@ -20,12 +20,12 @@ export class BookingService {
   ) { }
 
   async createBooking(
-    userId: string,
+    userMail: string,
     spaceId: string,
     date: string,
   ): Promise<Result<null, BookingError>> {
     return this.commandBus.execute<ICommand, Result<null, BookingError>>(
-      new CreateBookingCommand(userId, spaceId, date),
+      new CreateBookingCommand(userMail, spaceId, date),
     );
   }
 

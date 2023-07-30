@@ -4,11 +4,11 @@ import { format, parse } from 'date-fns';
 export class BookingDate extends ValueObject<{ date: Date }> {
   public static fromSerializedDate(serializedDate: string): BookingDate {
     return new BookingDate({
-      date: parse(serializedDate, 'yyyy-MM-dd', new Date()),
+      date: new Date(serializedDate),
     });
   }
 
   public toSerializedDate(): string {
-    return format(this.props.date, 'yyyy-MM-dd');
+    return this.props.date.toISOString();
   }
 }

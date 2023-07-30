@@ -6,6 +6,13 @@ import { useRouter } from 'next/router';
 import { SpaceBook, SpaceBookingPanel } from '@netspaces/ui';
 import { addDays, differenceInDays } from 'date-fns';
 
+import { useEffect, useMemo } from 'react';
+
+import useSWR from 'swr';
+
+const fetcher = (url: string) =>
+  fetch(url, { credentials: 'include' }).then((res) => res.json());
+
 const GET_WORKSPACE = gql`
   query GetWorkspace($id: String!) {
     workspace(id: $id) {
@@ -28,16 +35,44 @@ const GET_WORKSPACE = gql`
   }
 `;
 
-const CREATE_BOOKING = gql`
-  query CreateBooking($userId: String!, $spaceId: String!, $date: String!) {
-    createBooking(userId: $userId, spaceId: $spaceId, date: $date)
+const CREATE_BOOKING_MUTATION = gql`
+  mutation CreateBooking(
+    $userMail: String!
+    $spaceId: String!
+    $date: String!
+  ) {
+    createBooking(
+      bookingInput: { userMail: $userMail, spaceId: $spaceId, date: $date }
+    )
   }
 `;
 
+interface UserEntity {
+  id: string;
+}
+
 const Workspace = () => {
-  const currentDate = new Date();
+  const [createBookingMutation] = useMutation(CREATE_BOOKING_MUTATION);
+
+  const { data: userData } = useSWR<UserEntity>(
+    'http://localhost:3333/api/auth/me',
+    fetcher,
+  );
+
+  const me = useMemo(
+    () => (userData ? (userData as UserEntity) : undefined),
+    [userData],
+  );
 
   const router = useRouter();
+  useEffect(() => {
+    if (!me) {
+      router.push('http://localhost:3000/');
+    }
+  }, [me, router]);
+
+  const currentDate = new Date();
+
   const { uuid } = router.query;
 
   const { data, loading } = useQuery(GET_WORKSPACE, {
@@ -49,16 +84,28 @@ const Workspace = () => {
   const workspace: WorkspaceDTO = data?.workspace;
   const spaces: Array<SpaceDTO> = data?.workspace?.spaces;
 
-  const onBookSpaces = (spaceBooks: Array<SpaceBook>) => {
-    spaceBooks.map((spaceBook) => {
-      getDatesInRange(spaceBook.initialDate, spaceBook.finalDate).map(
-        (date) => {
-          useMutation(CREATE_BOOKING, {
-            variables: { userId: '', spaceId: spaceBook.space.id, date: date },
-          });
-        },
+  const onBookSpaces = async (spaceBooks: Array<SpaceBook>) => {
+    for (const spaceBook of spaceBooks) {
+      const datesInRange = getDatesInRange(
+        spaceBook.initialDate,
+        spaceBook.finalDate,
       );
-    });
+
+      for (const date of datesInRange) {
+        try {
+          await createBookingMutation({
+            variables: {
+              userMail: me?.email,
+              spaceId: spaceBook.space.id,
+              date: date.toISOString(),
+            },
+          });
+        } catch (error) {
+          // Handle any errors that might occur during the mutation
+          console.error('Error creating booking:', error);
+        }
+      }
+    }
   };
 
   function getDatesInRange(initialDate: Date, finalDate: Date): Date[] {

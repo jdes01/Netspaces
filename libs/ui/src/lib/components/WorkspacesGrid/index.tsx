@@ -5,8 +5,8 @@ import { useMemo, useState } from 'react';
 import { LocationFinder } from '../LocationFinder';
 import { ServicesTabs } from '../ServicesTabs';
 import { WorkspaceCard } from '../WorkspaceCard';
-import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
+import React from 'react';
 
 type WorkspaceGridProps = {
   workspaces: WorkspaceDTO[];
@@ -16,14 +16,11 @@ const fetcher = (url: string) =>
   fetch(url, { credentials: 'include' }).then((res) => res.json());
 
 interface UserEntity {
-  id: string;
-  email: string;
+  name: string;
 }
 
 export function WorkspaceGrid({ workspaces }: WorkspaceGridProps) {
   const [tabIndex, setTabIndex] = useState(0);
-
-  const { data: session, status } = useSession();
 
   const uniqueServices = uniqueServicesFromWorkspaces(workspaces);
   const filteredService = uniqueServices[tabIndex];
@@ -41,8 +38,7 @@ export function WorkspaceGrid({ workspaces }: WorkspaceGridProps) {
 
   return (
     <>
-      <Heading>Welcome back {session?.user?.name}</Heading>
-      <Heading>{!me ? 'I am nobody' : `My email is ${me?.email}`}</Heading>
+      <Heading>{`Welcome back ${me?.email}`}</Heading>
       <LocationFinder />
       <Tabs onChange={(index) => setTabIndex(index)} mt={10}>
         <ServicesTabs services={uniqueServices} />

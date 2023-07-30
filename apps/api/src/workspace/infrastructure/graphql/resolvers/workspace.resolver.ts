@@ -22,7 +22,8 @@ import {
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 
 import { Logger } from 'winston';
-import { Inject } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'apps/api/src/auth/jwt-auth.guard';
 
 @Resolver((_of: any) => Workspace)
 export class WorkspaceResolver {
@@ -31,7 +32,7 @@ export class WorkspaceResolver {
     private readonly spaceService: SpaceService,
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
-  ) {}
+  ) { }
 
   @Query((_returns) => [Workspace])
   async workspaces(): Promise<WorkspaceDTO[]> {

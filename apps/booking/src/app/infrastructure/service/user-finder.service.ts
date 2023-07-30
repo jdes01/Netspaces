@@ -15,9 +15,13 @@ export class MongoDBUserFinder implements UserFinder {
   constructor(
     @InjectModel(USER_PROJECTION)
     private readonly userProjection: Model<UserDocument>,
-  ) {}
+  ) { }
 
   find(id: BookingUserId): Promise<UserDTO | null> {
     return this.userProjection.findById(id.value).exec();
+  }
+
+  findByMail(mail: string): Promise<UserDTO | null> {
+    return this.userProjection.findOne({ mail: mail }).exec();
   }
 }

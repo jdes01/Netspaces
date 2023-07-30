@@ -72,7 +72,7 @@ export class BookingResolver {
     @Args('bookingInput') bookingInput: BookingInput,
   ): Promise<string> {
     const createdBookingResult = await this.bookingService.createBooking(
-      bookingInput.userId,
+      bookingInput.userMail,
       bookingInput.spaceId,
       bookingInput.date,
     );

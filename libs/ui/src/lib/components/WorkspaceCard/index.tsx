@@ -1,6 +1,7 @@
 import { Badge, Box, Image, Stack } from '@chakra-ui/react';
 import { WorkspaceDTO } from '@netspaces/contracts';
 import { useRouter } from 'next/router';
+import React from 'react';
 
 type WorkspaceCardProps = {
   workspace: WorkspaceDTO;
@@ -20,7 +21,7 @@ export function WorkspaceCard({ workspace }: WorkspaceCardProps) {
       display={'grid'}
       gap={5}
       _hover={{ shadow: 'lg' }}
-      onClick={() => router.push(`/admin/workspaces/${workspace._id}`)}
+      onClick={() => router.push(`/workspaces/${workspace._id}`)}
     >
       <Image
         borderRadius={20}

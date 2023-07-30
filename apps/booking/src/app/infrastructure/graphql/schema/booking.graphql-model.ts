@@ -19,7 +19,7 @@ export class Booking {
 @InputType()
 export class BookingInput {
   @Field()
-  userId!: string;
+  userMail!: string;
 
   @Field()
   spaceId!: string;

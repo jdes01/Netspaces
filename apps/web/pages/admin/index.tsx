@@ -1,7 +1,7 @@
-import { Landing } from '../../components/AdminLanding';
+import { AdminLanding } from '@netspaces/ui';
 
 export function Index() {
-  return <Landing></Landing>;
+  return <AdminLanding></AdminLanding>;
 }
 
 export default Index;

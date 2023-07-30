@@ -9,6 +9,7 @@ export const UserSchema = new Schema(
   {
     _id: String,
     companyId: String,
+    mail: String,
   },
   {
     versionKey: false,
