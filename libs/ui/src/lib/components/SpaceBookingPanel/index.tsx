@@ -11,7 +11,6 @@ import React, { useState } from 'react';
 import { FaWifi } from 'react-icons/fa';
 import { BookingCart } from '../BookingCart';
 import { SpaceCard } from '../SpaceCard/SpaceCard';
-import { OnDateSelected } from 'chakra-dayzed-datepicker';
 import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 import { SpaceAvailabilityCalendar } from '../SpaceAvailabilityCalendar';
 
@@ -36,8 +35,12 @@ type Props = {
 };
 
 const GET_SPACE_AVAILABILITY = gql`
-  query GetSpaceAvailabilityByMonth($spaceId: String!, $month: Float!) {
-    getSpaceAvailabilityByMonth(spaceId: $spaceId, month: $month) {
+  query GetSpaceAvailabilityByMonth(
+    $spaceId: String!
+    $month: Float!
+    $year: Float!
+  ) {
+    getSpaceAvailabilityByMonth(spaceId: $spaceId, month: $month, year: $year) {
       day
       quantity
     }
@@ -53,22 +56,29 @@ export const SpaceBookingPanel: React.FunctionComponent<Props> = ({
   const [spaceBooks, setSpaceBooks] = useState<Array<SpaceBook>>([]);
 
   const { data, loading } = useQuery(GET_SPACE_AVAILABILITY, {
-    variables: { spaceId: selectedSpace?.id, month: new Date().getMonth() },
+    variables: {
+      spaceId: selectedSpace?.id,
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+    },
   });
 
-  const dates = data?.getSpaceAvailabilityByMonth as Array<[number, number]>;
+  const dates = data?.getSpaceAvailabilityByMonth as Array<{
+    day: number;
+    quantity: number;
+  }>;
 
-  console.log(dates);
-
-  const unavailableDates = dates?.filter((date) => {
-    date[1] == 0;
-  });
-
-  const x = unavailableDates?.map((date) => {
-    new Date(new Date().getFullYear(), new Date().getMonth(), date[0]);
-  });
-
-  console.log(x);
+  const unavailableDates = dates
+    ?.filter((date) => {
+      return date.quantity == 0;
+    })
+    ?.map((date) => {
+      return new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        date.day,
+      );
+    });
 
   const handleOnSpaceCardClicked = (space: SpaceDTO) => {
     setSelectedSpace({
@@ -183,6 +193,8 @@ export const SpaceBookingPanel: React.FunctionComponent<Props> = ({
           <Box marginTop={5}>
             <SpaceAvailabilityCalendar
               onAddSpaceBookHandler={handleOnAddSpaceBookHandler}
+              disabled={selectedSpace === undefined}
+              disabledDates={unavailableDates}
             ></SpaceAvailabilityCalendar>
           </Box>
         </Box>

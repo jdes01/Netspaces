@@ -20,5 +20,5 @@ export interface BookingFinder {
     spaceQuantity: number,
   ): Promise<Array<string>>;
   findSpacePendingBookings(spaceId: BookingSpaceId): Promise<Array<BookingDTO>>;
-  findSpaceAvailabilityByMonth(spaceId: BookingSpaceId, quantity: number, month: number): Promise<Array<[number, number]>>
+  findSpaceAvailabilityByMonth(spaceId: BookingSpaceId, quantity: number, month: number, year: number): Promise<Array<[number, number]>>
 }

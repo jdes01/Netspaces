@@ -44,10 +44,10 @@ export class BookingService {
     >(new GetSpaceUnavailableDatesQuery(spaceId));
   }
 
-  async getSpaceAvailabilityByMonthInput(spaceId: string, month: number): Promise<Result<Array<[number, number]>, BookingSpaceNotFoundError>> {
+  async getSpaceAvailabilityByMonthInput(spaceId: string, month: number, year: number): Promise<Result<Array<[number, number]>, BookingSpaceNotFoundError>> {
     return this.queryBus.execute<
       IQuery,
       Result<Array<[number, number]>, BookingSpaceNotFoundError>
-    >(new GetSpaceAvailabilityByMonthQuery(spaceId, month));
+    >(new GetSpaceAvailabilityByMonthQuery(spaceId, month, year));
   }
 }

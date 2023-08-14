@@ -100,14 +100,18 @@ export class MongoDBBookingFinder implements BookingFinder {
     spaceId: BookingSpaceId,
     quantity: number,
     month: number,
+    year: number,
   ): Promise<Array<[number, number]>> {
     const filteredBookings = await this.bookingProjection
-      .find(
-        {
-          spaceId: { $eq: spaceId.value },
-          "$expr": { "$eq": [{ "$month": "$date" }, month] }
-        }
-      )
+      .find({
+        spaceId: { $eq: spaceId.value },
+        "$expr": {
+          $and: [
+            { "$eq": [{ "$month": "$date" }, month] },
+            { "$eq": [{ "$year": "$date" }, year] },
+          ],
+        },
+      })
       .exec();
 
     const bookingsByDay: Map<number, number> = new Map();

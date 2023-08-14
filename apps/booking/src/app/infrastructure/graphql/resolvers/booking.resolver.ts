@@ -51,9 +51,10 @@ export class BookingResolver {
   async getSpaceAvailabilityByMonth(
     @Args('spaceId', { type: () => String }) spaceId: string,
     @Args('month', { type: () => Number }) month: number,
+    @Args('year', { type: () => Number }) year: number,
   ): Promise<Array<SpaceAvailability>> {
     const spaceAvailabilityResult =
-      await this.bookingService.getSpaceAvailabilityByMonthInput(spaceId, month);
+      await this.bookingService.getSpaceAvailabilityByMonthInput(spaceId, month, year);
 
     return spaceAvailabilityResult.match<Array<SpaceAvailability>>(
       (spaceAvailability) => {

@@ -39,6 +39,7 @@ export class GetSpaceAvailabilityByMonthHandler implements IQueryHandler {
                 BookingSpaceId.fromString(query.spaceId),
                 spaceDTO.quantity,
                 query.month,
+                query.year
             ),
         );
     }

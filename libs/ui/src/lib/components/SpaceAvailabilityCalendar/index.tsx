@@ -1,4 +1,4 @@
-import { Text, Button, Box, ChakraProvider } from '@chakra-ui/react';
+import { Button, Box, ChakraProvider } from '@chakra-ui/react';
 
 import {
   Calendar,
@@ -12,16 +12,22 @@ import {
   CalendarDays,
   CalendarDefaultTheme,
   CalendarValues,
+  CalendarDate,
+  CalendarContext,
 } from '@uselessdev/datepicker';
 
-import React from 'react';
+import React, { useContext } from 'react';
 
 type Props = {
   onAddSpaceBookHandler: (dates: any) => void;
+  disabled: boolean;
+  disabledDates: Array<CalendarDate>;
 };
 
 export const SpaceAvailabilityCalendar: React.FunctionComponent<Props> = ({
   onAddSpaceBookHandler,
+  disabled,
+  disabledDates,
 }) => {
   const MONTHS = 2;
 
@@ -39,28 +45,18 @@ export const SpaceAvailabilityCalendar: React.FunctionComponent<Props> = ({
       padding={10}
       height={'fit-content'}
     >
-      <Text
-        fontWeight="semibold"
-        fontSize="xs"
-        textTransform="uppercase"
-        left={0}
-        top={0}
-      ></Text>
-
       <ChakraProvider theme={CalendarDefaultTheme}>
         <Calendar
           value={dates}
           onSelectDate={handleSelectDate}
           months={MONTHS}
           allowSelectSameDay
+          disableDates={disabledDates}
+          disablePastDates={true}
         >
           <CalendarControls>
             <CalendarPrevButton />
-            <CalendarNextButton
-              onClick={(e) => {
-                console.log(e);
-              }}
-            />
+            <CalendarNextButton />
           </CalendarControls>
 
           <CalendarMonths>
@@ -80,6 +76,7 @@ export const SpaceAvailabilityCalendar: React.FunctionComponent<Props> = ({
           onAddSpaceBookHandler(dates);
           setDates({});
         }}
+        isDisabled={disabled}
       >
         Add space book!
       </Button>
