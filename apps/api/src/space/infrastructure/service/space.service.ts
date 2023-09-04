@@ -16,7 +16,7 @@ export class SpaceService {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
-  ) {}
+  ) { }
 
   async createSpace(
     id: string,
@@ -25,9 +25,11 @@ export class SpaceService {
     quantity: number,
     seats: number,
     amenitys: Array<string>,
+    image: string
   ): Promise<Result<null, SpaceError>> {
+    console.log(amenitys)
     return this.commandBus.execute<ICommand, Result<null, SpaceError>>(
-      new CreateSpaceCommand(id, workspaceId, name, quantity, seats, amenitys),
+      new CreateSpaceCommand(id, workspaceId, name, quantity, seats, amenitys, image),
     );
   }
 

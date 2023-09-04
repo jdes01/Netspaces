@@ -46,7 +46,7 @@ export class CreateWorkspaceHandler
     private readonly companyFinder: CompanyFinder,
     @Inject(REDIS_SERVICE)
     private readonly redisService: RedisService,
-  ) {}
+  ) { }
 
   async execute(
     command: CreateWorkspaceCommand,
@@ -81,6 +81,7 @@ export class CreateWorkspaceHandler
           description,
           location,
           workspaceServices,
+          command.images
         );
         this.workspaceRepository.save(workspace);
         return new Ok(null);

@@ -16,6 +16,7 @@ import { CompanyId } from '../../../company/domain/model/value-objects';
 describe('CreateUserWithCompanyHandler', () => {
   let id;
   let name;
+  let mail;
   let companyId;
   let existingUser: UserDTO;
   let existingCompany: CompanyDTO;
@@ -25,9 +26,10 @@ describe('CreateUserWithCompanyHandler', () => {
   beforeEach(() => {
     id = 'e847261d-5539-49da-876d-bfc245e50974';
     name = 'userName';
+    mail = "mail"
     companyId = 'f9906072-9b8b-4e29-b3fa-913bdfb32fde';
 
-    existingUser = { _id: id, name: name, companyId: '' };
+    existingUser = { _id: id, name: name, companyId: '', mail: mail };
     existingCompany = { _id: companyId, name: name };
 
     command = new CreateUserWithCompanyCommand(id, name, companyId);

@@ -1,5 +1,14 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Box, Heading, Image, Text, Divider, HStack } from '@chakra-ui/react';
+import {
+  Box,
+  Heading,
+  Image,
+  Text,
+  Divider,
+  HStack,
+  SimpleGrid,
+  Flex,
+} from '@chakra-ui/react';
 import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
 import { useRouter } from 'next/router';
 
@@ -23,6 +32,7 @@ const GET_WORKSPACE = gql`
       city
       country
       services
+      images
       spaces {
         _id
         name
@@ -30,6 +40,7 @@ const GET_WORKSPACE = gql`
         workspaceId
         quantity
         amenitys
+        image
       }
     }
   }
@@ -65,15 +76,14 @@ const Workspace = () => {
   );
 
   const router = useRouter();
-  useEffect(() => {
-    if (!me) {
-      router.push('http://localhost:3000/');
-    }
-  }, [me, router]);
 
-  const currentDate = new Date();
+  if (me?.message === 'Unauthorized') {
+    router.push('http://localhost:3000/');
+  }
 
-  const { uuid } = router.query;
+  const {
+    query: { uuid },
+  } = router;
 
   const { data, loading } = useQuery(GET_WORKSPACE, {
     variables: { id: uuid },
@@ -101,10 +111,10 @@ const Workspace = () => {
             },
           });
         } catch (error) {
-          // Handle any errors that might occur during the mutation
           console.error('Error creating booking:', error);
         }
       }
+      router.reload();
     }
   };
 
@@ -118,6 +128,10 @@ const Workspace = () => {
     }
 
     return dates;
+  }
+
+  if (!workspace || !me) {
+    return <Heading>Loading</Heading>;
   }
 
   return (
@@ -145,22 +159,50 @@ const Workspace = () => {
 
         <Divider marginTop={3} />
 
+        <Box
+          marginTop={5}
+          padding={5}
+          borderRadius={20}
+          shadow={'base'}
+          height={'fit-content'}
+        >
+          <Text
+            fontWeight="semibold"
+            fontSize="xs"
+            textTransform="uppercase"
+            left={0}
+            top={0}
+            marginBottom={3}
+          >
+            Description:
+          </Text>
+          <Text fontWeight="semibold" fontSize="xs" textTransform="uppercase">
+            {workspace.description}
+          </Text>
+        </Box>
+
         <Box width={'100%'} marginTop={5}>
           <HStack overflowX="auto" margin={'auto'}>
             <Image
+              width={'500'}
+              height={'500'}
               borderRadius={20}
               margin={'auto'}
-              src="https://pbs.twimg.com/media/EnQp7n1XcAI9ZF4.jpg"
+              src={workspace.images[0]}
             />
             <Image
+              width={'500'}
+              height={'500'}
               borderRadius={20}
               margin={'auto'}
-              src="https://pbs.twimg.com/media/EnQp7n1XcAI9ZF4.jpg"
+              src={workspace.images[1]}
             />
             <Image
+              width={'500'}
+              height={'500'}
               borderRadius={20}
               margin={'auto'}
-              src="https://pbs.twimg.com/media/EnQp7n1XcAI9ZF4.jpg"
+              src={workspace.images[2]}
             />
           </HStack>
         </Box>

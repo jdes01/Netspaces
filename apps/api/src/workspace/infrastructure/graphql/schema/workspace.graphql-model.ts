@@ -31,6 +31,9 @@ export class Workspace {
 
   @Field(() => [Space])
   space?: Space[];
+
+  @Field(() => [String])
+  images?: [string];
 }
 
 @InputType()
@@ -58,6 +61,9 @@ export class WorkspaceInput {
 
   @Field(() => [String])
   services?: [string];
+
+  @Field(() => [String])
+  images: [string];
 }
 
 @InputType()

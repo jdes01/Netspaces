@@ -16,7 +16,7 @@ export class WorkspaceService {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
-  ) {}
+  ) { }
 
   async createWorkspace(
     id: string,
@@ -27,6 +27,7 @@ export class WorkspaceService {
     city: string,
     country: string,
     services: Array<string>,
+    images: Array<string>,
   ): Promise<Result<null, WorkspaceError>> {
     return this.commandBus.execute<ICommand, Result<null, WorkspaceError>>(
       new CreateWorkspaceCommand(
@@ -38,6 +39,7 @@ export class WorkspaceService {
         city,
         country,
         services,
+        images
       ),
     );
   }

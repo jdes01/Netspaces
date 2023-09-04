@@ -25,6 +25,7 @@ export class InMemoryUserFinder implements UserFinder {
   }
 
   async findByMail(mail: UserMail): Promise<UserDTO | null> {
-    throw new NotImplementedException();
+    const user = this.users.find((user) => user.mail === mail.value);
+    return user || null;
   }
 }

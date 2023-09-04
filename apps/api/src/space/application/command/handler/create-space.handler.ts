@@ -33,7 +33,7 @@ export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
     private readonly spaceFinder: SpaceFinder,
     @Inject(WORKSPACE_FINDER)
     private readonly workspaceFinder: WorkspaceFinder,
-  ) {}
+  ) { }
 
   async execute(
     command: CreateSpaceCommand,
@@ -63,6 +63,7 @@ export class CreateSpaceHandler implements ICommandHandler<CreateSpaceCommand> {
           quantity,
           seats,
           spaceAmenities,
+          command.image
         );
         this.spaceRepository.save(space);
 

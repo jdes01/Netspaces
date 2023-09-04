@@ -1,13 +1,17 @@
-import { Badge, Box, Image, Stack } from '@chakra-ui/react';
-import { WorkspaceDTO } from '@netspaces/contracts';
+import { Badge, Box, Image, Stack, Text } from '@chakra-ui/react';
+import { WorkspaceDTO } from '../../../../../contracts';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 type WorkspaceCardProps = {
   workspace: WorkspaceDTO;
+  onWorkspaceCardClickRoute: string;
 };
 
-export function WorkspaceCard({ workspace }: WorkspaceCardProps) {
+export function WorkspaceCard({
+  workspace,
+  onWorkspaceCardClickRoute,
+}: WorkspaceCardProps) {
   const router = useRouter();
 
   return (
@@ -15,19 +19,22 @@ export function WorkspaceCard({ workspace }: WorkspaceCardProps) {
       borderRadius={20}
       borderWidth={0}
       padding={1}
-      width={'100%'}
-      maxWidth={500}
+      width={'270px'}
       height={'fit-content'}
       display={'grid'}
       gap={5}
       _hover={{ shadow: 'lg' }}
-      onClick={() => router.push(`/workspaces/${workspace._id}`)}
+      onClick={() =>
+        router.push(`${onWorkspaceCardClickRoute}${workspace._id}`)
+      }
+      overflow="hidden"
     >
       <Image
         borderRadius={20}
-        width={'100%'}
-        height={'100%'}
-        src="https://pbs.twimg.com/media/EnQp7n1XcAI9ZF4.jpg"
+        width={'300px'}
+        height={'200px'}
+        src={workspace?.images[0]}
+        loading="lazy"
       />
 
       <Box marginLeft={3} marginBottom={5} display={'grid'} gap={4}>
@@ -60,7 +67,15 @@ export function WorkspaceCard({ workspace }: WorkspaceCardProps) {
           )}
         </Stack>
         <Box fontWeight={'semibold'}>
-          <Box fontWeight="bold" as="h4" lineHeight="tight" noOfLines={1}>
+          <Box
+            paddingRight={4}
+            fontWeight="bold"
+            as="h4"
+            lineHeight="tight"
+            width={'250px'}
+            noOfLines={2}
+            textOverflow="ellipsis"
+          >
             {workspace.name}
           </Box>
           <Box

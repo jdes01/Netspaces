@@ -1,8 +1,7 @@
 import { Grid, VStack, GridItem, Text, Button, Box } from '@chakra-ui/react';
 import React from 'react';
 import { BookingCartItem } from './BookingCartItem';
-import { SpaceDTO } from '@netspaces/contracts';
-import { SelectedSpace, SpaceBook } from '../SpaceBookingPanel';
+import { SpaceBook } from '../SpaceBookingPanel';
 
 type Props = {
   spaceBooks: Array<SpaceBook>;

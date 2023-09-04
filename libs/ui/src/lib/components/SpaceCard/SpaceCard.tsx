@@ -1,5 +1,6 @@
 import { Badge, Box, Image, Stack } from '@chakra-ui/react';
-import { SpaceDTO } from '@netspaces/contracts';
+import { SpaceDTO } from '../../../../../contracts';
+import React from 'react';
 
 type Props = {
   space: SpaceDTO;
@@ -12,7 +13,7 @@ export function SpaceCard({ space, onClick, highlighted = false }: Props) {
     <Box
       m={1}
       borderRadius={20}
-      borderWidth={1}
+      borderWidth={2}
       borderColor={highlighted === true ? 'red' : 'transparent'}
       _hover={{ cursor: 'pointer', shadow: 'base' }}
       onClick={() => {
@@ -20,8 +21,11 @@ export function SpaceCard({ space, onClick, highlighted = false }: Props) {
       }}
     >
       <Image
+        width={'300px'}
+        height={'200px'}
         borderRadius={20}
-        src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+        src={space.image}
+        loading="lazy"
       />
 
       <Box p="5">
@@ -40,7 +44,15 @@ export function SpaceCard({ space, onClick, highlighted = false }: Props) {
           ))}
         </Stack>
 
-        <Box mt="4" fontWeight="bold" as="h4" lineHeight="tight" noOfLines={1}>
+        <Box
+          mt="4"
+          fontWeight="bold"
+          as="h4"
+          lineHeight="tight"
+          width={'250px'}
+          noOfLines={2}
+          textOverflow="ellipsis"
+        >
           {space.name}
         </Box>
 
@@ -61,7 +73,6 @@ export function SpaceCard({ space, onClick, highlighted = false }: Props) {
             >
               {space.seats} seats
             </Badge>
-            {space.quantity} left
           </Box>
         </Box>
       </Box>

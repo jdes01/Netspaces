@@ -8,5 +8,6 @@ export class CreateSpaceCommand implements ICommand {
     public readonly quantity: number,
     public readonly seats: number,
     public readonly amenitys: Array<string>,
-  ) {}
+    public readonly image: string,
+  ) { }
 }

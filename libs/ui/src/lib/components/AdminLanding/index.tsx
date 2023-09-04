@@ -27,7 +27,9 @@ export function AdminLanding() {
           <Stack direction="row" spacing={10} align="center">
             <Button
               colorScheme="teal"
-              onClick={() => router.push('http://localhost:3000/workspaces')}
+              onClick={() =>
+                router.push('http://localhost:3000/admin/workspaces')
+              }
             >
               Register
             </Button>

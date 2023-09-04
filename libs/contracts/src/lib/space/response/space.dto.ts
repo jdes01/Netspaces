@@ -30,4 +30,8 @@ export class SpaceDTO {
   @ApiProperty()
   @IsNotEmpty()
   readonly amenitys: Array<SpaceAmenitysTypes>;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  readonly image: string;
 }

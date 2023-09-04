@@ -72,6 +72,7 @@ const logger: LoggerConfig = new LoggerConfig();
           event.payload.city,
           event.payload.country,
           event.payload.services.map((service) => service.toString()),
+          event.payload.images
         ),
       WorkspaceNameWasUpdatedEvent: (event: Event<UpdateWorkspaceNameDTO>) =>
         new WorkspaceNameWasUpdatedEvent(event.payload._id, event.payload.name),
@@ -137,4 +138,4 @@ const logger: LoggerConfig = new LoggerConfig();
     RedisModule,
   ],
 })
-export class WorkspaceModule {}
+export class WorkspaceModule { }

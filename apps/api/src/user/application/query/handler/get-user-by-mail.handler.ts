@@ -19,7 +19,6 @@ export class GetUserByMailHandler implements IQueryHandler {
 
     async execute(query: GetUserByMailQuery): Promise<UserDTO | null> {
         const user = this.userFinder.findByMail(UserMail.fromString(query.mail));
-        this.logger.info("OLEMICOLEGA", { user: user })
         return user
     }
 }

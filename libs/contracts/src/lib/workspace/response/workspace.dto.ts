@@ -26,4 +26,7 @@ export class WorkspaceDTO {
 
   @ApiProperty()
   readonly services: Array<string>;
+
+  @ApiProperty()
+  readonly images: Array<string>;
 }

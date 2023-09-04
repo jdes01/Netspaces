@@ -1,7 +1,7 @@
 import { Ok } from 'neverthrow';
 
 import { DeleteUserHandler } from '../command/handler/delete-user.handler';
-import { UserId, UserName } from '../../domain/model/value-objects';
+import { UserId, UserMail, UserName } from '../../domain/model/value-objects';
 import { DeleteUserCommand } from '../command/delete-user.command';
 import { InMemoryUserRepository, InmemoryRedisService } from '../../../test';
 import { User } from '../../domain/model';
@@ -17,6 +17,7 @@ describe('DeleteUserHandler', () => {
     existingUser = User.addWithoutCompany(
       UserId.fromString(id),
       UserName.fromString('name'),
+      UserMail.fromString("mail")
     );
     command = new DeleteUserCommand(id);
     redisService = new InmemoryRedisService();

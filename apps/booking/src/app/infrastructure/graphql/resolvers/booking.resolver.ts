@@ -87,4 +87,12 @@ export class BookingResolver {
       },
     );
   }
+
+  @Query((_returns) => [Booking])
+  async getBookingsByUser(
+    @Args('userId', { type: () => String }) userId: string,
+  ): Promise<Array<BookingDTO>> {
+    return await this.bookingService.getBookingsByUser(userId);
+  }
+
 }

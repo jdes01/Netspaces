@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { BookingDTO } from '@netspaces/contracts';
 import { Model } from 'mongoose';
@@ -8,6 +8,7 @@ import {
   BookingDate,
   BookingId,
   BookingSpaceId,
+  BookingUserId
 } from '../../domain/model/value-objects';
 import {
   BOOKING_PROJECTION,
@@ -139,4 +140,27 @@ export class MongoDBBookingFinder implements BookingFinder {
 
   }
 
+  async findByUser(userId: BookingUserId): Promise<Array<BookingDTO>> {
+    const bookingsViews = await this.bookingProjection
+      .find({
+        userId: { $eq: userId.value },
+      })
+      .exec();
+
+    return bookingsViews.map((bookingsView) => {
+      const date = new Date(bookingsView.date);
+      return {
+        _id: bookingsView._id,
+        userId: bookingsView.userId,
+        spaceId: bookingsView.spaceId,
+        date: date
+          .toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+          })
+          .replace(/\//g, '-'),
+      };
+    });
+  }
 }

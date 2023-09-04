@@ -8,3 +8,5 @@ export * from './lib/components/SpaceBookingPanel';
 export * from './lib/components/SpaceCard';
 export * from './lib/components/WorkspaceCard';
 export * from './lib/components/WorkspacesGrid';
+export * from './lib/components/CreateWorkspaceForm'
+export * from './lib/components/CreateSpaceForm'

@@ -13,7 +13,6 @@ import {
   CalendarDefaultTheme,
   CalendarValues,
   CalendarDate,
-  CalendarContext,
 } from '@uselessdev/datepicker';
 
 import React, { useContext } from 'react';

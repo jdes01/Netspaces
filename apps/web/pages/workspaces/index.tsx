@@ -4,7 +4,7 @@ import { WorkspaceDTO } from '@netspaces/contracts';
 
 import { WorkspaceGrid } from '@netspaces/ui';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import useSWR from 'swr';
 
@@ -21,6 +21,7 @@ const GET_WORKSPACES = gql`
       city
       country
       services
+      images
     }
   }
 `;
@@ -58,8 +59,11 @@ export function Index() {
   if (!me) return null;
 
   return (
-    <Box p="5" bg={'#FAF9F6'} m={[0, null, 5]}>
-      <WorkspaceGrid workspaces={workspaces}></WorkspaceGrid>
+    <Box p="5" m={[0, null, 5]}>
+      <WorkspaceGrid
+        workspaces={workspaces}
+        onWorkspaceCardClickRoute={'/workspaces/'}
+      ></WorkspaceGrid>
     </Box>
   );
 }

@@ -2,6 +2,16 @@ import { Directive, Field, ID, InputType, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Directive('@key(fields: "_id")')
+export class Space {
+  @Field((type) => ID)
+  _id!: string;
+
+  @Field()
+  name?: string;
+}
+
+@ObjectType()
+@Directive('@key(fields: "_id")')
 export class Booking {
   @Field((type) => ID)
   _id!: string;
@@ -11,6 +21,9 @@ export class Booking {
 
   @Field()
   spaceId?: string;
+
+  @Field()
+  space?: Space;
 
   @Field()
   date?: string;
@@ -45,3 +58,4 @@ export class SpaceAvailability {
   @Field()
   quantity: number;
 }
+

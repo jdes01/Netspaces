@@ -74,6 +74,7 @@ const logger: LoggerConfig = new LoggerConfig();
           event.payload.quantity,
           event.payload.seats,
           SpaceAmenity.toStringList(event.payload.amenitys),
+          event.payload.image
         ),
       SpaceNameWasUpdatedEvent: (event: Event<UpdateSpaceNameDTO>) =>
         new SpaceNameWasUpdatedEvent(event.payload._id, event.payload.name),
@@ -117,4 +118,4 @@ const logger: LoggerConfig = new LoggerConfig();
     SpaceService,
   ],
 })
-export class SpaceModule {}
+export class SpaceModule { }

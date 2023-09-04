@@ -14,7 +14,7 @@ import {
   Stack,
   useDisclosure,
 } from '@chakra-ui/react';
-import { SpaceDTO } from '@netspaces/contracts';
+import { SpaceDTO } from '../../../../../contracts';
 import { useState } from 'react';
 import { SingleDatepicker } from 'chakra-dayzed-datepicker';
 import { gql, useMutation, useQuery } from '@apollo/client';

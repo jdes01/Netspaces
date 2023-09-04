@@ -1,7 +1,16 @@
 import { Box, FormControl, HStack, IconButton, Select } from '@chakra-ui/react';
+import { City, Country, State } from 'country-state-city';
+import React from 'react';
 import { FiMapPin } from 'react-icons/fi';
 
-export function LocationFinder() {
+type LocationFinderProps = {
+  onSelect: (city: string) => void;
+};
+
+export function LocationFinder({ onSelect }: LocationFinderProps) {
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    onSelect(event.target.value);
+  };
   return (
     <Box
       m={1}
@@ -20,12 +29,14 @@ export function LocationFinder() {
             bg={'#FAF9F6'}
           />
           <Select
-            placeholder="Select country"
+            placeholder="Select city"
             borderColor={'transparent'}
             focusBorderColor="transparent"
+            onChange={handleSelectChange}
           >
-            <option>United Arab Emirates</option>
-            <option>Nigeria</option>
+            {City.getCitiesOfState('ES', 'AN')?.map((city) => {
+              return <option>{city.name}</option>;
+            })}
           </Select>
         </HStack>
       </FormControl>

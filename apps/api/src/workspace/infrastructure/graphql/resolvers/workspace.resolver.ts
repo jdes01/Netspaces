@@ -81,6 +81,7 @@ export class WorkspaceResolver {
       workspaceInput.city,
       workspaceInput.country,
       workspaceInput.services,
+      workspaceInput.images
     );
 
     return createdWorkspaceResult.match<string>(

@@ -29,6 +29,7 @@ export class Workspace extends AggregateRoot {
   private _description!: WorkspaceDescription;
   private _location!: WorkspaceLocation;
   private _services: Array<WorkspaceService> = [];
+  private _images: Array<string> = [];
   private _deleted!: boolean;
 
   public static add(
@@ -38,6 +39,7 @@ export class Workspace extends AggregateRoot {
     description: WorkspaceDescription,
     location: WorkspaceLocation,
     services: Array<WorkspaceService>,
+    images: Array<string>
   ): Workspace {
     const workspace = new Workspace();
 
@@ -50,21 +52,12 @@ export class Workspace extends AggregateRoot {
       location.city,
       location.country,
       services.map((service) => service.value),
+      images,
     );
 
     workspace.apply(event);
 
     return workspace;
-  }
-
-  public addSpace(
-    spaceId: SpaceId,
-    name: SpaceName,
-    quantity: SpaceQuantity,
-    seats: SpaceSeats,
-    amenitys: Array<SpaceAmenity>,
-  ): Space {
-    return Space.add(spaceId, this.id, name, quantity, seats, amenitys);
   }
 
   private onWorkspaceWasCreatedEvent(event: WorkspaceWasCreatedEvent): void {
@@ -77,6 +70,7 @@ export class Workspace extends AggregateRoot {
       event.city,
       event.country,
     );
+    this._images = event.images
 
     const servicesResult = WorkspaceService.fromStringList(event.services);
 

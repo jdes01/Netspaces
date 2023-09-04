@@ -26,7 +26,7 @@ export class SpaceResolver {
     private readonly spaceService: SpaceService,
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
-  ) {}
+  ) { }
 
   @Query((_returns) => [Space])
   async spaces(): Promise<SpaceDTO[]> {
@@ -61,6 +61,7 @@ export class SpaceResolver {
       spaceInput.quantity,
       spaceInput.seats,
       spaceInput.amenitys,
+      spaceInput.image
     );
 
     return createdSpaceResult.match<string>(

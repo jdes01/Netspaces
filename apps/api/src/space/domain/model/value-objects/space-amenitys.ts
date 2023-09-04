@@ -22,14 +22,15 @@ export class SpaceAmenity extends ValueObject<{ value: SpaceAmenitysTypes }> {
     amenitys: Array<string>,
   ): Result<Array<SpaceAmenity>, SpaceAmenityNotValidError> {
     try {
-      return new Ok(
-        amenitys.map(
-          (amenity) =>
-            new SpaceAmenity({
-              value: SpaceAmenitysTypes[amenity],
-            }),
-        ),
-      );
+      const spaceAmenitys = amenitys.map((amenity) => {
+        const amenityType = SpaceAmenitysTypes[amenity];
+        if (amenityType === undefined) {
+          throw new Error(amenity);
+        }
+        return new SpaceAmenity({ value: amenityType });
+      });
+
+      return new Ok(spaceAmenitys);
     } catch (e: any) {
       return new Err(new SpaceAmenityNotValidError(e.message));
     }

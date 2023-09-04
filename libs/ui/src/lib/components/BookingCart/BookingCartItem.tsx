@@ -8,8 +8,6 @@ import {
   Text,
   Button,
 } from '@chakra-ui/react';
-import { WorkspaceDTO } from '@netspaces/contracts';
-import { useRouter } from 'next/router';
 import { IconButton } from '@chakra-ui/react';
 import { CloseIcon } from '@chakra-ui/icons';
 import React from 'react';

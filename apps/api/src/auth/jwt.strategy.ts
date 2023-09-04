@@ -11,6 +11,7 @@ interface JwtPayload {
     sub: string;
     name: string
     email: string;
+    picture: string;
 }
 
 @Injectable()
@@ -28,8 +29,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     async validate(payload: JwtPayload): Promise<UserEntity> {
         const existingUser = await this.userService.getUserByMail(payload.email)
 
-        if (existingUser === null) this.userService.createUserWithoutCompany(uuid(), payload.name, payload.email)
+        existingUser ?? this.userService.createUserWithoutCompany(uuid(), payload.name, payload.email)
 
-        return { id: payload.sub, name: payload.name, email: payload.email } as UserEntity;
+        return { id: existingUser._id, name: payload.name, email: payload.email, picture: payload.picture } as UserEntity;
     }
 }

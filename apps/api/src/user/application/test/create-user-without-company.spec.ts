@@ -13,6 +13,7 @@ import { UserAlreadyExistsError } from '../../domain/exception';
 describe('CreateUserHandler', () => {
   let id;
   let name;
+  let mail;
   let existingUser: UserDTO;
   let command;
   let redisService;
@@ -20,8 +21,9 @@ describe('CreateUserHandler', () => {
   beforeEach(() => {
     id = 'e847261d-5539-49da-876d-bfc245e50974';
     name = 'userName';
-    existingUser = { _id: id, name: name, companyId: '' };
-    command = new CreateUserWithoutCompanyCommand(id, name);
+    mail = "mail"
+    existingUser = { _id: id, name: name, companyId: '', mail: mail };
+    command = new CreateUserWithoutCompanyCommand(id, name, mail);
     redisService = new InmemoryRedisService();
   });
 

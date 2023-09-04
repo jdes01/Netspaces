@@ -15,6 +15,7 @@ export const WorkspaceSchema = new Schema(
     city: String,
     country: String,
     services: Array<string>,
+    images: Array<string>,
   },
   {
     versionKey: false,

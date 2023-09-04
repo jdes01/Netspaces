@@ -27,6 +27,9 @@ export class Space {
 
   @Field((_type) => [String])
   amenitys?: [string];
+
+  @Field()
+  image?: string;
 }
 
 @InputType()
@@ -48,6 +51,9 @@ export class SpaceInput {
 
   @Field((_type) => [String])
   amenitys?: [string];
+
+  @Field()
+  image!: string;
 }
 
 @InputType()

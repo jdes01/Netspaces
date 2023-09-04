@@ -11,11 +11,12 @@ import React, { useState } from 'react';
 import { FaWifi } from 'react-icons/fa';
 import { BookingCart } from '../BookingCart';
 import { SpaceCard } from '../SpaceCard/SpaceCard';
-import { SpaceDTO, WorkspaceDTO } from '@netspaces/contracts';
+import { SpaceDTO, WorkspaceDTO } from '../../../../../contracts';
 import { SpaceAvailabilityCalendar } from '../SpaceAvailabilityCalendar';
 
 import { gql, useQuery } from '@apollo/client';
 import { CalendarValues } from '@uselessdev/datepicker';
+import { iconMapper } from '../WorkspaceServiceIcons';
 
 export type SelectedSpace = {
   id: string;
@@ -58,7 +59,7 @@ export const SpaceBookingPanel: React.FunctionComponent<Props> = ({
   const { data, loading } = useQuery(GET_SPACE_AVAILABILITY, {
     variables: {
       spaceId: selectedSpace?.id,
-      month: new Date().getMonth(),
+      month: new Date().getMonth() + 1,
       year: new Date().getFullYear(),
     },
   });
@@ -76,7 +77,7 @@ export const SpaceBookingPanel: React.FunctionComponent<Props> = ({
       return new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
-        date.day,
+        date.day + 1,
       );
     });
 
@@ -141,14 +142,24 @@ export const SpaceBookingPanel: React.FunctionComponent<Props> = ({
             Services:
           </Text>
           <SimpleGrid columns={2}>
-            {workspace.services.map((service) => (
-              <Flex alignItems="center">
-                <FaWifi></FaWifi>
-                <Box marginLeft={3} width={'100%'} borderRadius={20}>
-                  {service}
-                </Box>
-              </Flex>
-            ))}
+            {workspace.services.map((service) => {
+              const icon = iconMapper(service);
+
+              return icon ? (
+                <Flex alignItems="center">
+                  {icon}
+                  <Box marginLeft={3} width={'100%'} borderRadius={20}>
+                    {service}
+                  </Box>
+                </Flex>
+              ) : (
+                <Flex alignItems="center">
+                  <Box marginLeft={3} width={'100%'} borderRadius={20}>
+                    {service}
+                  </Box>
+                </Flex>
+              );
+            })}
           </SimpleGrid>
         </Box>
       </GridItem>

@@ -11,6 +11,7 @@ import {
 } from '../../domain/exception';
 import { GetSpaceUnavailableDatesQuery } from '../../application/query/get-space-unavailable-dates.query';
 import { GetSpaceAvailabilityByMonthQuery } from '../../application/query/get-space-availability-by-month.query';
+import { GetBookingsByUserQuery } from '../../application/query/get-bookings-by-user.query';
 
 @Injectable()
 export class BookingService {
@@ -49,5 +50,11 @@ export class BookingService {
       IQuery,
       Result<Array<[number, number]>, BookingSpaceNotFoundError>
     >(new GetSpaceAvailabilityByMonthQuery(spaceId, month, year));
+  }
+
+  async getBookingsByUser(userId: string): Promise<Array<BookingDTO>> {
+    return this.queryBus.execute<IQuery, Array<BookingDTO>>(
+      new GetBookingsByUserQuery(userId),
+    );
   }
 }

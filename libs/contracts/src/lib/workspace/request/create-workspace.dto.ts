@@ -44,4 +44,9 @@ export class CreateWorkspaceDTO {
   @IsNotEmpty()
   @IsArray()
   readonly services: Array<WorkspaceServicesTypes>;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsArray()
+  readonly images: Array<string>;
 }

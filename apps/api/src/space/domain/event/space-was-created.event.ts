@@ -8,6 +8,7 @@ export class SpaceWasCreatedEvent extends Event {
     public readonly quantity: number,
     public readonly seats: number,
     public readonly amenitys: Array<string>,
+    public readonly image: string,
   ) {
     super(id, {
       _id: id,
@@ -16,6 +17,7 @@ export class SpaceWasCreatedEvent extends Event {
       quantity,
       seats,
       workspaceId,
+      image
     });
   }
 }

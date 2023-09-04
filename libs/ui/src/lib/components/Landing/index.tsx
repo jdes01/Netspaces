@@ -8,6 +8,7 @@ import {
   useColorMode,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import React from 'react';
 import { FaMoon, FaSun } from 'react-icons/fa';
 
 type Props = {
@@ -29,24 +30,7 @@ export function Landing({ signIn }: Props) {
         </Box>
         <Box m={'auto'} mt={10}>
           <Stack direction="row" spacing={10} align="center">
-            <Button
-              colorScheme="teal"
-              onClick={() => router.push('http://localhost:3000/workspaces')}
-            >
-              Register
-            </Button>
-            <Button
-              colorScheme="teal"
-              variant="ghost"
-              // onClick={() => {
-              //   localStorage.setItem(
-              //     'userId',
-              //     'ce32ecbe-d777-4ab5-a4e8-56ce9b5219d7',
-              //   );
-              //   router.push('http://localhost:3000/workspaces');
-              // }}
-              onClick={signIn}
-            >
+            <Button colorScheme="teal" variant="ghost" onClick={signIn}>
               Log in
             </Button>
           </Stack>

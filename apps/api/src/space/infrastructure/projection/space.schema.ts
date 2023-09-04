@@ -13,6 +13,7 @@ export const SpaceSchema = new Schema(
     quantity: Number,
     seats: Number,
     workspaceId: String,
+    image: String,
   },
   {
     versionKey: false,

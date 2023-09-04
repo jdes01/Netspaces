@@ -17,6 +17,7 @@ export class Space extends AggregateRoot {
   private _quantity!: SpaceQuantity;
   private _seats!: SpaceSeats;
   private _amenitys!: Array<SpaceAmenity>;
+  private _image!: string;
   private _deleted!: boolean | null;
 
   public static add(
@@ -26,6 +27,7 @@ export class Space extends AggregateRoot {
     quantity: SpaceQuantity,
     seats: SpaceSeats,
     amenitys: Array<SpaceAmenity>,
+    image: string
   ): Space {
     const space = new Space();
 
@@ -36,6 +38,7 @@ export class Space extends AggregateRoot {
       quantity.value,
       seats.value,
       amenitys.map((amenity) => amenity.value),
+      image
     );
 
     space.apply(event);
@@ -49,6 +52,7 @@ export class Space extends AggregateRoot {
     this._name = SpaceName.fromString(event.name);
     this._quantity = SpaceQuantity.fromNumber(event.quantity);
     this._seats = SpaceSeats.fromNumber(event.seats);
+    this._image = event.image
 
     SpaceAmenity.fromStringList(event.amenitys).match(
       (amenitys) => {
