@@ -66,7 +66,7 @@ export function CreateSpaceForm({
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent pb={6}>
-          <ModalHeader>Create Workspace</ModalHeader>
+          <ModalHeader>Create Space</ModalHeader>
           <ModalBody>
             <FormControl isRequired>
               <FormLabel>Name</FormLabel>

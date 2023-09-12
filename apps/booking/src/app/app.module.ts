@@ -49,7 +49,7 @@ import { BookingService } from './infrastructure/service/booking.service';
 
 import { WinstonModule } from 'nest-winston';
 import { LoggerConfig } from '../logger';
-import { Space } from './infrastructure/graphql/schema/booking.graphql-model';
+// import { Space } from './infrastructure/graphql/schema/booking.graphql-model';
 
 const logger: LoggerConfig = new LoggerConfig();
 
@@ -71,9 +71,9 @@ const logger: LoggerConfig = new LoggerConfig();
         federation: 2,
       },
       driver: ApolloFederationDriver,
-      buildSchemaOptions: {
-        orphanedTypes: [Space],
-      },
+      // buildSchemaOptions: {
+      //   orphanedTypes: [Space],
+      // },
     }),
     CqrsModule,
     EventStoreModule.forRoot({

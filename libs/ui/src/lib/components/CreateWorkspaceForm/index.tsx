@@ -15,6 +15,7 @@ import {
   IconButton,
   HStack,
   VStack,
+  Grid,
 } from '@chakra-ui/react';
 
 import React from 'react';
@@ -98,33 +99,35 @@ export function CreateWorkspaceForm({
             <FormControl isRequired>
               <FormLabel>Images</FormLabel>
               <Input
+                mt={1}
                 placeholder="url:"
                 onChange={(e) => setFormImageOne(e.target.value)}
               />
               <Input
+                mt={1}
                 placeholder="url:"
                 onChange={(e) => setFormImageTwo(e.target.value)}
               />
               <Input
+                mt={1}
                 placeholder="url:"
                 onChange={(e) => setFormImageThree(e.target.value)}
               />
             </FormControl>
             <FormControl isRequired mt={4}>
               <FormLabel></FormLabel>
-              <VStack spacing={5} direction="row">
-                {Object.keys(WorkspaceServicesTypes).map((key) => {
-                  return (
-                    <Checkbox
-                      key={key}
-                      isChecked={formServices.includes(key)}
-                      onChange={() => handleServiceToggle(key)}
-                    >
-                      {key}
-                    </Checkbox>
-                  );
-                })}
-              </VStack>
+              <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+                {Object.keys(WorkspaceServicesTypes).map((key) => (
+                  <Checkbox
+                    key={key}
+                    isChecked={formServices.includes(key)}
+                    onChange={() => handleServiceToggle(key)}
+                    borderColor={'gray.400'}
+                  >
+                    {key}
+                  </Checkbox>
+                ))}
+              </Grid>
             </FormControl>
           </ModalBody>
 

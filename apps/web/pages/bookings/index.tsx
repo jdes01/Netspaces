@@ -8,6 +8,7 @@ import {
   Flex,
   HStack,
   Avatar,
+  VStack,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
@@ -83,169 +84,243 @@ export function Index() {
 
   return (
     <>
-      <Box p="8">
-        <HStack gap={3}>
-          <Avatar src={me.picture}></Avatar>
-          <Heading> welcome back Javier!</Heading>
-        </HStack>
-        <Flex justifyContent="center" alignItems="center" height="50vh">
-          <Box
-            mt={200}
-            textAlign="center"
-            borderRadius={20}
-            borderWidth={0.5}
-            width="90%"
-            maxWidth="2000"
-            height={1000}
+      <Flex
+        align="center"
+        justify="center"
+        minH="100vh"
+        maxH="200px"
+        flexDirection="column"
+      >
+        <Box width={1500} height={500} mb={200}>
+          <HStack gap={300} align="center" justifyContent="center" mx="auto">
+            <Avatar src={me.picture} width={500} height={500}></Avatar>
+            <Heading size={'4xl'}>Javier de Santiago</Heading>
+          </HStack>
+        </Box>
+        <Box>
+          <Heading>Reservas:</Heading>
+          <Flex
+            mt={2}
+            direction="column"
+            p={8}
+            rounded={8}
+            shadow="md"
+            bg="white"
+            width={1500}
+            height={500}
+            borderColor={'blackAlpha.400'}
+            borderWidth={2}
+            overflowY="auto"
           >
-            <Flex padding={5}>
-              <Heading> Bookings:</Heading>
-            </Flex>
             <Grid height={'100%'} width={'100%'}>
-              <GridItem>
-                <Box
-                  borderRadius={20}
-                  borderWidth={0.5}
-                  height={100}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <HStack
-                    gap={3}
-                    align="center"
-                    justifyContent="center"
-                    mx="auto"
+              <VStack spacing={4} p={4}>
+                <GridItem>
+                  <Box
+                    width={750}
+                    borderRadius={50}
+                    borderWidth={0.5}
+                    borderColor={'gray.400'}
+                    height={100}
+                    display="flex"
+                    paddingTop={2}
+                    paddingBottom={2}
+                    paddingLeft={4}
+                    paddingRight={4}
+                    alignItems="center"
                   >
-                    <Avatar src={me.picture}></Avatar>
-                    <Heading> Nombre de un espacio</Heading>
-                    <Heading> 10/10/2023 </Heading>
-                  </HStack>
-                </Box>
-              </GridItem>
-              <GridItem>
-                <Box
-                  borderRadius={20}
-                  borderWidth={0.5}
-                  height={100}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <HStack
-                    gap={3}
-                    align="center"
-                    justifyContent="center"
-                    mx="auto"
+                    <HStack
+                      gap={3}
+                      align="center"
+                      justifyContent="center"
+                      mx="auto"
+                    >
+                      <Avatar
+                        src={
+                          'https://media.gettyimages.com/id/1157235072/video/comfortable-office-atmosphere.jpg?s=640x640&k=20&c=3HJV7KsAP62-3hGtgplR2cJX9nIMJ51BMSg9_FYwqic='
+                        }
+                      ></Avatar>
+                      <Heading> Escritorio Individual</Heading>
+                      <Heading> 11/12/2023 </Heading>
+                    </HStack>
+                  </Box>
+                </GridItem>
+                <GridItem>
+                  <Box
+                    width={750}
+                    borderRadius={50}
+                    borderWidth={0.5}
+                    borderColor={'gray.400'}
+                    height={100}
+                    display="flex"
+                    paddingTop={2}
+                    paddingBottom={2}
+                    paddingLeft={4}
+                    paddingRight={4}
+                    alignItems="center"
                   >
-                    <Avatar src={me.picture}></Avatar>
-                    <Heading> Nombre de un espacio</Heading>
-                    <Heading> 10/10/2023 </Heading>
-                  </HStack>
-                </Box>
-              </GridItem>
-              <GridItem>
-                <Box
-                  borderRadius={20}
-                  borderWidth={0.5}
-                  height={100}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <HStack
-                    gap={3}
-                    align="center"
-                    justifyContent="center"
-                    mx="auto"
+                    <HStack
+                      gap={3}
+                      align="center"
+                      justifyContent="center"
+                      mx="auto"
+                    >
+                      <Avatar
+                        src={
+                          'https://www.bravo.es/wp-content/uploads/2019/12/Caracter%C3%ADsticas-para-un-espacio-coworking-1480x740.jpg'
+                        }
+                      ></Avatar>
+                      <Heading> Mesa para compartir</Heading>
+                      <Heading> 12/12/2023 </Heading>
+                    </HStack>
+                  </Box>
+                </GridItem>
+                <GridItem>
+                  <Box
+                    width={750}
+                    borderRadius={50}
+                    borderWidth={0.5}
+                    borderColor={'gray.400'}
+                    height={100}
+                    display="flex"
+                    paddingTop={2}
+                    paddingBottom={2}
+                    paddingLeft={4}
+                    paddingRight={4}
+                    alignItems="center"
                   >
-                    <Avatar src={me.picture}></Avatar>
-                    <Heading> Nombre de un espacio</Heading>
-                    <Heading> 10/10/2023 </Heading>
-                  </HStack>
-                </Box>
-              </GridItem>
-              <GridItem>
-                <Box
-                  borderRadius={20}
-                  borderWidth={0.5}
-                  height={100}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <HStack
-                    gap={3}
-                    align="center"
-                    justifyContent="center"
-                    mx="auto"
+                    <HStack
+                      gap={3}
+                      align="center"
+                      justifyContent="center"
+                      mx="auto"
+                    >
+                      <Avatar
+                        src={
+                          'https://c1.wallpaperflare.com/preview/50/512/980/iocenters-meeting-room-kuwait-city.jpg'
+                        }
+                      ></Avatar>
+                      <Heading> Sala de reuniones</Heading>
+                      <Heading> 10/12/2023 </Heading>
+                    </HStack>
+                  </Box>
+                </GridItem>
+                <GridItem>
+                  <Box
+                    width={750}
+                    borderRadius={50}
+                    borderWidth={0.5}
+                    borderColor={'gray.400'}
+                    height={100}
+                    display="flex"
+                    paddingTop={2}
+                    paddingBottom={2}
+                    paddingLeft={4}
+                    paddingRight={4}
+                    alignItems="center"
                   >
-                    <Avatar src={me.picture}></Avatar>
-                    <Heading> Nombre de un espacio</Heading>
-                    <Heading> 10/10/2023 </Heading>
-                  </HStack>
-                </Box>
-              </GridItem>
-              <GridItem>
-                <Box
-                  borderRadius={20}
-                  borderWidth={0.5}
-                  height={100}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <HStack
-                    gap={3}
-                    align="center"
-                    justifyContent="center"
-                    mx="auto"
+                    <HStack
+                      gap={3}
+                      align="center"
+                      justifyContent="center"
+                      mx="auto"
+                    >
+                      <Avatar
+                        src={
+                          'https://c1.wallpaperflare.com/preview/50/512/980/iocenters-meeting-room-kuwait-city.jpg'
+                        }
+                      ></Avatar>
+                      <Heading> Sala de reuniones</Heading>
+                      <Heading> 11/12/2023 </Heading>
+                    </HStack>
+                  </Box>
+                </GridItem>
+                <GridItem>
+                  <Box
+                    width={750}
+                    borderRadius={50}
+                    borderWidth={0.5}
+                    borderColor={'gray.400'}
+                    height={100}
+                    display="flex"
+                    paddingTop={2}
+                    paddingBottom={2}
+                    paddingLeft={4}
+                    paddingRight={4}
+                    alignItems="center"
                   >
-                    <Avatar src={me.picture}></Avatar>
-                    <Heading> Nombre de un espacio</Heading>
-                    <Heading> 10/10/2023 </Heading>
-                  </HStack>
-                </Box>
-              </GridItem>
-              <GridItem>
-                <Box
-                  borderRadius={20}
-                  borderWidth={0.5}
-                  height={100}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <HStack
-                    gap={3}
-                    align="center"
-                    justifyContent="center"
-                    mx="auto"
+                    <HStack
+                      gap={3}
+                      align="center"
+                      justifyContent="center"
+                      mx="auto"
+                    >
+                      <Avatar
+                        src={
+                          'https://c1.wallpaperflare.com/preview/50/512/980/iocenters-meeting-room-kuwait-city.jpg'
+                        }
+                      ></Avatar>
+                      <Heading> Sala de reuniones</Heading>
+                      <Heading> 12/12/2023 </Heading>
+                    </HStack>
+                  </Box>
+                </GridItem>
+                <GridItem>
+                  <Box
+                    width={750}
+                    borderRadius={50}
+                    borderWidth={0.5}
+                    borderColor={'gray.400'}
+                    height={100}
+                    display="flex"
+                    paddingTop={2}
+                    paddingBottom={2}
+                    paddingLeft={4}
+                    paddingRight={4}
+                    alignItems="center"
                   >
-                    <Avatar src={me.picture}></Avatar>
-                    <Heading> Nombre de un espacio</Heading>
-                    <Heading> 10/10/2023 </Heading>
-                  </HStack>
-                </Box>
-              </GridItem>
-              <GridItem>
-                <Box
-                  borderRadius={20}
-                  borderWidth={0.5}
-                  height={100}
-                  display="flex"
-                  alignItems="center"
-                >
-                  <HStack
-                    gap={3}
-                    align="center"
-                    justifyContent="center"
-                    mx="auto"
+                    <HStack
+                      gap={3}
+                      align="center"
+                      justifyContent="center"
+                      mx="auto"
+                    >
+                      <Avatar src={me.picture}></Avatar>
+                      <Heading> Nombre de un espacio</Heading>
+                      <Heading> 10/10/2023 </Heading>
+                    </HStack>
+                  </Box>
+                </GridItem>
+                <GridItem>
+                  <Box
+                    width={750}
+                    borderRadius={50}
+                    borderWidth={0.5}
+                    borderColor={'gray.400'}
+                    height={100}
+                    display="flex"
+                    paddingTop={2}
+                    paddingBottom={2}
+                    paddingLeft={4}
+                    paddingRight={4}
+                    alignItems="center"
                   >
-                    <Avatar src={me.picture}></Avatar>
-                    <Heading> Nombre de un espacio</Heading>
-                    <Heading> 10/10/2023 </Heading>
-                  </HStack>
-                </Box>
-              </GridItem>
+                    <HStack
+                      gap={3}
+                      align="center"
+                      justifyContent="center"
+                      mx="auto"
+                    >
+                      <Avatar src={me.picture}></Avatar>
+                      <Heading> Nombre de un espacio</Heading>
+                      <Heading> 10/10/2023 </Heading>
+                    </HStack>
+                  </Box>
+                </GridItem>
+              </VStack>
             </Grid>
-          </Box>
-        </Flex>
-      </Box>
+          </Flex>
+        </Box>
+      </Flex>
     </>
   );
 }
